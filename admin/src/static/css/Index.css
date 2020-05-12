@@ -1,0 +1,11 @@
+.chart_index {
+    width: 100%;
+    height: 100%;
+}
+
+.chart_index .chart_left {
+    width: 600px;
+    height: 600px;
+    margin: 0px auto;
+}
+
