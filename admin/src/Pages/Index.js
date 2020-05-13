@@ -10,8 +10,6 @@ function Index(props) {
 
     useEffect(() => {
         getValueArticle()
-
-
     }, [])
 
     const getValueArticle = () => {

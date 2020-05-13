@@ -33,7 +33,7 @@ module.exports = appInfo => {
       // username
       user: 'root',
       // password
-      password: 'root',
+      password: 'hwyhcp',
       // database
       database: 'my_blog',
     },
@@ -52,7 +52,7 @@ module.exports = appInfo => {
 
   config.cors = {
     origin: 'http://localhost:3000',
-    credentials: true,//允许cookie跨域
+    credentials: true, // 允许cookie跨域
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
 

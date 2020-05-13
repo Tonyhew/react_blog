@@ -8,4 +8,5 @@ module.exports = app => {
   router.get('/default/getNavList', controller.default.home.getNavList);
   router.get('/default/getTypeInfo', controller.default.home.getTypeInfo);
   router.get('/default/getListById/:id', controller.default.home.getListById);
+  router.get('/default/getSecondNav/:id', controller.default.home.getSecondNav);
 };

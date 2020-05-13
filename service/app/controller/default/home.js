@@ -48,6 +48,16 @@ class HomeController extends Controller {
     this.ctx.body = { data: result };
   }
 
+  async getSecondNav() {
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_secondnav.id as id, ' +
+                'blog_secondnav.title as title ' +
+                'FROM blog_secondNav where blog_secondNav.arctype_parent_id =' + id;
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = { second: result };
+
+  }
+
   async getListById() {
     const id = this.ctx.params.id;
     const sql = 'SELECT blog_article.id as id,' +
