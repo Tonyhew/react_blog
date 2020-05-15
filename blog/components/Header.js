@@ -9,31 +9,28 @@ import servicePath from '../config/apiUrl'
 const { SubMenu } = Menu
 const Header = () => {
 	const [listData, setListData] = useState([]);
-	const [second, setSecond] = useState([])
+	// const [second, setSecond] = useState([])
 
 	useEffect(() => {
 		const fetchData = async () => {
-			var list = []
-			const result = await axios(servicePath.getNavList).then(
-				(res) => {
+			let list = []
+			await axios(servicePath.getNavList).then((res) => {
 					list = res.data.data;
-					for (let i = 0; i < list.length; i++) {
-						var id = res.data.data[i].Id
-						axios(servicePath.getSecondNav + id).then((res) => {
-							list[i].second = res.data.second
-							setSecond(res.data.second)
-						})
-					}
-					return list
 				}
-			)
-
-			setListData(result)
+			).then(r => {
+				for (let i = 0; i < list.length; i++) {
+					let id = list[i].Id
+					axios(servicePath.getSecondNav + id).then(res => {
+						list[i].children = res.data.second;
+					})
+				}
+				return list
+			})
+			setListData([...list])
 		}
 		fetchData()
 	}, [])
 
-	console.log(second)
 	const handleClick = (e) => {
 		if (e.key == 0) {
 			Router.push('/index')
@@ -66,8 +63,6 @@ const Header = () => {
 		</Menu>
 	);
 
-
-
 	return (
 		<div className="header">
 			<Row type="flex" justify="center">
@@ -77,21 +72,23 @@ const Header = () => {
 				</Col>
 				<Col className="menu-div" xs={0} sm={0} md={14} lg={8} xl={6}>
 
-					<Menu mode="horizontal" onClick={handleClick}>
+					<Menu mode="horizontal" onClick={handleClick} theme='dark'>
 						<Menu.Item key="0">
 							<Icon type="home" />
               首页
             </Menu.Item>
 						{
-							listData.map(item => {
+							listData.map((listItem) => {
+								console.log(listItem)
 								return (
-									<SubMenu title={item.typeName} key={item.Id}>
+									<SubMenu title={listItem.typeName} key={listItem.Id}>
 										{
-											second.map(item => {
-												return (
-													<Menu.Item key={item.id}>{item.title}</Menu.Item>
-												)
-											})
+										
+											// listItem.children.map(itemNav => {
+											// 	return (
+											// 		<Menu.Item>{itemNav.title}</Menu.Item>
+											// 	)
+											// })
 										}
 									</SubMenu>
 								)
@@ -99,7 +96,7 @@ const Header = () => {
 						}
 					</Menu>
 				</Col>
-				<Col className="menu-div-mobile" xs={6} sm={6} md={0} lg={0} xl={0}>
+				<Col className="menu-div-mobile" xs={12} sm={12} md={0} lg={0} xl={0}>
 					<Dropdown overlay={menu} trigger={['click']}>
 						<div onClick={menuMobile}>
 							<img src={'../static/images/menu.png'} alt="菜单" />
