@@ -8,25 +8,28 @@ import servicePath from '../config/apiUrl'
 
 const { SubMenu } = Menu
 const Header = () => {
+	
 	const [listData, setListData] = useState([]);
-	// const [second, setSecond] = useState([])
+	const [second, setSecond] = useState([])
 
 	useEffect(() => {
+		var storage = window.localStorage;
 		const fetchData = async () => {
-			let list = []
+			let list
 			await axios(servicePath.getNavList).then((res) => {
-					list = res.data.data;
-				}
-			).then(r => {
+				list = res.data.data;
+			}).then(() => {
 				for (let i = 0; i < list.length; i++) {
 					let id = list[i].Id
-					axios(servicePath.getSecondNav + id).then(res => {
-						list[i].children = res.data.second;
+					axios(servicePath.getSecondNav).then(r => {
+						// list[i].children = r.data.second
+						// storage.setItem("second", JSON.stringify(r.data.second))
+						setSecond(r.data.second)
 					})
 				}
 				return list
 			})
-			setListData([...list])
+			setListData(list)
 		}
 		fetchData()
 	}, [])
@@ -55,7 +58,6 @@ const Header = () => {
 						<Menu.Item key={item.Id}>
 							<Icon type={item.icon} />
 							{item.typeName}
-
 						</Menu.Item>
 					)
 				})
@@ -79,16 +81,17 @@ const Header = () => {
             </Menu.Item>
 						{
 							listData.map((listItem) => {
-								console.log(listItem)
+								// console.log(listItem.Id)
 								return (
 									<SubMenu title={listItem.typeName} key={listItem.Id}>
 										{
-										
-											// listItem.children.map(itemNav => {
-											// 	return (
-											// 		<Menu.Item>{itemNav.title}</Menu.Item>
-											// 	)
-											// })
+											second.map(item => {
+												if (listItem.Id === item.arctype_parent_id) {
+													return (
+														<Menu.Item key={item.Id}>{item.title}</Menu.Item>
+													)
+												}
+											})
 										}
 									</SubMenu>
 								)
