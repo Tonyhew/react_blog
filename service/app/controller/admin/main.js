@@ -30,16 +30,16 @@ class MainController extends Controller {
   async getNavList() {
     const resType = await this.app.mysql.select('blog_arctype')
     this.ctx.body = {
-      data: resType
-    }
+      data: resType,
+    };
   }
 
   async getTypeInfo() {
 
     const resType = await this.app.mysql.select('blog_type');
     this.ctx.body = {
-      type: resType
-    }
+      type: resType,
+    };
 
   }
 
@@ -47,83 +47,83 @@ class MainController extends Controller {
 
     const tmpArticle = this.ctx.request.body
     const result = await this.app.mysql.insert('blog_article', tmpArticle)
-    const insertSuccess = result.affectedRows === 1 
-    const insertId = result.insertId
+    const insertSuccess = result.affectedRows === 1
+    const insertId = result.insertId;
 
     this.ctx.body = {
       isSuccess: insertSuccess,
-      insertId: insertId
-    }
+      insertId,
+    };
 
 
   }
 
   async updateArticle() {
 
-    let tmpArticle = this.ctx.request.body
-    const result = await this.app.mysql.update('blog_article', tmpArticle)
-    const updateSuccess = result.affectedRows === 1
+    let tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.update('blog_article', tmpArticle);
+    const updateSuccess = result.affectedRows === 1;
     this.ctx.body = {
-      isSuccess: updateSuccess
-    }
+      isSuccess: updateSuccess,
+    };
 
   }
 
   async getArticleList() {
     let sql = 'SELECT blog_article.id as id, ' +
-              'blog_article.title as title, ' +
-              'blog_article.descript as descript, ' +
-              'blog_article.view_count as view_count, ' +
-              "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
-              'blog_type.typeName as typeName ' +
-              'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-              'ORDER BY blog_article.id DESC'
+      'blog_article.title as title, ' +
+      'blog_article.descript as descript, ' +
+      'blog_article.view_count as view_count, ' +
+      "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
+      'blog_type.typeName as typeName ' +
+      'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
+      'ORDER BY blog_article.id DESC';
 
-    const result = await this.app.mysql.query(sql)
+    const result = await this.app.mysql.query(sql);
     this.ctx.body = {
-      list: result
-    }          
+      list: result,
+    };
   }
 
   async deleteArticle() {
 
-    let id = this.ctx.params.id
-    const res = await this.app.mysql.delete('blog_article', { 'id': id })
+    let id = this.ctx.params.id;
+    const res = await this.app.mysql.delete('blog_article', { 'id': id });
     this.ctx.body = {
-      data: res
-    }
+      data: res,
+    };
 
   }
 
   async getArticleById() {
-    let id = this.ctx.params.id
+    let id = this.ctx.params.id;
     let sql = 'SELECT blog_article.id as id, ' +
-              'blog_article.title as title, ' +
-              'blog_article.descript as descript, ' +
-              'blog_article.article_content as article_content, ' +
-              'blog_article.view_count as view_count, ' +
-              "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
-              'blog_type.typeName as typeName ,' +
-              'blog_type.id as typeId ' +
-              'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-              'WHERE blog_article.id =' + id
-    
-    const result = await this.app.mysql.query(sql)      
+      'blog_article.title as title, ' +
+      'blog_article.descript as descript, ' +
+      'blog_article.article_content as article_content, ' +
+      'blog_article.view_count as view_count, ' +
+      "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
+      'blog_type.typeName as typeName ,' +
+      'blog_type.id as typeId ' +
+      'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
+      'WHERE blog_article.id =' + id;
+
+    const result = await this.app.mysql.query(sql);
     this.ctx.body = {
-      data: result
-    }
+      data: result,
+    };
 
 
   }
 
   async countArticleValue() {
     const sql = 'SELECT typeName, ' +
-                '(SELECT COUNT(*) FROM blog_article AS a WHERE a.type_id = t.ID) AS Count '+
-                'FROM blog_type t'
-    const result = await this.app.mysql.query(sql) 
+      '(SELECT COUNT(*) FROM blog_article AS a WHERE a.type_id = t.ID) AS Count ' +
+      'FROM blog_type t';
+    const result = await this.app.mysql.query(sql)
     this.ctx.body = {
-      countArt: result
-    }           
+      countArt: result,
+    };
   }
 
 }
