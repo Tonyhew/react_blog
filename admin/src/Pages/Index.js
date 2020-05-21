@@ -72,6 +72,7 @@ function Index(props) {
         <div className='chart_index'>
 
             <div className='chart_left'>
+                <p>统计文章</p>
                 <Doughnut data={data} width={600} height={300} />
             </div>
 
