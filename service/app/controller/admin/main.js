@@ -42,10 +42,19 @@ class MainController extends Controller {
   }
 
   async getSecondNav() {
-    const result = await this.app.mysql.select('blog_secondNav');
+    let id = this.ctx.params.id;
+    let sql = 'SELECT blog_secondNav.Id as id, ' +
+              'blog_secondNav.title as title ' +
+              'FROM blog_secondNav '+
+              'WHERE blog_secondNav.arctype_parent_id = ' + id;
+    const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       secondNav: result,
     };
+    // const result = await this.app.mysql.select('blog_secondNav');
+    // this.ctx.body = {
+    //   secondNav: result,
+    // };
   }
 
   async getTypeInfo() {
