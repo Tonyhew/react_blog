@@ -28,19 +28,31 @@ class MainController extends Controller {
   }
 
   async getNavList() {
-    const resType = await this.app.mysql.select('blog_arctype')
+    const resType = await this.app.mysql.select('blog_arctype');
     this.ctx.body = {
       data: resType,
     };
   }
 
-  async getTypeInfo() {
+  async getFirstNav() {
+    const result = await this.app.mysql.select('blog_arctype');
+    this.ctx.body = {
+      firstNav: result,
+    };
+  }
 
+  async getSecondNav() {
+    const result = await this.app.mysql.select('blog_secondNav');
+    this.ctx.body = {
+      secondNav: result,
+    };
+  }
+
+  async getTypeInfo() {
     const resType = await this.app.mysql.select('blog_type');
     this.ctx.body = {
       type: resType,
     };
-
   }
 
   async addArticle() {
