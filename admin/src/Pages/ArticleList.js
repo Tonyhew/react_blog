@@ -61,9 +61,12 @@ function ArticleList(props) {
                             <b>类别</b>
                         </Col>
                         <Col span={4}>
+                            <b>栏目</b>
+                        </Col>
+                        <Col span={2}>
                             <b>发布时间</b>
                         </Col>
-                        <Col span={4}>
+                        <Col span={2}>
                             <b>浏览量</b>
                         </Col>
                         <Col span={4}>
@@ -83,9 +86,12 @@ function ArticleList(props) {
                                 {item.typeName}
                             </Col>
                             <Col span={4}>
+                            
+                            </Col>
+                            <Col span={2}>
                                 {item.addTime}
                             </Col>
-                            <Col span={4}>
+                            <Col span={2}>
                                 {item.view_count}
                             </Col>
                             <Col span={4}>

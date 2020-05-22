@@ -19,10 +19,11 @@ function AddArticle(props) {
 	const [showDate, setShowDate] = useState()   //发布日期
 	const [updateDate, setUpdateDate] = useState() //修改日志的日期
 	const [typeInfo, setTypeInfo] = useState([]) // 文章类别信息
-	const [fnavInfo, setFNavInfo] = useState([]) // 文章栏目信息
-	const [snavInfo, setSNavInfo] = useState([]) // 文章栏目信息
+	const [fnavInfo, setFNavInfo] = useState([]) // 文章一级栏目信息
+	const [snavInfo, setSNavInfo] = useState([]) // 文章二级栏目信息
 	const [selectedType, setSelectType] = useState('文章类型') //选择的文章类别
-	const [selectedNav, setSelectNav] = useState('文章栏目') //选择的文章类别
+	const [selectedNav, setSelectNav] = useState('文章一级栏目') //选择的文章类别
+	const [selectedSNav, setSelectSNav] = useState('') //选择的文章类别
 
 	const renderer = new marked.Renderer();
 
@@ -70,7 +71,6 @@ function AddArticle(props) {
 					localStorage.removeItem('openId')
 					props.history.push('/')
 				} else {
-					console.log(res)
 					setTypeInfo(res.data.type)
 				}
 			}
@@ -83,16 +83,10 @@ function AddArticle(props) {
 			url: servicePath.getFirstNav,
 			withCredentials: true,
 		}).then(res => {
+			for (let i = 0; i < res.data.fistNav; i++) {
+				console.log(res.data.fistNav[i].Id)
+			}
 			setFNavInfo(res.data.firstNav)
-		}).then(() => {
-			axios({
-				method: 'get',
-				url: servicePath.getSecondNav,
-				withCredentials: true,
-			}).then(r => {
-				console.log(r)
-				setSNavInfo(r.data.secondNav)
-			})
 		})
 	}
 
@@ -102,13 +96,23 @@ function AddArticle(props) {
 
 	const selectFNavHandler = (value) => {
 		setSelectNav(value)
-		console.log(fnavInfo, snavInfo)
+		console.log(props)
+		axios({
+			method: 'get',
+			url: servicePath.getSecondNav + value,
+			withCredentials: true,
+		}).then((res) => {
+			setSNavInfo(res.data.secondNav)
+		})
 	}
 
 	const selectSNavHandler = (value) => {
-		setSelectNav(value)
+		setSelectSNav(value)
+		
 	}
 
+	console.log(selectedNav)
+	console.log(selectedSNav)
 	const saveArticle = () => {
 		if (!selectedType) {
 			message.error('请选择文章类型')
@@ -137,7 +141,10 @@ function AddArticle(props) {
 		dataProps.descript = introducemd
 		let dateText = showDate.replace('-', '/')
 		dataProps.addTime = (new Date(showDate).getTime()) / 1000
+		// dataProps.fNav = fnavInfo
+		if (selectedSNav === '文章二级栏目') {
 
+		}
 		if (articleId == 0) {
 			dataProps.view_count = 0;
 			axios({
@@ -195,7 +202,6 @@ function AddArticle(props) {
 		)
 	}
 
-
 	return (
 		<div>
 			<Row gutter={5}>
@@ -228,20 +234,20 @@ function AddArticle(props) {
 						<Col span={12}>
 							<Select defaultValue={selectedNav} size="large" onChange={selectFNavHandler} style={{ width: '100%' }}>
 								{
-									fnavInfo.map((fistNav, index) => {
+									fnavInfo.map((fistNav) => {
 										return (
-											<Option key={index} value={fistNav.Id}>{fistNav.typeName}</Option>
+											<Option key={fistNav.Id} value={fistNav.Id}>{fistNav.typeName}</Option>
 										)
 									})
 								}
 							</Select>
 						</Col>
 						<Col span={12}>
-							<Select defaultValue={selectedNav} size="large" onChange={selectSNavHandler} style={{ width: '100%' }}>
+							<Select defaultValue={selectedSNav} size="large" onChange={selectSNavHandler} style={{ width: '100%' }} allowClear>
 								{
-									snavInfo.map((secondNav, index) => {
+									snavInfo.map((secondNav) => {
 										return (
-											<Option key={index} value={secondNav.Id}>{secondNav.title}</Option>
+											<Option key={secondNav.id} value={secondNav.id}>{secondNav.title}</Option>
 										)
 									})
 								}

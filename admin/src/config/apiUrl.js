@@ -5,7 +5,7 @@ let servicePath = {
     getNavList: ipUrl + 'getNavList',
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
     getFirstNav: ipUrl + 'getFirstNav', // 获得文章一级栏目信息
-    getSecondNav: ipUrl + 'getSecondNav', // 获得文章二级栏目信息
+    getSecondNav: ipUrl + 'getSecondNav/', // 获得文章二级栏目信息
     addArticle: ipUrl + 'addArticle', // 添加文章
     updateArticle: ipUrl + 'updateArticle', // 修改文章
     getArticleList: ipUrl + 'getArticleList', // 修改文章
