@@ -8,7 +8,7 @@ module.exports = app => {
   router.get('/admin/getNavList', adminauth, controller.admin.main.getNavList);
   router.get('/admin/getTypeInfo', adminauth, controller.admin.main.getTypeInfo);
   router.get('/admin/getFirstNav', adminauth, controller.admin.main.getFirstNav);
-  router.get('/admin/getSecondNav', adminauth, controller.admin.main.getSecondNav);
+  router.get('/admin/getSecondNav/:id', adminauth, controller.admin.main.getSecondNav);
   router.post('/admin/addArticle', adminauth, controller.admin.main.addArticle);
   router.post('/admin/updateArticle', adminauth, controller.admin.main.updateArticle);
   router.get('/admin/getArticleList', adminauth, controller.admin.main.getArticleList);

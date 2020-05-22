@@ -42,10 +42,10 @@ class MainController extends Controller {
   }
 
   async getSecondNav() {
-    let id = this.ctx.params.id;
-    let sql = 'SELECT blog_secondNav.Id as id, ' +
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_secondNav.Id as id, ' +
               'blog_secondNav.title as title ' +
-              'FROM blog_secondNav '+
+              'FROM blog_secondNav ' +
               'WHERE blog_secondNav.arctype_parent_id = ' + id;
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
@@ -66,9 +66,9 @@ class MainController extends Controller {
 
   async addArticle() {
 
-    const tmpArticle = this.ctx.request.body
-    const result = await this.app.mysql.insert('blog_article', tmpArticle)
-    const insertSuccess = result.affectedRows === 1
+    const tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.insert('blog_article', tmpArticle);
+    const insertSuccess = result.affectedRows === 1;
     const insertId = result.insertId;
 
     this.ctx.body = {
@@ -81,7 +81,7 @@ class MainController extends Controller {
 
   async updateArticle() {
 
-    let tmpArticle = this.ctx.request.body;
+    const tmpArticle = this.ctx.request.body;
     const result = await this.app.mysql.update('blog_article', tmpArticle);
     const updateSuccess = result.affectedRows === 1;
     this.ctx.body = {
@@ -91,14 +91,14 @@ class MainController extends Controller {
   }
 
   async getArticleList() {
-    let sql = 'SELECT blog_article.id as id, ' +
-      'blog_article.title as title, ' +
-      'blog_article.descript as descript, ' +
-      'blog_article.view_count as view_count, ' +
-      "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
-      'blog_type.typeName as typeName ' +
-      'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-      'ORDER BY blog_article.id DESC';
+    const sql = 'SELECT blog_article.id as id, ' +
+                'blog_article.title as title, ' +
+                'blog_article.descript as descript, ' +
+                'blog_article.view_count as view_count, ' +
+                "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
+                'blog_type.typeName as typeName ' +
+                'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
+                'ORDER BY blog_article.id DESC';
 
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
@@ -108,7 +108,8 @@ class MainController extends Controller {
 
   async deleteArticle() {
 
-    let id = this.ctx.params.id;
+    const id = this.ctx.params.id;
+    // eslint-disable-next-line quote-props
     const res = await this.app.mysql.delete('blog_article', { 'id': id });
     this.ctx.body = {
       data: res,
@@ -117,8 +118,8 @@ class MainController extends Controller {
   }
 
   async getArticleById() {
-    let id = this.ctx.params.id;
-    let sql = 'SELECT blog_article.id as id, ' +
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_article.id as id, ' +
       'blog_article.title as title, ' +
       'blog_article.descript as descript, ' +
       'blog_article.article_content as article_content, ' +
@@ -141,7 +142,7 @@ class MainController extends Controller {
     const sql = 'SELECT typeName, ' +
       '(SELECT COUNT(*) FROM blog_article AS a WHERE a.type_id = t.ID) AS Count ' +
       'FROM blog_type t';
-    const result = await this.app.mysql.query(sql)
+    const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       countArt: result,
     };
