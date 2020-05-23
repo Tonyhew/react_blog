@@ -6,7 +6,7 @@ import Index from './Index'
 import AddArticle from './AddArticle'
 import ArticleList from './ArticleList'
 import ArticleType from './ArticleType'
-
+import NavManage from './NavManage'
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -19,6 +19,7 @@ function AdminIndex(props) {
 		'/index/add': '添加文章',
 		'/index/list': '文章列表',
 		'/index/type': '标签管理',
+		'/index/navManage': '栏目管理',
 	}
 
 	const { location } = props
@@ -65,6 +66,12 @@ function AdminIndex(props) {
 		}
 	}
 
+	const handleClickNav = e => {
+		if(e.key === 'navManage') {
+			props.history.push('/index/navManage')
+		}
+	}
+
 	const handleClickType = e => {
 		if (e.key === 'typeManage') {
 			props.history.push('/index/type')
@@ -84,10 +91,17 @@ function AdminIndex(props) {
 						<span>工作台</span>
 					</Menu.Item>
 					<Menu.Item
+						key="navManage"
+						onClick={handleClickNav}
+					>
+						<Icon type="unordered-list" />
+						<span>栏目管理</span>
+					</Menu.Item>
+					<Menu.Item
 						key="typeManage"
 						onClick={handleClickType}
 					>
-						<Icon type="desktop" />
+						<Icon type="tags" />
 						<span>标签管理</span>
 					</Menu.Item>
 					<SubMenu
@@ -121,6 +135,7 @@ function AdminIndex(props) {
 							<Route path="/index/list/" component={ArticleList} onEnter={setCurrentTitle('文章列表')} />
 							<Route path="/index/add/:id" exact component={AddArticle} />
 							<Route path="/index/type/" exact component={ArticleType} onEnter={setCurrentTitle('标签管理')} />
+							<Route path="/index/navManage/" exact component={NavManage} onEnter={setCurrentTitle('栏目管理')} />
 						</div>
 					</div>
 				</Content>

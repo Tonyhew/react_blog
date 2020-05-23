@@ -23,7 +23,7 @@ function AddArticle(props) {
 	const [snavInfo, setSNavInfo] = useState([]) // 文章二级栏目信息
 	const [selectedType, setSelectType] = useState('文章类型') //选择的文章类别
 	const [selectedNav, setSelectNav] = useState('文章一级栏目') //选择的文章类别
-	const [selectedSNav, setSelectSNav] = useState('') //选择的文章类别
+	const [selectedSNav, setSelectSNav] = useState('文章二级栏目') //选择的文章类别
 
 	const renderer = new marked.Renderer();
 
@@ -142,8 +142,10 @@ function AddArticle(props) {
 		let dateText = showDate.replace('-', '/')
 		dataProps.addTime = (new Date(showDate).getTime()) / 1000
 		// dataProps.fNav = fnavInfo
-		if (selectedSNav === '文章二级栏目') {
-
+		if (selectedSNav === '文章二级栏目' || selectedSNav === 'undefined') {
+			dataProps.nav_id = selectedNav
+		} else {
+			dataProps.nav_id = selectedSNav
 		}
 		if (articleId == 0) {
 			dataProps.view_count = 0;
@@ -198,6 +200,8 @@ function AddArticle(props) {
 				setIntroducehtml(tmpDes)
 				setShowDate(aticleId.addTime)
 				setSelectType(aticleId.typeId)
+				setSelectNav(aticleId.nav_id)
+				setSelectSNav(aticleId.nav_id)
 			}
 		)
 	}
