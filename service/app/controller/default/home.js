@@ -68,7 +68,7 @@ class HomeController extends Controller {
                 'blog_article.view_count as view_count,' +
                 'blog_type.typeName as typeName ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'WHERE type_id=' + id;
+                'WHERE nav_id =' + id;
 
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };

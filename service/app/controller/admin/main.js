@@ -95,9 +95,14 @@ class MainController extends Controller {
                 'blog_article.title as title, ' +
                 'blog_article.descript as descript, ' +
                 'blog_article.view_count as view_count, ' +
+                'blog_article.nav_id as nav_id, ' +
                 "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
-                'blog_type.typeName as typeName ' +
+                'blog_type.typeName as typeName, ' +
+                'blog_arctype.typeName as arcTypeName, ' +
+                'blog_secondnav.title as secondTitle ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
+                'LEFT JOIN blog_arctype ON blog_article.nav_id = blog_arctype.Id ' +
+                'LEFT JOIN blog_secondnav ON blog_article.nav_id = blog_secondnav.Id ' +
                 'ORDER BY blog_article.id DESC';
 
     const result = await this.app.mysql.query(sql);
@@ -125,6 +130,7 @@ class MainController extends Controller {
       'blog_article.article_content as article_content, ' +
       'blog_article.view_count as view_count, ' +
       "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
+      'blog_article.nav_id as nav_id, ' +
       'blog_type.typeName as typeName ,' +
       'blog_type.id as typeId ' +
       'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
