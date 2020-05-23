@@ -8,28 +8,19 @@ import servicePath from '../config/apiUrl'
 
 const { SubMenu } = Menu
 const Header = () => {
-	
+
 	const [listData, setListData] = useState([]);
 	const [second, setSecond] = useState([])
 
 	useEffect(() => {
-		var storage = window.localStorage;
 		const fetchData = async () => {
-			let list
 			await axios(servicePath.getNavList).then((res) => {
-				list = res.data.data;
+				setListData(res.data.data)
 			}).then(() => {
-				for (let i = 0; i < list.length; i++) {
-					let id = list[i].Id
-					axios(servicePath.getSecondNav).then(r => {
-						// list[i].children = r.data.second
-						// storage.setItem("second", JSON.stringify(r.data.second))
-						setSecond(r.data.second)
-					})
-				}
-				return list
+				axios(servicePath.getSecondNav).then(r => {
+					setSecond(r.data.second)
+				})
 			})
-			setListData(list)
 		}
 		fetchData()
 	}, [])
@@ -69,8 +60,12 @@ const Header = () => {
 		<div className="header">
 			<Row type="flex" justify="center">
 				<Col xs={24} sm={24} md={10} lg={15} xl={12}>
-					<span className="header-logo">Tony</span>
-					<span className="header-txt">专注前端开发</span>
+					<Link href="/">
+						<div className='header_logo'>
+							<span className="header-logo">Tony</span>
+							<span className="header-txt">专注前端开发</span>
+						</div>
+					</Link>
 				</Col>
 				<Col className="menu-div" xs={0} sm={0} md={14} lg={8} xl={6}>
 
@@ -81,20 +76,32 @@ const Header = () => {
             </Menu.Item>
 						{
 							listData.map((listItem) => {
-								// console.log(listItem.Id)
-								return (
-									<SubMenu title={listItem.typeName} key={listItem.Id}>
-										{
-											second.map(item => {
-												if (listItem.Id === item.arctype_parent_id) {
-													return (
-														<Menu.Item key={item.Id}>{item.title}</Menu.Item>
-													)
-												}
-											})
-										}
-									</SubMenu>
-								)
+								console.log(listItem)
+								if (listItem.status === -1) {
+									return (
+										<Menu.Item key={listItem.Id}>
+											<Icon type={listItem.icon} />
+											{listItem.typeName}
+										</Menu.Item>
+									)
+								} else {
+									return (
+										<SubMenu title={listItem.typeName} key={listItem}>
+											{
+												second.map(item => {
+													if (listItem.Id === item.arctype_parent_id) {
+														return (
+															<Menu.Item key={item.Id}>{item.title}</Menu.Item>
+														)
+													}
+												})
+											}
+										</SubMenu>
+									)
+								}
+								// return (
+
+								// )
 							})
 						}
 					</Menu>

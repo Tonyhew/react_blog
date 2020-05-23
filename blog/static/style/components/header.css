@@ -12,6 +12,10 @@
     right: 0;
 }
 
+.header_logo {
+    cursor: pointer;
+}
+
 .header-logo {
     color: #1e90ff;
     font-size: 1.4rem;

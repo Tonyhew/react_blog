@@ -17,6 +17,7 @@ const MyList = (list) => {
   const [myList, setMylist] = useState(list.data)
   useEffect(() => {
     setMylist(list.data)
+    console.log()
   })
 
   const renderer = new marked.Renderer();
