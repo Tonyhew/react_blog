@@ -190,6 +190,7 @@ function AddArticle(props) {
 			header: { 'Access-Control-Allow-Origin': '*' }
 		}).then(
 			res => {
+				console.log(res)
 				let aticleId = res.data.data[0]
 				setArticleTitle(aticleId.title)
 				setArticleContent(aticleId.article_content)
@@ -303,9 +304,9 @@ function AddArticle(props) {
 						<Col span={12}>
 							<div className="date-select">
 								<DatePicker
-									placeholder="发布日期"
+									placeholder={showDate ? showDate : '发布日期'}
 									size="large"
-									onChange={(date, dateString) => { setShowDate(dateString) }}
+									onChange={(dateString) => { setShowDate(dateString) }}
 								/>
 							</div>
 						</Col>
