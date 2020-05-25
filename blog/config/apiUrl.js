@@ -1,4 +1,4 @@
-let ipUrl = 'http://192.168.113.113:7001/default/'
+let ipUrl = 'http://127.0.0.1:7001/default/'
 
 let servicePath = {
     getArticleList: ipUrl + 'getArticleList', // 获取文章列表接口

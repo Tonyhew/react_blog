@@ -22,15 +22,15 @@ const MyList = (list) => {
 
   const renderer = new marked.Renderer();
   marked.setOptions({
-    renderer : renderer,
-    gfm : true,
-    pedantic : false,
-    sanitize : false,
-    tables : true,
-    breaks : false,
-    smartLists : true,
-    smartypants : false,
-    highlight : function(code) {
+    renderer: renderer,
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    tables: true,
+    breaks: false,
+    smartLists: true,
+    smartypants: false,
+    highlight: function (code) {
       return hljs.highlightAuto(code).value;
     }
   });
@@ -38,7 +38,6 @@ const MyList = (list) => {
   return (
     <div>
       <Head>
-        <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
@@ -70,7 +69,7 @@ const MyList = (list) => {
                     <span><Icon type="folder" /> {item.typeName}</span>
                     <span><Icon type="fire" /> {item.view_count}</span>
                   </div>
-                  <div className="list-context" dangerouslySetInnerHTML={{__html: marked(item.descript)}}></div>
+                  <div className="list-context" dangerouslySetInnerHTML={{ __html: marked(item.descript) }}></div>
                 </List.Item>
               )}
             >

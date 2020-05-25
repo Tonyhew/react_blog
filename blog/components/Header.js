@@ -76,7 +76,6 @@ const Header = () => {
             </Menu.Item>
 						{
 							listData.map((listItem) => {
-								console.log(listItem)
 								if (listItem.status === -1) {
 									return (
 										<Menu.Item key={listItem.Id}>

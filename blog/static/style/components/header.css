@@ -1,6 +1,5 @@
 .header {
     background-color: #001529;
-    padding: .4rem;
     overflow: hidden;
     height: 3.2rem;
     border-bottom: 1px solid #eee;
@@ -13,7 +12,10 @@
 }
 
 .header_logo {
+    width: 35%;
+    margin: 0 auto 0 0;
     cursor: pointer;
+    line-height: 46px;
 }
 
 .header-logo {
@@ -37,12 +39,14 @@
     font-size: 1rem !important;
     padding-left: 1rem;
     padding-right: 1rem;
+    line-height: 50px;
 }
 
 .ant-menu-submenu-title {
     font-size: 1rem !important;
     padding-left: 1rem;
     padding-right: 1rem;
+    line-height: 50px;
 }
 
 .menu-div-mobile {

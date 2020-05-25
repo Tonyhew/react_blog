@@ -35,7 +35,7 @@ const Home = (list) => {
   return (
     <div>
       <Head>
-        <title>Home</title>
+        <title>首页</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
