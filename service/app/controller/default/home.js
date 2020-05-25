@@ -26,7 +26,7 @@ class HomeController extends Controller {
                 'blog_article.title as title,' +
                 'blog_article.descript as descript,' +
                 'blog_article.article_content as content,' +
-                "FROM_UNIXTIME(blog_article.addTime, '%Y-%M-%D %H:%i:%s') as addTime," +
+                "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
                 'blog_article.view_count as view_count,' +
                 'blog_type.typeName as typeName,' +
                 'blog_type.id as typeId ' +
@@ -64,7 +64,7 @@ class HomeController extends Controller {
     const sql = 'SELECT blog_article.id as id,' +
                 'blog_article.title as title,' +
                 'blog_article.descript as descript,' +
-                "FROM_UNIXTIME(blog_article.addTime, '%Y-%M-%D %H:%i:%s') as addTime," +
+                "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
                 'blog_article.view_count as view_count,' +
                 'blog_type.typeName as typeName ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
