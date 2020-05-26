@@ -4,7 +4,6 @@ import { Row, Col, Affix, Icon, Breadcrumb } from 'antd'
 import axios from 'axios'
 import Header from '../components/Header'
 import Author from '../components/Author'
-import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 import '../static/style/pages/detailed.css'
 import MarkNav from 'markdown-navbar'
@@ -72,7 +71,7 @@ const Detailed = (props) => {
               </div>
 
               <div className="detailed-content"
-                   dangerouslySetInnerHTML={{__html: html}}
+                dangerouslySetInnerHTML={{__html: html}}
               >
               </div>
 
@@ -83,7 +82,6 @@ const Detailed = (props) => {
 
         <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
           <Author />
-          <Advert />
           <Affix offsetTop={55}>
             <div className="detailed-nav comm-box">
               <div className="nav-title">文章目录</div>

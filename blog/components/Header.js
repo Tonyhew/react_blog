@@ -38,19 +38,35 @@ const Header = () => {
 	}
 
 	const menu = (
-		<Menu mode="horizontal" onClick={handleClick} className="mobile_menu">
+		<Menu onClick={handleClick} className="mobile_menu">
 			<Menu.Item key="0">
 				<Icon type="home" />
          首页
       </Menu.Item>
 			{
-				listData.map((item) => {
-					return (
-						<Menu.Item key={item.Id}>
-							<Icon type={item.icon} />
-							{item.typeName}
-						</Menu.Item>
-					)
+				listData.map((listItem) => {
+					if (listItem.status === -1) {
+						return (
+							<Menu.Item key={listItem.Id}>
+								<Icon type={listItem.icon} />
+								{listItem.typeName}
+							</Menu.Item>
+						)
+					} else {
+						return (
+							<SubMenu title={listItem.typeName} key={listItem} className="sonList">
+								{
+									second.map(item => {
+										if (listItem.Id === item.arctype_parent_id) {
+											return (
+												<Menu.Item key={item.Id}>{item.title}</Menu.Item>
+											)
+										}
+									})
+								}
+							</SubMenu>
+						)
+					}
 				})
 			}
 		</Menu>
@@ -106,7 +122,7 @@ const Header = () => {
 					</Menu>
 				</Col>
 				<Col className="menu-div-mobile" xs={12} sm={12} md={0} lg={0} xl={0}>
-					<Dropdown overlay={menu} trigger={['click']}>
+					<Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
 						<div onClick={menuMobile}>
 							<img src={'../static/images/menu.png'} alt="菜单" />
 						</div>
