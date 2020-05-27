@@ -52,6 +52,12 @@ function Login(props) {
 
 	}
 
+	onkeydown = (e) => {
+		if (e.keyCode === 13) {
+			checkLogin()
+		}
+	}
+
 	return (
 		<div className="Login-div">
 
@@ -73,7 +79,7 @@ function Login(props) {
 						onChange={(e) => { setPassword(e.target.value) }}
 					/>
 					<br /><br />
-					<Button type="primary" size="large" block onClick={checkLogin} >Login in</Button>
+					<Button type="primary" size="large" block onClick={checkLogin} onkeydown={(e) => onkeydown(e)} >Login in</Button>
 				</Card>
 			</Spin>
 
