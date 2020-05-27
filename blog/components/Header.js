@@ -10,7 +10,8 @@ const { SubMenu } = Menu
 const Header = () => {
 
 	const [listData, setListData] = useState([]);
-	const [second, setSecond] = useState([])
+	const [second, setSecond] = useState([]);
+	const [isClose, setIsClose] = useState(false)
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -35,6 +36,12 @@ const Header = () => {
 
 	const menuMobile = (e) => {
 		e.preventDefault();
+		setIsClose(true)
+	}
+
+	const menuPc = (e) => {
+		e.preventDefault();
+		setIsClose(false)
 	}
 
 	const menu = (
@@ -71,6 +78,22 @@ const Header = () => {
 			}
 		</Menu>
 	);
+
+	const menuIsClose = () => {
+		if (!isClose) {
+			return (
+				<div onClick={menuMobile}>
+					<img src={'../static/images/menu.png'} alt="菜单" />
+				</div>
+			)
+		} else {
+			return (
+				<div onClick={menuPc}>
+					<img src={'../static/images/close.png'} alt="菜单" />
+				</div>
+			)
+		}
+	}
 
 	return (
 		<div className="header">
@@ -123,9 +146,9 @@ const Header = () => {
 				</Col>
 				<Col className="menu-div-mobile" xs={12} sm={12} md={0} lg={0} xl={0}>
 					<Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
-						<div onClick={menuMobile}>
-							<img src={'../static/images/menu.png'} alt="菜单" />
-						</div>
+						{
+							menuIsClose()
+						}
 					</Dropdown>
 				</Col>
 			</Row>
