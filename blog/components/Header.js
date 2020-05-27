@@ -146,9 +146,7 @@ const Header = () => {
 				</Col>
 				<Col className="menu-div-mobile" xs={12} sm={12} md={0} lg={0} xl={0}>
 					<Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
-						{
-							menuIsClose()
-						}
+						{	menuIsClose() }
 					</Dropdown>
 				</Col>
 			</Row>
