@@ -4,8 +4,6 @@ const Controller = require('egg').Controller;
 
 
 class MainController extends Controller {
-
-
   async index() {
     this.ctx.body = 'hi api';
   }
@@ -51,10 +49,19 @@ class MainController extends Controller {
     this.ctx.body = {
       secondNav: result,
     };
-    // const result = await this.app.mysql.select('blog_secondNav');
-    // this.ctx.body = {
-    //   secondNav: result,
-    // };
+  }
+
+  async addFirstNav() {
+    const tmpFirstNav = this.ctx.request.body;
+    console.log(tmpFirstNav);
+    const result = await this.app.mysql.insert('blog_arctype', tmpFirstNav);
+    const insertSuccess = result.affectedRows === 1;
+    const insertId = result.insertId;
+
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      insertId,
+    };
   }
 
   async getTypeInfo() {
