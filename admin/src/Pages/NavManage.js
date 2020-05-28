@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { List, Row, Col, Button, Drawer } from 'antd';
+import moment from 'moment';
+import { List, Row, Col, Button, Drawer, Input, DatePicker, message } from 'antd';
 import servicePath from '../config/apiUrl';
 import '../static/css/NavManage.css';
 import axios from 'axios';
 
 
-function NavManage() {
+function NavManage(props) {
 
+  const [navId, setNavId] = useState(0)
   const [navList, setNavList] = useState([]);
   const [visiable, setVisiable] = useState(false);
-  const [firstNavTypeName, setFirstNavTypeName] = useState('')
-  const [firstNavAddTime, setFirstNavAddTime] = useState()
-  const [firstStatus, setFitstStatus] = useState(-1)
+  const [firstNavTypeName, setFirstNavTypeName] = useState('');
+  const [firstNavIcon, setFirstNavIcon] = useState('');
+  const [firstNavAddTime, setFirstNavAddTime] = useState();
+  const [firstNavEditTime, setFirstNavEditTime] = useState();
+  const [firstStatus, setFitstStatus] = useState(-1);
 
   useEffect(() => {
     getNavList()
-  }, [])
+    getCurrentTime()
+    let tmpId = props.match.params.id
+		if (tmpId) {
+			setNavId(tmpId)
+		}
+  }, []);
+
+  const getCurrentTime = () => {
+    let time = new Date();
+    let d = new Date(time);
+    let dateValue = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    setFirstNavAddTime(dateValue)
+  }
 
   const getNavList = () => {
     axios({
@@ -39,11 +55,36 @@ function NavManage() {
   }
 
   const sumbitFirstNav = () => {
-
+    console.log(props)
+    let dataProps = {};
+    dataProps.typeName = firstNavTypeName;
+    dataProps.icon = firstNavIcon;
+    dataProps.status = firstStatus;
+    dataProps.add_time = firstNavAddTime
+    if (navId === 0) {
+      axios({
+        method: 'post',
+				url: servicePath.addFirstNav,
+				withCredentials: true,
+				data: dataProps
+      }).then(
+        (res) => {
+          setNavId(res.data.insertId)
+					if (res.data.isSuccess) {
+						message.success('栏目添加成功')
+					} else {
+						message.error('栏目添加失败')
+					}
+        }
+      )
+    } else {
+      dataProps.Id = navId
+    }
   }
 
-  const editNav = () => {
-
+  const editNav = (id) => {
+    setVisiable(true)
+    console.log(id)
   }
 
   const deleteNavItem = () => {
@@ -86,10 +127,12 @@ function NavManage() {
                 {item.typeName}
               </Col>
               <Col span={6}>
-                {item.add_time}
+                {
+                  item.add_time ? moment(item.add_time).format('YYYY-MM-DD HH:mm:ss') : '暂无时间'
+                }
               </Col>
               <Col span={6}>
-                <Button type='primary' onClick={editNav(item.Id)}>修改</Button>
+                <Button type='primary' onClick={ () => editNav(item.Id) }>修改</Button>
                 <Button type='danger' className="button_nav" onClick={deleteNavItem(item.Id)}>删除</Button>
               </Col>
             </Row>
@@ -103,6 +146,18 @@ function NavManage() {
         visible={visiable}
         bodyStyle={{ paddingBottom: 80 }}
       >
+        <Row>
+          <Col span={24}>
+            <Input size='large' placeholder={firstNavTypeName} className='input input_title' onChange={ (e) => setFirstNavTypeName(e.target.value) } />
+          </Col>
+          <Col span={24}>
+            <Input size='large' placeholder='icon图标(请在ant design中的icon组件中查找您所想要的图标)' onChange={ (e) => setFirstNavIcon(e.target.value) } className='input input_icon' />
+          </Col>
+
+          <Col span={24}>
+            <DatePicker defaultValue={moment(firstNavAddTime)} size='large' format="YYYY-MM-DD HH:mm:ss" showTime placeholder='请选择时间' />
+          </Col>
+        </Row>
         <div
           style={{
             textAlign: 'right',

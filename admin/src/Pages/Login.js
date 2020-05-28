@@ -79,7 +79,7 @@ function Login(props) {
 						onChange={(e) => { setPassword(e.target.value) }}
 					/>
 					<br /><br />
-					<Button type="primary" size="large" block onClick={checkLogin} onkeydown={(e) => onkeydown(e)} >Login in</Button>
+					<Button type="primary" size="large" block onClick={checkLogin} onKeyDown={(e) => onkeydown(e)} >Login in</Button>
 				</Card>
 			</Spin>
 

@@ -69,6 +69,8 @@ function AdminIndex(props) {
 	const handleClickNav = e => {
 		if(e.key === 'navManage') {
 			props.history.push('/index/navManage')
+		} else {
+			props.history.push('/index/addSecond')
 		}
 	}
 
@@ -90,13 +92,19 @@ function AdminIndex(props) {
 						<Icon type="pie-chart" />
 						<span>工作台</span>
 					</Menu.Item>
-					<Menu.Item
-						key="navManage"
+					<SubMenu
+						key="sub2"
 						onClick={handleClickNav}
+						title={
+							<span>
+								<Icon type="unordered-list" />
+								<span>栏目管理</span>
+							</span>
+						}
 					>
-						<Icon type="unordered-list" />
-						<span>栏目管理</span>
-					</Menu.Item>
+						<Menu.Item key="navManage">添加栏目</Menu.Item>
+						<Menu.Item key="addSecond">添加二级栏目</Menu.Item>
+					</SubMenu>
 					<Menu.Item
 						key="typeManage"
 						onClick={handleClickType}
