@@ -41,7 +41,7 @@ function Login(props) {
 		}).then(
 			(res) => {
 				setIsLoading(false)
-				if (res.data.data == '登录成功') {
+				if (res.data.data === '登录成功') {
 					localStorage.setItem('openId', res.data.openId)
 					props.history.push('/index')
 				} else {
@@ -79,7 +79,7 @@ function Login(props) {
 						onChange={(e) => { setPassword(e.target.value) }}
 					/>
 					<br /><br />
-					<Button type="primary" size="large" block onClick={checkLogin} onKeyDown={(e) => onkeydown(e)} >Login in</Button>
+					<Button type="primary" size="large" block onClick={checkLogin} onKeyDown={(e) => onkeydown(e)} >登录后台</Button>
 				</Card>
 			</Spin>
 

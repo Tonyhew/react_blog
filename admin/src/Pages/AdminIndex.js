@@ -144,6 +144,7 @@ function AdminIndex(props) {
 							<Route path="/index/add/:id" exact component={AddArticle} />
 							<Route path="/index/type/" exact component={ArticleType} onEnter={setCurrentTitle('标签管理')} />
 							<Route path="/index/navManage/" exact component={NavManage} onEnter={setCurrentTitle('栏目管理')} />
+							<Route path="/index/navManage/:id" exact component={NavManage} onEnter={setCurrentTitle('二级栏目管理')} />
 						</div>
 					</div>
 				</Content>
