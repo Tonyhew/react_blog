@@ -53,7 +53,6 @@ class MainController extends Controller {
 
   async addFirstNav() {
     const tmpFirstNav = this.ctx.request.body;
-    console.log(tmpFirstNav);
     const result = await this.app.mysql.insert('blog_arctype', tmpFirstNav);
     const insertSuccess = result.affectedRows === 1;
     const insertId = result.insertId;
@@ -61,6 +60,36 @@ class MainController extends Controller {
     this.ctx.body = {
       isSuccess: insertSuccess,
       insertId,
+    };
+  }
+
+  async getFirstNavInfo() {
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_arctype.Id as id, ' +
+                'blog_arctype.typeName as typeName, ' +
+                'blog_arctype.icon as icon ' +
+                'FROM blog_arctype WHERE blog_arctype.id = ' + id;
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = {
+      fnavinfo: result,
+    };
+  }
+
+  async updateFirstNav() {
+    const tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.update('blog_arctype', tmpArticle);
+    const updateSuccess = result.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: updateSuccess,
+    };
+  }
+
+  async deleteFirstNav() {
+    const id = this.ctx.params.id;
+    // eslint-disable-next-line quote-props
+    const res = await this.app.mysql.delete('blog_arctype', { 'id': id });
+    this.ctx.body = {
+      data: res,
     };
   }
 

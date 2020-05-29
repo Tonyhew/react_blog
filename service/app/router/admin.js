@@ -10,6 +10,9 @@ module.exports = app => {
   router.get('/admin/getFirstNav', adminauth, controller.admin.main.getFirstNav);
   router.get('/admin/getSecondNav/:id', adminauth, controller.admin.main.getSecondNav);
   router.post('/admin/addFirstNav', adminauth, controller.admin.main.addFirstNav);
+  router.get('/admin/getFirstNavInfo/:id', adminauth, controller.admin.main.getFirstNavInfo);
+  router.post('/admin/updateFirstNav', adminauth, controller.admin.main.updateFirstNav);
+  router.get('/admin/deleteFirstNav/:id', adminauth, controller.admin.main.deleteFirstNav);
   router.post('/admin/addArticle', adminauth, controller.admin.main.addArticle);
   router.post('/admin/updateArticle', adminauth, controller.admin.main.updateArticle);
   router.get('/admin/getArticleList', adminauth, controller.admin.main.getArticleList);
