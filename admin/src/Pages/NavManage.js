@@ -7,8 +7,9 @@ import axios from 'axios';
 
 const { confirm } = Modal
 function NavManage(props) {
+  moment.suppressDeprecationWarnings = true;
 
-  const [navId, setNavId] = useState(0)
+  const [navId, setNavId] = useState(0);
   const [navList, setNavList] = useState([]);
   const [visiable, setVisiable] = useState(false);
   const [secondVisiable, setSecondVisiable] = useState(false);
@@ -17,10 +18,14 @@ function NavManage(props) {
   const [firstNavAddTime, setFirstNavAddTime] = useState();
   const [firstNavEditTime, setFirstNavEditTime] = useState();
   const [firstStatus, setFitstStatus] = useState(-1);
+  const [secondNavList, setSecondNavList] = useState([]);
+  const [secondPId, setSecondPId] = useState(0)
+  const [secondNavTitle, setSecondNavTitle] = useState('');
+
 
   useEffect(() => {
-    getNavList()
-    getCurrentTime()
+    getNavList();
+    getCurrentTime();
     let tmpId = props.match.params.id
     if (tmpId) {
       setNavId(tmpId)
@@ -144,10 +149,62 @@ function NavManage(props) {
 
   const addNewSecond = (id) => {
     setSecondVisiable(true);
+    setSecondNavTitle('二级栏目标题')
+    setSecondPId(id)
+    axios({
+      method: 'get',
+      url: servicePath.getSecondNavById + id,
+      withCredentials: true,
+      header: { 'Acess-Control-Allow-Origin': '*' }
+    }).then(
+      (res) => {
+        setSecondNavList(res.data.secondnav)
+      }
+    )
   }
 
   const closeSecondDrawer = () => {
     setSecondVisiable(false);
+  }
+
+  const deleteSecondNav = (id) => {
+
+  }
+
+  const addSecond = () => {
+    let dataP = {}
+    dataP.title = secondNavTitle;
+    dataP.add_time = firstNavAddTime;
+    dataP.arctype_parent_id = secondPId;
+    axios({
+      method: 'post',
+      url: servicePath.addSecondNav,
+      withCredentials: true,
+      data: dataP,
+      header: { 'Acess-Control-Allow-Origin': '*' }
+    }).then(
+      (res) => {
+        if (res.data.isSuccess) {
+          message.success('新增成功！');
+          let data = {}
+          data.id = secondPId;
+          data.status = 1;
+          axios({
+            method: 'post',
+            url: servicePath.editFirstNavStatus,
+            withCredentials: true,
+            data: data,
+            header: { 'Acess-Control-Allow-Origin': '*' }
+          }).then(
+            res => {
+              console.log(res)
+              addNewSecond(secondPId)
+            }
+          )
+        }
+      }
+    )
+
   }
 
   return (
@@ -200,7 +257,7 @@ function NavManage(props) {
         )}
       />
       <Drawer
-        title="新增栏目"
+        title={navId === 0 ? '新增栏目' : '修改栏目'}
         width={720}
         onClose={addFirstNavClose}
         visible={visiable}
@@ -244,7 +301,66 @@ function NavManage(props) {
         visible={secondVisiable}
         bodyStyle={{ paddingBottom: 80 }}
       >
+        <Row>
+          <Col span={24}>
+            <Input size='large' placeholder={secondNavTitle} className='input input_title' onChange={(e) => setSecondNavTitle(e.target.value)} />
+          </Col>
 
+          <Col span={24} style={{ margin: '0 0 10px' }}>
+            <DatePicker defaultValue={moment(firstNavAddTime)} size='large' format="YYYY-MM-DD HH:mm:ss" showTime placeholder='请选择新增时间' />
+          </Col>
+        </Row>
+        <List
+          header={
+            <Row className="list-div">
+              <Col span={6}>
+                <b>ID</b>
+              </Col>
+              <Col span={6}>
+                <b>栏目</b>
+              </Col>
+              <Col span={6}>
+                <b>添加时间</b>
+              </Col>
+              <Col span={6}>
+                <b>操作</b>
+              </Col>
+            </Row>
+          }
+          bordered
+          dataSource={secondNavList}
+          renderItem={(item) => (
+            <List.Item>
+              <Row className="list-div">
+                <Col span={6}>
+                  {item.id}
+                </Col>
+                <Col span={6}>
+                  {item.title}
+                </Col>
+                <Col span={6}>
+                  <b>{item.add_time ? moment(item.add_time).format('YYYY-MM-DD HH:mm:ss') : '暂无时间'}</b>
+                </Col>
+                <Col span={6}>
+                  <Button type='danger' onClick={() => deleteSecondNav(item.id)} size='default'>删除</Button>
+                </Col>
+              </Row>
+            </List.Item>
+          )}
+        />
+        <div
+          style={{
+            textAlign: 'right',
+            margin: '10px 0'
+          }}
+        >
+          <Button onClick={closeSecondDrawer} style={{ marginRight: 8 }}>
+            取消
+          </Button>
+          <Button onClick={() => addSecond()} type="primary">
+            添加二级栏目
+          </Button>
+        </div>
       </Drawer>
       {/* 二级栏目END */}
     </div>

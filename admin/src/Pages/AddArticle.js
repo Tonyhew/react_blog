@@ -28,8 +28,8 @@ function AddArticle(props) {
 	const renderer = new marked.Renderer();
 
 	useEffect(() => {
-		getTypeInfo()
-		let tmpId = props.match.params.id
+		getTypeInfo();
+		let tmpId = props.match.params.id;
 		if (tmpId) {
 			setArticleId(tmpId)
 			getArticleById(tmpId)
