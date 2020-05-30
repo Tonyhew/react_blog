@@ -13,6 +13,9 @@ module.exports = app => {
   router.get('/admin/getFirstNavInfo/:id', adminauth, controller.admin.main.getFirstNavInfo);
   router.post('/admin/updateFirstNav', adminauth, controller.admin.main.updateFirstNav);
   router.get('/admin/deleteFirstNav/:id', adminauth, controller.admin.main.deleteFirstNav);
+  router.get('/admin/getSecondNavById/:id', adminauth, controller.admin.main.getSecondNavById);
+  router.post('/admin/addSecondNav', adminauth, controller.admin.main.addSecondNav);
+  router.post('/admin/editFirstNavStatus', adminauth, controller.admin.main.editFirstNavStatus);
   router.post('/admin/addArticle', adminauth, controller.admin.main.addArticle);
   router.post('/admin/updateArticle', adminauth, controller.admin.main.updateArticle);
   router.get('/admin/getArticleList', adminauth, controller.admin.main.getArticleList);

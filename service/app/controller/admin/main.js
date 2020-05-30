@@ -93,6 +93,40 @@ class MainController extends Controller {
     };
   }
 
+  async getSecondNavById() {
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_secondnav.id as id, ' +
+                'blog_secondnav.title as title, ' +
+                'blog_secondnav.add_time as add_time ' +
+                'FROM blog_secondnav LEFT JOIN blog_arctype ON blog_secondnav.arctype_parent_id = blog_arctype.id ' +
+                'WHERE blog_secondnav.arctype_parent_id =' + id;
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = {
+      secondnav: result,
+    };
+  }
+
+  async addSecondNav() {
+    const tmpFirstNav = this.ctx.request.body;
+    const result = await this.app.mysql.insert('blog_secondnav', tmpFirstNav);
+    const insertSuccess = result.affectedRows === 1;
+    const insertId = result.insertId;
+
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      insertId,
+    };
+  }
+
+  async editFirstNavStatus() {
+    const tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.update('blog_arctype', tmpArticle);
+    const updateSuccess = result.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: updateSuccess,
+    };
+  }
+
   async getTypeInfo() {
     const resType = await this.app.mysql.select('blog_type');
     this.ctx.body = {
@@ -176,8 +210,6 @@ class MainController extends Controller {
     this.ctx.body = {
       data: result,
     };
-
-
   }
 
   async countArticleValue() {
