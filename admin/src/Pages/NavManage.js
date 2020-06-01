@@ -30,6 +30,7 @@ function NavManage(props) {
     if (tmpId) {
       setNavId(tmpId)
     }
+
   }, []);
 
   const getCurrentTime = () => {
@@ -161,6 +162,7 @@ function NavManage(props) {
         setSecondNavList(res.data.secondnav)
       }
     )
+
   }
 
   const closeSecondDrawer = () => {
@@ -168,6 +170,51 @@ function NavManage(props) {
   }
 
   const deleteSecondNav = (id) => {
+    console.log(id)
+    confirm({
+      title: '你确定要删除这条栏目吗？',
+      content: '如果你点击OK按钮，栏目将会永远被删除，无法恢复',
+      onOk() {
+        axios(servicePath.deleteSecondNav + id, { withCredentials: true }).then(
+          res => {
+            message.success('栏目删除成功')
+            addNewSecond(secondPId)
+            axios({
+              method: 'get',
+              url: servicePath.countSecondNav + secondPId,
+              withCredentials: true,
+              header: { 'Acess-Control-Allow-Origin': '*' }
+            }).then(
+              (res) => {
+                if (res.data.result[0].c === 0) {
+                  let data = {}
+                  data.id = secondPId;
+                  data.status = -1;
+                  axios({
+                    method: 'post',
+                    url: servicePath.editFirstNavStatus,
+                    withCredentials: true,
+                    data: data,
+                    header: { 'Acess-Control-Allow-Origin': '*' }
+                  }).then(
+                    res => {
+                      console.log(res)
+                      addNewSecond(secondPId)
+                    }
+                  )
+                }
+              }
+            )
+            // if (res.data.isSuccess && secondNavList.length === 0) {
+            //   
+            // }
+          }
+        )
+      },
+      onCancel() {
+        message.error('没有任何改变')
+      }
+    })
 
   }
 

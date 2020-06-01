@@ -7,6 +7,7 @@ import AddArticle from './AddArticle'
 import ArticleList from './ArticleList'
 import ArticleType from './ArticleType'
 import NavManage from './NavManage'
+import servicePath from '../config/apiUrl';
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -67,7 +68,7 @@ function AdminIndex(props) {
 	}
 
 	const handleClickNav = e => {
-		if(e.key === 'navManage') {
+		if (e.key === 'navManage') {
 			props.history.push('/index/navManage')
 		} else {
 			props.history.push('/index/addSecond')
@@ -103,7 +104,6 @@ function AdminIndex(props) {
 						}
 					>
 						<Menu.Item key="navManage">添加栏目</Menu.Item>
-						<Menu.Item key="addSecond">添加二级栏目</Menu.Item>
 					</SubMenu>
 					<Menu.Item
 						key="typeManage"

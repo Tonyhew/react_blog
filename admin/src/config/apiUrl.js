@@ -13,6 +13,8 @@ let servicePath = {
     getSecondNavById: ipUrl + 'getSecondNavById/',
     addSecondNav: ipUrl + 'addSecondNav/',
     editFirstNavStatus: ipUrl + 'editFirstNavStatus',
+    deleteSecondNav: ipUrl + 'deleteSecondNav/',
+    countSecondNav: ipUrl + 'countSecondNav/',
     addArticle: ipUrl + 'addArticle', // 添加文章
     updateArticle: ipUrl + 'updateArticle', // 修改文章
     getArticleList: ipUrl + 'getArticleList', // 修改文章
