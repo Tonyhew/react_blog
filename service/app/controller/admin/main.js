@@ -118,6 +118,28 @@ class MainController extends Controller {
     };
   }
 
+  async deleteSecondNav() {
+    const id = this.ctx.params.id;
+    // eslint-disable-next-line quote-props
+    const res = await this.app.mysql.delete('blog_secondnav', { 'id': id });
+    const insertSuccess = res.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      data: res,
+    };
+  }
+
+  async countSecondNav() {
+    const id = this.ctx.params.id;
+    const sql = 'SELECT COUNT(*) as c FROM blog_secondnav WHERE blog_secondnav.arctype_parent_id =' + id;
+
+    const result = await this.app.mysql.query(sql);
+    console.log(result);
+    this.ctx.body = {
+      result,
+    };
+  }
+
   async editFirstNavStatus() {
     const tmpArticle = this.ctx.request.body;
     const result = await this.app.mysql.update('blog_arctype', tmpArticle);
