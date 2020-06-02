@@ -93,18 +93,13 @@ function AdminIndex(props) {
 						<Icon type="pie-chart" />
 						<span>工作台</span>
 					</Menu.Item>
-					<SubMenu
-						key="sub2"
+					<Menu.Item
+						key="navManage"
 						onClick={handleClickNav}
-						title={
-							<span>
-								<Icon type="unordered-list" />
-								<span>栏目管理</span>
-							</span>
-						}
 					>
-						<Menu.Item key="navManage">添加栏目</Menu.Item>
-					</SubMenu>
+						<Icon type="unordered-list" />
+						<span>添加栏目</span>
+					</Menu.Item>
 					<Menu.Item
 						key="typeManage"
 						onClick={handleClickType}
@@ -136,7 +131,7 @@ function AdminIndex(props) {
 					<Breadcrumb style={{ margin: '16px 0' }}>
 						{breadcrumbItems}
 					</Breadcrumb>
-					<div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+					<div style={{ minHeight: 360 }}>
 						<div>
 							<Route path="/index/" exact component={Index} onEnter={setCurrentTitle('首页')} />
 							<Route path="/index/add/" exact component={AddArticle} onEnter={setCurrentTitle('添加文章')} />

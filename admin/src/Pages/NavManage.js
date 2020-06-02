@@ -255,7 +255,7 @@ function NavManage(props) {
   }
 
   return (
-    <div>
+    <div style={{ padding: 24, background: '#fff' }}>
       <Row>
         <Col span={24} className='add_nav'>
           <Button type='primary' onClick={() => addNewNav()}>新增</Button>

@@ -20,22 +20,28 @@ function Index(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				let result = res.data.countArt
-				console.log(result)
-				for (let item in result) {
-					console.log(result[item].typeName)
-					var dataA = result.reduce((res, v) => {
-						Object.keys(v).forEach(key => {
-							const value = v[key];
-							if (res[key]) res[key].push(value);
-							else res[key] = [value];
-						})
-						return res;
-					}, {});
-					console.log(dataA)
-					setTypeName(dataA.typeName)
-					setCount(dataA.Count)
+				if (res.data.data == '没有登录') {
+					localStorage.removeItem('openId')
+					props.history.push('/')
+				} else {
+					let result = res.data.countArt
+					console.log(result)
+					for (let item in result) {
+						console.log(result[item].typeName)
+						var dataA = result.reduce((res, v) => {
+							Object.keys(v).forEach(key => {
+								const value = v[key];
+								if (res[key]) res[key].push(value);
+								else res[key] = [value];
+							})
+							return res;
+						}, {});
+						console.log(dataA)
+						setTypeName(dataA.typeName)
+						setCount(dataA.Count)
+					}
 				}
+
 			}
 		)
 	}
@@ -66,7 +72,7 @@ function Index(props) {
 	}
 	return (
 		<div className='chart_index'>
-			<div className='chart_left'>
+			<div className='chart_left' style={{ padding: 24, background: '#fff' }}>
 				<p>统计文章</p>
 				<Doughnut data={data} width={600} height={300} />
 			</div>

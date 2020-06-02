@@ -139,10 +139,10 @@ function AddArticle(props) {
 		dataProps.title = articleTitle
 		dataProps.article_content = articleContent
 		dataProps.descript = introducemd
-		let dateText = showDate.replace('-', '/')
+		// let dateText = showDate.replace('-', '/')
 		dataProps.addTime = (new Date(showDate).getTime()) / 1000
 		// dataProps.fNav = fnavInfo
-		if (selectedSNav === '文章二级栏目' || selectedSNav === 'undefined') {
+		if (selectedSNav === '文章二级栏目' || selectedSNav === undefined) {
 			dataProps.nav_id = selectedNav
 		} else {
 			dataProps.nav_id = selectedSNav
@@ -208,7 +208,7 @@ function AddArticle(props) {
 	}
 
 	return (
-		<div>
+		<div style={{ padding: 24,background: '#fff' }}>
 			<Row gutter={5}>
 				<Col span={18}>
 					<Row gutter={10}>

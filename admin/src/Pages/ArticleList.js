@@ -16,8 +16,12 @@ function ArticleList(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				console.log(res.data.list)
-				setList(res.data.list)
+				if (res.data.data == '没有登录') {
+					localStorage.removeItem('openId')
+					props.history.push('/')
+				} else {
+					setList(res.data.list)
+				}
 			}
 		)
 	}
@@ -50,7 +54,7 @@ function ArticleList(props) {
 
 
 	return (
-		<div>
+		<div style={{ padding: 24, background: '#fff' }}>
 			<List
 				header={
 					<Row className="list-div">
