@@ -134,7 +134,6 @@ class MainController extends Controller {
     const sql = 'SELECT COUNT(*) as c FROM blog_secondnav WHERE blog_secondnav.arctype_parent_id =' + id;
 
     const result = await this.app.mysql.query(sql);
-    console.log(result);
     this.ctx.body = {
       result,
     };
