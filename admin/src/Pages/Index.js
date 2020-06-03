@@ -20,7 +20,7 @@ function Index(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				if (res.data.data == '没有登录') {
+				if (res.data.data === '没有登录') {
 					localStorage.removeItem('openId')
 					props.history.push('/')
 				} else {

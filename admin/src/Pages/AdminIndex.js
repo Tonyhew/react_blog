@@ -7,7 +7,7 @@ import AddArticle from './AddArticle'
 import ArticleList from './ArticleList'
 import ArticleType from './ArticleType'
 import NavManage from './NavManage'
-import servicePath from '../config/apiUrl';
+// import servicePath from '../config/apiUrl';
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;

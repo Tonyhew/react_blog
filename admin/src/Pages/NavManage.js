@@ -17,7 +17,7 @@ function NavManage(props) {
   const [firstNavIcon, setFirstNavIcon] = useState('');
   const [firstNavAddTime, setFirstNavAddTime] = useState();
   const [firstNavEditTime, setFirstNavEditTime] = useState();
-  const [firstStatus, setFitstStatus] = useState(-1);
+  const [firstStatus] = useState(-1);
   const [secondNavList, setSecondNavList] = useState([]);
   const [secondPId, setSecondPId] = useState(0)
   const [secondNavTitle, setSecondNavTitle] = useState('');
@@ -66,7 +66,6 @@ function NavManage(props) {
   }
 
   const sumbitFirstNav = () => {
-    console.log(props)
     let dataProps = {};
     if (navId === 0) {
       dataProps.typeName = firstNavTypeName;

@@ -4,6 +4,9 @@ let servicePath = {
     checkLogin: ipUrl + 'checkLogin', // 检查用户名密码
     getNavList: ipUrl + 'getNavList',
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
+    addNewTag: ipUrl + 'addNewTag',
+    updateTag: ipUrl + 'updateTag',
+    deleteTag: ipUrl + 'deleteTag/',
     getFirstNav: ipUrl + 'getFirstNav', // 获得文章一级栏目信息
     getSecondNav: ipUrl + 'getSecondNav/', // 获得文章二级栏目信息
     addFirstNav: ipUrl + 'addFirstNav',

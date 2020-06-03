@@ -10,6 +10,16 @@ const { TextArea } = Input;
 
 function AddArticle(props) {
 
+	useEffect(() => {
+		let tmpId = props.match.params.id;
+		if (tmpId) {
+			setArticleId(tmpId)
+			getArticleById(tmpId)
+		}
+		getTypeInfo();
+		getAllNav()
+	}, [])
+
 	const [articleId, setArticleId] = useState(0)  // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
 	const [articleTitle, setArticleTitle] = useState('')   //文章标题
 	const [articleContent, setArticleContent] = useState('')  //markdown的编辑内容
@@ -17,7 +27,7 @@ function AddArticle(props) {
 	const [introducemd, setIntroducemd] = useState()            //简介的markdown内容
 	const [introducehtml, setIntroducehtml] = useState('等待编辑') //简介的html内容
 	const [showDate, setShowDate] = useState()   //发布日期
-	const [updateDate, setUpdateDate] = useState() //修改日志的日期
+	// const [updateDate, setUpdateDate] = useState() //修改日志的日期
 	const [typeInfo, setTypeInfo] = useState([]) // 文章类别信息
 	const [fnavInfo, setFNavInfo] = useState([]) // 文章一级栏目信息
 	const [snavInfo, setSNavInfo] = useState([]) // 文章二级栏目信息
@@ -26,16 +36,6 @@ function AddArticle(props) {
 	const [selectedSNav, setSelectSNav] = useState('文章二级栏目') //选择的文章类别
 
 	const renderer = new marked.Renderer();
-
-	useEffect(() => {
-		getTypeInfo();
-		let tmpId = props.match.params.id;
-		if (tmpId) {
-			setArticleId(tmpId)
-			getArticleById(tmpId)
-		}
-		getAllNav()
-	}, [])
 
 	marked.setOptions({
 		renderer: renderer,
@@ -67,7 +67,7 @@ function AddArticle(props) {
 			withCredentials: true,
 		}).then(
 			(res) => {
-				if (res.data.data == '没有登录') {
+				if (res.data.data === '没有登录') {
 					localStorage.removeItem('openId')
 					props.history.push('/')
 				} else {
@@ -120,7 +120,7 @@ function AddArticle(props) {
 		} else if (!articleTitle) {
 			message.error('请填写文章标题')
 			return false
-		} else if (selectedType == '文章类型') {
+		} else if (selectedType === '文章类型') {
 			message.error('请填写文章类型')
 			return false
 		} else if (!articleContent) {
@@ -147,7 +147,7 @@ function AddArticle(props) {
 		} else {
 			dataProps.nav_id = selectedSNav
 		}
-		if (articleId == 0) {
+		if (articleId === 0) {
 			dataProps.view_count = 0;
 			axios({
 				method: 'post',

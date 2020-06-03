@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { List, Row, Col, Modal, message, Button, Switch } from 'antd'
+import { List, Row, Col, Modal, message, Button } from 'antd'
 import axios from 'axios'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
 const { confirm } = Modal
 
 function ArticleList(props) {
-	const [list, setList] = useState([])
+	const [list, setList] = useState([]);
+	
+	useEffect(() => {
+		getList();
+	}, [])
 
 	const getList = () => {
 		axios({
@@ -16,7 +20,7 @@ function ArticleList(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				if (res.data.data == '没有登录') {
+				if (res.data.data === '没有登录') {
 					localStorage.removeItem('openId')
 					props.history.push('/')
 				} else {
@@ -25,10 +29,6 @@ function ArticleList(props) {
 			}
 		)
 	}
-
-	useEffect(() => {
-		getList()
-	}, [])
 
 	const delteArticle = (id) => {
 		confirm({
