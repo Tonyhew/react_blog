@@ -155,6 +155,37 @@ class MainController extends Controller {
     };
   }
 
+  async addNewTag() {
+    const tmpTagType = this.ctx.request.body;
+    const result = await this.app.mysql.insert('blog_type', tmpTagType);
+    const insertId = result.insertId;
+    const insertSuccess = result.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      insertId,
+    };
+  }
+
+  async updateTag() {
+
+    const tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.update('blog_type', tmpArticle);
+    const updateSuccess = result.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: updateSuccess,
+    };
+
+  }
+
+  async deleteTag() {
+    const id = this.ctx.params.id;
+    // eslint-disable-next-line quote-props
+    const res = await this.app.mysql.delete('blog_type', { 'id': id });
+    this.ctx.body = {
+      data: res,
+    };
+  }
+
   async addArticle() {
 
     const tmpArticle = this.ctx.request.body;
