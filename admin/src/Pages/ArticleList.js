@@ -7,7 +7,7 @@ const { confirm } = Modal
 
 function ArticleList(props) {
 	const [list, setList] = useState([]);
-	
+
 	useEffect(() => {
 		getList();
 	}, [])
@@ -99,8 +99,8 @@ function ArticleList(props) {
 								{item.view_count}
 							</Col>
 							<Col span={4}>
-								<Button type="primary" onClick={() => { updataArticle(item.id) }}>修改</Button>
-								<Button onClick={() => { delteArticle(item.id) }}>删除</Button>
+								<Button type="primary" className="button" onClick={() => updataArticle(item.id)}>修改</Button>
+								<Button type="danger" onClick={() => delteArticle(item.id)}>删除</Button>
 							</Col>
 						</Row>
 					</List.Item>

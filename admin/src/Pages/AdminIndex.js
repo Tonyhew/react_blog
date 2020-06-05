@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Route, Link } from 'react-router-dom';
-import '../static/css/AdminIndex.css'
-import Index from './Index'
-import AddArticle from './AddArticle'
-import ArticleList from './ArticleList'
-import ArticleType from './ArticleType'
-import NavManage from './NavManage'
+import '../static/css/AdminIndex.css';
+import Index from './Index';
+import AddArticle from './AddArticle';
+import ArticleList from './ArticleList';
+import ArticleType from './ArticleType';
+import NavManage from './NavManage';
 // import servicePath from '../config/apiUrl';
 
 const { Content, Footer, Sider } = Layout;

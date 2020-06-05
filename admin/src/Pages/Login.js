@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Card, Input, Icon, Spin, message } from 'antd'
-import 'antd/dist/antd.css'
-import '../static/css/Login.css'
-import servicePath from '../config/apiUrl'
-import axios from 'axios'
-
+import { Button, Card, Input, Icon, Spin, message } from 'antd';
+import 'antd/dist/antd.css';
+import '../static/css/Login.css';
+import servicePath from '../config/apiUrl';
+import axios from 'axios';
+import MD5 from 'md5'
 
 function Login(props) {
 
@@ -30,7 +30,7 @@ function Login(props) {
 
 		let dataProps = {
 			'userName': userName,
-			'password': password
+			'password': MD5(password + 'fndjvrfewewq9eu!')
 		}
 
 		axios({
