@@ -47,13 +47,21 @@ module.exports = appInfo => {
     csrf: {
       enable: false,
     },
-    domainWhiteList: [ '*' ],
+    domainWhiteList: ['*'],
   };
 
   config.cors = {
     origin: 'http://localhost:3000',
     credentials: true, // 允许cookie跨域
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  };
+
+  config.session = {
+    key: 'openId',
+    maxAge: 30 * 60 * 1000,
+    httpOnly: true,
+    encrypt: true,
+    renew: true, // 延长会话有效期
   };
 
   return {
