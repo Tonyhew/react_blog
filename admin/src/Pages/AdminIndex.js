@@ -168,7 +168,7 @@ function AdminIndex(props) {
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
 			<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-				<div className="logo" />
+				<div className="logo">后台管理系统</div>
 				{
 					authS()
 				}

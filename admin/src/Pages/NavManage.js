@@ -49,7 +49,12 @@ function NavManage(props) {
       header: { 'Acess-Control-Allow-Origin': '*' }
     }).then(
       (res) => {
-        setNavList(res.data.data)
+        if (res.data.data === '没有登录') {
+          localStorage.removeItem('openId')
+          props.history.push('/')
+        } else {
+          setNavList(res.data.data)
+        }
       }
     )
   }
