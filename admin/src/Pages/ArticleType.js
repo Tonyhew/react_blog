@@ -21,8 +21,12 @@ function ArticleType(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				console.log(res.data.type)
-				setType(res.data.type)
+				if (res.data.data === '没有登录') {
+					localStorage.removeItem('openId')
+					props.history.push('/')
+				} else {
+					setType(res.data.type)
+				}
 			}
 		)
 	}
