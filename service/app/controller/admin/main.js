@@ -11,14 +11,15 @@ class MainController extends Controller {
   async checkLogin() {
     const userName = this.ctx.request.body.userName;
     const password = this.ctx.request.body.password;
-    const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
+    // const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
+    const sql = "SELECT * FROM admin_role WHERE id = (SELECT role_id FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "' AND user_status = -1) AND role_status = -1";
     const res = await this.app.mysql.query(sql);
     if (res.length > 0) {
       const openId = new Date().getTime();
       // eslint-disable-next-line quote-props
       this.ctx.session.openId = { 'openId': openId };
       // eslint-disable-next-line quote-props
-      this.ctx.body = { 'data': '登录成功', 'openId': openId };
+      this.ctx.body = { 'data': '登录成功', 'openId': openId, loginStatus: res };
     } else {
       // eslint-disable-next-line quote-props
       this.ctx.body = { 'data': '登录失败' };
