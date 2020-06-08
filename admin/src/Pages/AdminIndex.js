@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import '../static/css/AdminIndex.css';
@@ -14,7 +14,12 @@ const { SubMenu } = Menu;
 
 function AdminIndex(props) {
 
-	console.log(props)
+	const [collapsed, setCollapsed] = useState(false)
+
+	useEffect(() => {
+		localStorage.getItem("roleId");
+	}, [])
+
 	const breadcrumbNameMap = {
 		'/index': '首页',
 		'/index/add': '添加文章',
@@ -24,7 +29,6 @@ function AdminIndex(props) {
 	}
 
 	const { location } = props
-	console.log(location)
 	const pathSnippets = location.pathname.split('/').filter(i => i);
 	const extraBreadcrumbItems = pathSnippets.map((_, index) => {
 		const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
@@ -43,10 +47,6 @@ function AdminIndex(props) {
 	const setCurrentTitle = (title) => {
 		document.title = title
 	}
-
-
-	const [collapsed, setCollapsed] = useState(false)
-
 
 	const onCollapse = collapsed => {
 		setCollapsed(collapsed)
@@ -81,10 +81,9 @@ function AdminIndex(props) {
 		}
 	}
 
-	return (
-		<Layout style={{ minHeight: '100vh' }}>
-			<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-				<div className="logo" />
+	const authS = () => {
+		if (localStorage.roleId == 10) {
+			return (
 				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
 					<Menu.Item
 						key="Index"
@@ -125,6 +124,54 @@ function AdminIndex(props) {
 						<span>留言管理</span>
 					</Menu.Item>
 				</Menu>
+			)
+		} else if (localStorage.roleId == 6) {
+			return (
+				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+					<Menu.Item
+						key="Index"
+						onClick={handleClickIndex}
+					>
+						<Icon type="pie-chart" />
+						<span>工作台</span>
+					</Menu.Item>
+
+					<Menu.Item
+						key="typeManage"
+						onClick={handleClickType}
+					>
+						<Icon type="tags" />
+						<span>标签管理</span>
+					</Menu.Item>
+					<SubMenu
+						key="sub1"
+						onClick={handleClickArticle}
+						title={
+							<span>
+								<Icon type="desktop" />
+								<span>文章管理</span>
+							</span>
+						}
+					>
+						<Menu.Item key="addArticle">添加文章</Menu.Item>
+						<Menu.Item key="articleList">文章列表</Menu.Item>
+					</SubMenu>
+					<Menu.Item key="9">
+						<Icon type="file" />
+						<span>留言管理</span>
+					</Menu.Item>
+				</Menu>
+			)
+		}
+	}
+
+	return (
+		<Layout style={{ minHeight: '100vh' }}>
+			<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+				<div className="logo" />
+				{
+					authS()
+				}
 			</Sider>
 			<Layout>
 				<Content style={{ margin: '0 16px' }}>
