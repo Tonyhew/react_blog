@@ -4,13 +4,13 @@ import 'antd/dist/antd.css';
 import '../static/css/Login.css';
 import servicePath from '../config/apiUrl';
 import axios from 'axios';
-import MD5 from 'md5'
+import MD5 from 'md5';
 
 function Login(props) {
 
-	const [userName, setUserName] = useState('')
-	const [password, setPassword] = useState('')
-	const [isLoading, setIsLoading] = useState(false)
+	const [userName, setUserName] = useState('');
+	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const checkLogin = () => {
 		setIsLoading(true)
@@ -40,12 +40,16 @@ function Login(props) {
 			withCredentials: true,
 		}).then(
 			(res) => {
-				setIsLoading(false)
-				if (res.data.data === '登录成功') {
-					localStorage.setItem('openId', res.data.openId)
-					props.history.push('/index')
-				} else {
-					message.error('用户名密码错误')
+				console.log(res)
+				if (res.data.loginStatus[0].role_status) {
+					setIsLoading(false)
+					if (res.data.data === '登录成功') {
+						localStorage.setItem('openId', res.data.openId);
+						props.history.push('/index');
+						localStorage.setItem("roleId", res.data.loginStatus[0].Id);
+					} else {
+						message.error('用户名密码错误')
+					}
 				}
 			}
 		)
