@@ -18,7 +18,7 @@ function AdminIndex(props) {
 
 	useEffect(() => {
 		localStorage.getItem("roleId");
-	}, [])
+	}, []);
 
 	const breadcrumbNameMap = {
 		'/index': '首页',
@@ -53,7 +53,6 @@ function AdminIndex(props) {
 	};
 
 	const handleClickArticle = e => {
-		console.log(e)
 		if (e.key === 'addArticle') {
 			props.history.push('/index/add')
 		} else {
@@ -81,97 +80,50 @@ function AdminIndex(props) {
 		}
 	}
 
-	const authS = () => {
-		if (localStorage.roleId == 10) {
-			return (
-				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-					<Menu.Item
-						key="Index"
-						onClick={handleClickIndex}
-					>
-						<Icon type="pie-chart" />
-						<span>工作台</span>
-					</Menu.Item>
-					<Menu.Item
-						key="navManage"
-						onClick={handleClickNav}
-					>
-						<Icon type="unordered-list" />
-						<span>添加栏目</span>
-					</Menu.Item>
-					<Menu.Item
-						key="typeManage"
-						onClick={handleClickType}
-					>
-						<Icon type="tags" />
-						<span>标签管理</span>
-					</Menu.Item>
-					<SubMenu
-						key="sub1"
-						onClick={handleClickArticle}
-						title={
-							<span>
-								<Icon type="desktop" />
-								<span>文章管理</span>
-							</span>
-						}
-					>
-						<Menu.Item key="addArticle">添加文章</Menu.Item>
-						<Menu.Item key="articleList">文章列表</Menu.Item>
-					</SubMenu>
-					<Menu.Item key="9">
-						<Icon type="file" />
-						<span>留言管理</span>
-					</Menu.Item>
-				</Menu>
-			)
-		} else if (localStorage.roleId == 6) {
-			return (
-				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-					<Menu.Item
-						key="Index"
-						onClick={handleClickIndex}
-					>
-						<Icon type="pie-chart" />
-						<span>工作台</span>
-					</Menu.Item>
-
-					<Menu.Item
-						key="typeManage"
-						onClick={handleClickType}
-					>
-						<Icon type="tags" />
-						<span>标签管理</span>
-					</Menu.Item>
-					<SubMenu
-						key="sub1"
-						onClick={handleClickArticle}
-						title={
-							<span>
-								<Icon type="desktop" />
-								<span>文章管理</span>
-							</span>
-						}
-					>
-						<Menu.Item key="addArticle">添加文章</Menu.Item>
-						<Menu.Item key="articleList">文章列表</Menu.Item>
-					</SubMenu>
-					<Menu.Item key="9">
-						<Icon type="file" />
-						<span>留言管理</span>
-					</Menu.Item>
-				</Menu>
-			)
-		}
-	}
-
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
 			<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
 				<div className="logo">后台管理系统</div>
-				{
-					authS()
-				}
+				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+					<Menu.Item
+						key="Index"
+						onClick={handleClickIndex}
+					>
+						<Icon type="pie-chart" />
+						<span>工作台</span>
+					</Menu.Item>
+					{
+						localStorage.roleId == 10 ? <Menu.Item key="navManage" onClick={handleClickNav} ><Icon type="unordered-list" /><span>添加栏目</span></Menu.Item> : null
+					}
+
+					{
+						localStorage.roleId == 6 ? '' : ''
+					}
+					<Menu.Item
+						key="typeManage"
+						onClick={handleClickType}
+					>
+						<Icon type="tags" />
+						<span>标签管理</span>
+					</Menu.Item>
+					<SubMenu
+						key="sub1"
+						onClick={handleClickArticle}
+						title={
+							<span>
+								<Icon type="desktop" />
+								<span>文章管理</span>
+							</span>
+						}
+					>
+						<Menu.Item key="addArticle">添加文章</Menu.Item>
+						<Menu.Item key="articleList">文章列表</Menu.Item>
+					</SubMenu>
+					<Menu.Item key="9">
+						<Icon type="file" />
+						<span>留言管理</span>
+					</Menu.Item>
+				</Menu>
 			</Sider>
 			<Layout>
 				<Content style={{ margin: '0 16px' }}>

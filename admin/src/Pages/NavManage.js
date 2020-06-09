@@ -50,8 +50,9 @@ function NavManage(props) {
     }).then(
       (res) => {
         if (res.data.data === '没有登录') {
-          localStorage.removeItem('openId')
-          props.history.push('/')
+          localStorage.removeItem('openId');
+          localStorage.removeItem('roleId');
+          props.history.push('/');
         } else {
           setNavList(res.data.data)
         }

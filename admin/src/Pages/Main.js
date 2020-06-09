@@ -5,12 +5,12 @@ import AdminIndex from '../Pages/AdminIndex';
 
 
 function Main() {
-    return (
-        <Router>
-            <Route path="/" exact component={Login} />
-            <Route path="/index/" component={AdminIndex} />
-        </Router>
-    )
+	return (
+		<Router>
+			<Route path="/" exact component={Login} />
+			<Route path="/index/" component={AdminIndex} />
+		</Router>
+	)
 }
 
 

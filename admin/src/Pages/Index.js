@@ -21,11 +21,11 @@ function Index(props) {
 		}).then(
 			(res) => {
 				if (res.data.data === '没有登录') {
-					localStorage.removeItem('openId')
-					props.history.push('/')
+					localStorage.removeItem('openId');
+					localStorage.removeItem('roleId');
+					props.history.push('/');
 				} else {
 					let result = res.data.countArt
-					console.log(result)
 					for (let item in result) {
 						console.log(result[item].typeName)
 						var dataA = result.reduce((res, v) => {

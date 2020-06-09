@@ -45,7 +45,7 @@ function Login(props) {
 					setIsLoading(false)
 					if (res.data.data === '登录成功') {
 						localStorage.setItem('openId', res.data.openId);
-						props.history.push('/index');
+						props.history.push('/index')
 						localStorage.setItem("roleId", res.data.loginStatus[0].Id);
 					} else {
 						message.error('用户名密码错误')
