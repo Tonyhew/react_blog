@@ -7,6 +7,7 @@ import AddArticle from './AddArticle';
 import ArticleList from './ArticleList';
 import ArticleType from './ArticleType';
 import NavManage from './NavManage';
+import UserManage from './UserManage';
 // import servicePath from '../config/apiUrl';
 
 const { Content, Footer, Sider } = Layout;
@@ -69,8 +70,12 @@ function AdminIndex(props) {
 	const handleClickNav = e => {
 		if (e.key === 'navManage') {
 			props.history.push('/index/navManage')
-		} else {
-			props.history.push('/index/addSecond')
+		}
+	}
+
+	const handleClickUser = e => {
+		if (e.key === 'userManage') {
+			props.history.push('/index/userManage')
 		}
 	}
 
@@ -97,7 +102,7 @@ function AdminIndex(props) {
 					}
 
 					{
-						localStorage.roleId == 6 ? '' : ''
+						localStorage.roleId == 10 ? <Menu.Item key="userManage" onClick={handleClickUser} ><Icon type="user" /><span>用户管理</span></Menu.Item> : null
 					}
 					<Menu.Item
 						key="typeManage"
@@ -139,6 +144,7 @@ function AdminIndex(props) {
 							<Route path="/index/type/" exact component={ArticleType} onEnter={setCurrentTitle('标签管理')} />
 							<Route path="/index/navManage/" exact component={NavManage} onEnter={setCurrentTitle('栏目管理')} />
 							<Route path="/index/navManage/:id" exact component={NavManage} onEnter={setCurrentTitle('二级栏目管理')} />
+							<Route path="/index/userManage/" exact component={UserManage} onEnter={setCurrentTitle('用户管理')} />
 						</div>
 					</div>
 				</Content>
