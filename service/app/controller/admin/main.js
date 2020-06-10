@@ -26,6 +26,35 @@ class MainController extends Controller {
     }
   }
 
+  async checkUser() {
+    const userName = this.ctx.request.body.userName;
+    const password = this.ctx.request.body.password;
+
+    const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
+    const result = await this.app.mysql.query(sql);
+    if (result.length > 0) {
+      this.ctx.body = {
+        isSuccess: true,
+      };
+    } else {
+      this.ctx.body = {
+        data: '账号或密码填写错误',
+      };
+    }
+  }
+
+  async getUserInfo() {
+    const sql = 'SELECT admin_user.id AS id, ' +
+                'admin_user.userName AS userName, ' +
+                'admin_role.role_name AS roleName, ' +
+                'admin_user.user_status AS user_status ' +
+                'FROM admin_user LEFT JOIN admin_role ON admin_user.role_id = admin_role.id';
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = {
+      secondNav: result,
+    };
+  }
+
   async getNavList() {
     const resType = await this.app.mysql.select('blog_arctype');
     this.ctx.body = {
