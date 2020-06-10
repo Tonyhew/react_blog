@@ -1,7 +1,9 @@
 let ipUrl = 'http://127.0.0.1:7001/admin/'
 
 let servicePath = {
-    checkLogin: ipUrl + 'checkLogin', // 检查用户名密码
+    checkLogin: ipUrl + 'checkLogin', // 检查登录态
+    checkUser: ipUrl + 'checkUser',
+    getUserInfo: ipUrl + 'getUserInfo',
     getNavList: ipUrl + 'getNavList',
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
     addNewTag: ipUrl + 'addNewTag',
