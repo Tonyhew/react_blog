@@ -35,22 +35,42 @@ function Login(props) {
 
 		axios({
 			method: 'post',
-			url: servicePath.checkLogin,
+			url: servicePath.checkUser,
 			data: dataProps,
 			withCredentials: true,
+			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				console.log(res)
-				if (res.data.loginStatus[0].role_status) {
+				if (res.data.isSuccess) {
+					axios({
+						method: 'post',
+						url: servicePath.checkLogin,
+						data: dataProps,
+						withCredentials: true,
+					}).then(
+						(res) => {
+							console.log(res)
+							if (res.data.loginStatus != null) {
+								if (res.data.loginStatus[0].role_status) {
+									setIsLoading(false)
+									if (res.data.data === '登录成功') {
+										localStorage.setItem('openId', res.data.openId);
+										props.history.push('/index')
+										localStorage.setItem("roleId", res.data.loginStatus[0].Id);
+									}
+								}
+							} else {
+								setIsLoading(false)
+								props.history.push('/')
+								message.error('没有该账号')
+							}
+						}
+					)
+				} else {
 					setIsLoading(false)
-					if (res.data.data === '登录成功') {
-						localStorage.setItem('openId', res.data.openId);
-						props.history.push('/index')
-						localStorage.setItem("roleId", res.data.loginStatus[0].Id);
-					} else {
-						message.error('用户名密码错误')
-					}
+					message.error(res.data.data)
 				}
+
 			}
 		)
 
