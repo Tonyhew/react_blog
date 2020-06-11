@@ -46,12 +46,43 @@ class MainController extends Controller {
   async getUserInfo() {
     const sql = 'SELECT admin_user.id AS id, ' +
                 'admin_user.userName AS userName, ' +
+                'admin_user.role_id AS role_id, ' +
                 'admin_role.role_name AS roleName, ' +
                 'admin_user.user_status AS user_status ' +
                 'FROM admin_user LEFT JOIN admin_role ON admin_user.role_id = admin_role.id';
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
-      secondNav: result,
+      userInfo: result,
+    };
+  }
+
+  async isDisableUser() {
+    const tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.update('admin_user', tmpArticle);
+    const updateSuccess = result.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: updateSuccess,
+    };
+  }
+
+  async addNewUser() {
+    const tmpFirstNav = this.ctx.request.body;
+    const result = await this.app.mysql.insert('admin_user', tmpFirstNav);
+    const insertSuccess = result.affectedRows === 1;
+    const insertId = result.insertId;
+
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      insertId,
+    };
+  }
+
+  async deleteUser() {
+    const id = this.ctx.params.id;
+    // eslint-disable-next-line quote-props
+    const res = await this.app.mysql.delete('admin_user', { 'id': id });
+    this.ctx.body = {
+      data: res,
     };
   }
 
