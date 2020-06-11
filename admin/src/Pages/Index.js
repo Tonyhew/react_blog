@@ -27,7 +27,6 @@ function Index(props) {
 				} else {
 					let result = res.data.countArt
 					for (let item in result) {
-						console.log(result[item].typeName)
 						var dataA = result.reduce((res, v) => {
 							Object.keys(v).forEach(key => {
 								const value = v[key];
@@ -36,7 +35,6 @@ function Index(props) {
 							})
 							return res;
 						}, {});
-						console.log(dataA)
 						setTypeName(dataA.typeName)
 						setCount(dataA.Count)
 					}
