@@ -15,7 +15,10 @@ module.exports = app => {
   router.get('/admin/index', adminauth, controller.admin.main.index);
   router.post('/admin/checkLogin', controller.admin.main.checkLogin); // 检查登录态
   router.post('/admin/checkUser', controller.admin.main.checkUser); // 检测用户名密码
-  router.get('/admin/getUserInfo', controller.admin.main.getUserInfo); // 获取用户列表
+  router.get('/admin/getUserInfo', adminauth, controller.admin.main.getUserInfo); // 获取用户列表
+  router.post('/admin/isDisableUser', adminauth, controller.admin.main.isDisableUser); // 禁用用户
+  router.post('/admin/addNewUser', adminauth, controller.admin.main.addNewUser); // 新增用户
+  router.get('/admin/deleteUser/:id', adminauth, controller.admin.main.deleteUser); // 删除用户
   router.get('/admin/getNavList', adminauth, controller.admin.main.getNavList); // 获取一级导航列表
   router.get('/admin/getTypeInfo', adminauth, controller.admin.main.getTypeInfo); // 获取标签信息
   router.post('/admin/addNewTag', adminauth, controller.admin.main.addNewTag); // 添加新标签
