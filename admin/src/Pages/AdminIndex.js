@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import '../static/css/AdminIndex.css';
@@ -27,6 +27,7 @@ function AdminIndex(props) {
 		'/index/list': '文章列表',
 		'/index/type': '标签管理',
 		'/index/navManage': '栏目管理',
+		'/index/userManage': '用户管理',
 	}
 
 	const { location } = props
@@ -100,7 +101,6 @@ function AdminIndex(props) {
 					{
 						localStorage.roleId == 10 ? <Menu.Item key="navManage" onClick={handleClickNav} ><Icon type="unordered-list" /><span>添加栏目</span></Menu.Item> : null
 					}
-
 					{
 						localStorage.roleId == 10 ? <Menu.Item key="userManage" onClick={handleClickUser} ><Icon type="user" /><span>用户管理</span></Menu.Item> : null
 					}
