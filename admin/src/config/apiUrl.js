@@ -4,6 +4,9 @@ let servicePath = {
     checkLogin: ipUrl + 'checkLogin', // 检查登录态
     checkUser: ipUrl + 'checkUser',
     getUserInfo: ipUrl + 'getUserInfo',
+    isDisableUser: ipUrl + 'isDisableUser',
+    addNewUser: ipUrl + 'addNewUser',
+    deleteUser: ipUrl + 'deleteUser/',
     getNavList: ipUrl + 'getNavList',
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
     addNewTag: ipUrl + 'addNewTag',
