@@ -7,6 +7,22 @@ class HomeController extends Controller {
     this.ctx.body = 'api-hi';
   }
 
+  async getListTitle() {
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_arctype.typeName ' +
+                'FROM blog_arctype WHERE blog_arctype.id = ' + id;
+    const results = await this.app.mysql.query(sql);
+    this.ctx.body = { data: results };
+  }
+
+  async getListSecondTitle() {
+    const id = this.ctx.params.id;
+    const sql = 'SELECT blog_secondNav.title ' +
+                'FROM blog_secondNav WHERE blog_secondNav.id = ' + id;
+    const results = await this.app.mysql.query(sql);
+    this.ctx.body = { data: results };
+  }
+
   async getArticleList() {
     const sql = 'SELECT blog_article.id as id,' +
                 'blog_article.title as title,' +
@@ -14,7 +30,8 @@ class HomeController extends Controller {
                 "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
                 'blog_article.view_count as view_count,' +
                 'blog_type.typeName as typeName ' +
-                'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id';
+                'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
+                'ORDER BY blog_article.addTime DESC';
 
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
@@ -28,6 +45,7 @@ class HomeController extends Controller {
                 'blog_article.article_content as content,' +
                 "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
                 'blog_article.view_count as view_count,' +
+                'blog_article.nav_id as nav_id, ' +
                 'blog_type.typeName as typeName,' +
                 'blog_type.id as typeId ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
@@ -68,7 +86,8 @@ class HomeController extends Controller {
                 'blog_article.view_count as view_count,' +
                 'blog_type.typeName as typeName ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'WHERE nav_id =' + id;
+                'WHERE nav_id =' + id +
+                ' ORDER BY blog_article.addTime DESC';
 
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
