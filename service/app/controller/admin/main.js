@@ -156,11 +156,11 @@ class MainController extends Controller {
 
   async getSecondNavById() {
     const id = this.ctx.params.id;
-    const sql = 'SELECT blog_secondnav.id as id, ' +
-                'blog_secondnav.title as title, ' +
-                'blog_secondnav.add_time as add_time ' +
-                'FROM blog_secondnav LEFT JOIN blog_arctype ON blog_secondnav.arctype_parent_id = blog_arctype.id ' +
-                'WHERE blog_secondnav.arctype_parent_id =' + id;
+    const sql = 'SELECT blog_secondNav.id as id, ' +
+                'blog_secondNav.title as title, ' +
+                'blog_secondNav.add_time as add_time ' +
+                'FROM blog_secondNav LEFT JOIN blog_arctype ON blog_secondNav.arctype_parent_id = blog_arctype.id ' +
+                'WHERE blog_secondNav.arctype_parent_id =' + id;
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       secondnav: result,
@@ -169,7 +169,7 @@ class MainController extends Controller {
 
   async addSecondNav() {
     const tmpFirstNav = this.ctx.request.body;
-    const result = await this.app.mysql.insert('blog_secondnav', tmpFirstNav);
+    const result = await this.app.mysql.insert('blog_secondNav', tmpFirstNav);
     const insertSuccess = result.affectedRows === 1;
     const insertId = result.insertId;
 
@@ -182,7 +182,7 @@ class MainController extends Controller {
   async deleteSecondNav() {
     const id = this.ctx.params.id;
     // eslint-disable-next-line quote-props
-    const res = await this.app.mysql.delete('blog_secondnav', { 'id': id });
+    const res = await this.app.mysql.delete('blog_secondNav', { 'id': id });
     const insertSuccess = res.affectedRows === 1;
     this.ctx.body = {
       isSuccess: insertSuccess,
@@ -192,7 +192,7 @@ class MainController extends Controller {
 
   async countSecondNav() {
     const id = this.ctx.params.id;
-    const sql = 'SELECT COUNT(*) as c FROM blog_secondnav WHERE blog_secondnav.arctype_parent_id =' + id;
+    const sql = 'SELECT COUNT(*) as c FROM blog_secondNav WHERE blog_secondNav.arctype_parent_id =' + id;
 
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
@@ -282,10 +282,10 @@ class MainController extends Controller {
                 "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
                 'blog_type.typeName as typeName, ' +
                 'blog_arctype.typeName as arcTypeName, ' +
-                'blog_secondnav.title as secondTitle ' +
+                'blog_secondNav.title as secondTitle ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
                 'LEFT JOIN blog_arctype ON blog_article.nav_id = blog_arctype.Id ' +
-                'LEFT JOIN blog_secondnav ON blog_article.nav_id = blog_secondnav.Id ' +
+                'LEFT JOIN blog_secondNav ON blog_article.nav_id = blog_secondNav.Id ' +
                 'ORDER BY blog_article.id DESC';
 
     const result = await this.app.mysql.query(sql);
