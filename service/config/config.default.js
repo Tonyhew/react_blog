@@ -27,15 +27,15 @@ module.exports = appInfo => {
     // database configuration
     client: {
       // host
-      host: 'localhost',
+      host: '39.97.67.234',
       // port
       port: '3306',
       // username
-      user: 'root',
+      user: 'tonyhew',
       // password
-      password: 'hwyhcp',
+      password: 'heweiyi123!',
       // database
-      database: 'my_blog',
+      database: 'react_blog',
     },
     // load into app, default is open
     app: true,
@@ -47,11 +47,11 @@ module.exports = appInfo => {
     csrf: {
       enable: false,
     },
-    domainWhiteList: ['*'],
+    domainWhiteList: [ '*' ],
   };
 
   config.cors = {
-    origin: 'http://localhost:3000',
+    // origin: '*',
     credentials: true, // 允许cookie跨域
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
