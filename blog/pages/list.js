@@ -14,11 +14,29 @@ import marked from 'marked'
 
 const MyList = (list) => {
 
-  const [myList, setMylist] = useState(list.data)
+  const [myList, setMylist] = useState(list.data);
+  const [title, setTitle] = useState('')
+
   useEffect(() => {
-    setMylist(list.data)
-    console.log()
+    setMylist(list.data);
+    getTitle()
   })
+
+  const getTitle = () => {
+    if (list.url.query.id.length >= 4) {
+      axios(servicePath.getListSecondTitle + list.url.query.id).then(
+        (res) => {
+          setTitle(res.data.data[0].title)
+        }
+      )
+    } else {
+      axios(servicePath.getListTitle + list.url.query.id).then(
+        (res) => {
+          setTitle(res.data.data[0].typeName)
+        }
+      )
+    }
+  }
 
   const renderer = new marked.Renderer();
   marked.setOptions({
@@ -34,10 +52,10 @@ const MyList = (list) => {
       return hljs.highlightAuto(code).value;
     }
   });
-
   return (
     <div>
       <Head>
+        <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
@@ -48,7 +66,7 @@ const MyList = (list) => {
             <div className="bread-div">
               <Breadcrumb>
                 <Breadcrumb.Item><a href='/'>首页</a></Breadcrumb.Item>
-                <Breadcrumb.Item>视频列表</Breadcrumb.Item>
+                <Breadcrumb.Item>{title}</Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>
