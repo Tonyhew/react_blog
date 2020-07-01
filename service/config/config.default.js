@@ -27,15 +27,15 @@ module.exports = appInfo => {
     // database configuration
     client: {
       // host
-      host: '39.97.67.234',
+      host: 'xx.xx.xx.xx',
       // port
       port: '3306',
       // username
-      user: 'tonyhew',
+      user: 'xxxxx',
       // password
-      password: 'heweiyi123!',
+      password: 'xxxxxxxxx',
       // database
-      database: 'react_blog',
+      database: 'xxxxx',
     },
     // load into app, default is open
     app: true,
