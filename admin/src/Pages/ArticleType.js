@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { List, Row, Col, Modal, message, Input, Button, Drawer } from 'antd'
-import axios from 'axios'
-import servicePath from '../config/apiUrl'
-import '../static/css/ArticleList.css'
-const { confirm } = Modal
+import React, { useState, useEffect } from 'react';
+import { List, Row, Col, Modal, message, Input, Button, Drawer } from 'antd';
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
+import '../static/css/ArticleList.css';
+const { confirm } = Modal;
 
 function ArticleType(props) {
-	const [typeId, setTypeId] = useState(0)
+	const [typeId, setTypeId] = useState(0);
 	const [type, setType] = useState([]);
 	const [tagTitle, setTagTitle] = useState('标签标题');
 	const [orderNum, setOrderNum] = useState(0);
