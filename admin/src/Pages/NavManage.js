@@ -19,16 +19,16 @@ function NavManage(props) {
   const [firstNavEditTime, setFirstNavEditTime] = useState();
   const [firstStatus] = useState(-1);
   const [secondNavList, setSecondNavList] = useState([]);
-  const [secondPId, setSecondPId] = useState(0)
+  const [secondPId, setSecondPId] = useState(0);
   const [secondNavTitle, setSecondNavTitle] = useState('');
 
 
   useEffect(() => {
     getNavList();
     getCurrentTime();
-    let tmpId = props.match.params.id
+    let tmpId = props.match.params.id;
     if (tmpId) {
-      setNavId(tmpId)
+      setNavId(tmpId);
     }
 
   }, []);
@@ -37,8 +37,8 @@ function NavManage(props) {
     let time = new Date();
     let d = new Date(time);
     let dateValue = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-    setFirstNavAddTime(dateValue)
-    setFirstNavEditTime(dateValue)
+    setFirstNavAddTime(dateValue);
+    setFirstNavEditTime(dateValue);
   }
 
   const getNavList = () => {
