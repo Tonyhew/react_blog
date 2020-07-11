@@ -1,13 +1,25 @@
-let ipUrl = 'http://127.0.0.1:7001/admin/'
+let ipUrl = 'https://api.tonyhew.com/admin/'
+
+/** 
+ * 
+ * @author: Tonyhew
+ * @param: {
+ *  get: 获取,
+ *  add: 新增,
+ *  update: 修改,
+ *  delete: 删除,
+ * }
+ * 
+ * */ 
 
 let servicePath = {
     checkLogin: ipUrl + 'checkLogin', // 检查登录态
-    checkUser: ipUrl + 'checkUser',
-    getUserInfo: ipUrl + 'getUserInfo',
-    isDisableUser: ipUrl + 'isDisableUser',
-    addNewUser: ipUrl + 'addNewUser',
-    deleteUser: ipUrl + 'deleteUser/',
-    getNavList: ipUrl + 'getNavList',
+    checkUser: ipUrl + 'checkUser', // 检查是否有该用户
+    getUserInfo: ipUrl + 'getUserInfo', // 获取用户信息
+    isDisableUser: ipUrl + 'isDisableUser', // 是否禁用用户
+    addNewUser: ipUrl + 'addNewUser', // 添加用户
+    deleteUser: ipUrl + 'deleteUser/', // 删除用户
+    getNavList: ipUrl + 'getNavList', 
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
     addNewTag: ipUrl + 'addNewTag',
     updateTag: ipUrl + 'updateTag',
