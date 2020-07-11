@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 
 function AdminIndex(props) {
 
-	const [collapsed, setCollapsed] = useState(false)
+	const [collapsed, setCollapsed] = useState(false);
 
 	useEffect(() => {
 		localStorage.getItem("roleId");
