@@ -33,7 +33,7 @@ function ArticleList(props) {
 	}
 
 	const topArticle = (id) => {
-		
+		console.log(id)
 	}
 
 	const delteArticle = (id) => {
