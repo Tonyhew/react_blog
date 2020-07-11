@@ -5,7 +5,7 @@ import { Row, Col, List, Input, Button, message, Switch, Drawer, Modal } from 'a
 import axios from 'axios';
 import MD5 from 'md5';
 import servicePath from '../config/apiUrl';
-import '../static/css/UserManage.css'
+import '../static/css/UserManage.css';
 
 const { confirm } = Modal
 function UserManage(props) {
