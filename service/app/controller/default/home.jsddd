@@ -29,10 +29,9 @@ class HomeController extends Controller {
                 'blog_article.descript as descript,' +
                 "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
                 'blog_article.view_count as view_count,' +
-                'blog_article.is_top as isTop, ' +
                 'blog_type.typeName as typeName ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'ORDER BY blog_article.is_top DESC, blog_article.addTime DESC';
+                'ORDER BY blog_article.addTime DESC';
 
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
@@ -40,15 +39,7 @@ class HomeController extends Controller {
 
   async getArticleById() {
     const id = this.ctx.params.id;
-
-    if (id) {
-      const sql1 = 'UPDATE blog_article SET view_count = (view_Count + 1) WHERE id = ' + id;
-
-      const updateResult = await this.app.mysql.query(sql1);
-      const updateSuccess = updateResult.affectedRows === 1;
-
-      if (updateSuccess) {
-        const sql2 = 'SELECT blog_article.id as id,' +
+    const sql = 'SELECT blog_article.id as id,' +
                 'blog_article.title as title,' +
                 'blog_article.descript as descript,' +
                 'blog_article.article_content as content,' +
@@ -58,17 +49,11 @@ class HomeController extends Controller {
                 'blog_type.typeName as typeName,' +
                 'blog_type.id as typeId ' +
                 'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'WHERE blog_article.id =' + id;
-        const result = await this.app.mysql.query(sql2);
-        this.ctx.body = {
-          data: result,
-        };
-      }
-    } else {
-      console.log('id错误1');
-      this.ctx.body = { data: 'id错误' };
-    }
-
+                'WHERE blog_article.id=' + id;
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = {
+      data: result,
+    };
   }
   // 得到类别名称和编号
   async getTypeInfo() {
@@ -106,14 +91,6 @@ class HomeController extends Controller {
 
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
-  }
-
-  async countArticleListById() {
-    const id = this.ctx.params.id;
-    const sql = 'SELECT count(*) as total FROM blog_article WHERE nav_id = ' + id;
-
-    const result = await this.app.mysql.query(sql);
-    this.ctx.body = { data: result };
   }
 
 }
