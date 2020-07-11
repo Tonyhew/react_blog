@@ -67,7 +67,10 @@ const Detailed = (props) => {
   return (
     <>
       <Head>
-        <title>Tony's Blog__{props.title}</title>
+        <meta charSet='utf-8' />
+        <title>Tony's 个人博客 | {props.title}</title>
+        <meta name="description" content={props.title}></meta>
+        <meta name="author" content="何伟义, Tonyhew"/>
       </Head>
       <Header />
       <Row className="comm-main" type="flex" justify="center">

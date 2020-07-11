@@ -2,7 +2,36 @@
     font-size: 1.3rem;
     color: #1e90ff;
     padding: 0 0.5rem;
+    position: relative;
 }
+
+.list-title img {
+    width: 4%;
+    vertical-align: middle;
+    /* position: absolute;
+    right: 0.5rem;
+    top: 5px; */
+}
+
+.list-title a {
+    vertical-align: middle;
+}
+
+.list-title .list_top {
+    margin-left: .5rem;
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .list-title img {
+        width: 6%;
+    }
+}
+@media screen and (min-width: 320px)and (max-width: 750px){
+    .list-title img {
+        width: 10%;
+    }
+}
+
 .list-context{
     color:#777;
     padding:.5rem;

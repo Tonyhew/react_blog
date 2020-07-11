@@ -19,23 +19,26 @@ const Home = (list) => {
   const [myList, setMylist] = useState(list.data)
   const renderer = new marked.Renderer();
   marked.setOptions({
-    renderer : renderer,
-    gfm : true,
-    pedantic : false,
-    sanitize : false,
-    tables : true,
-    breaks : false,
-    smartLists : true,
-    smartypants : false,
-    highlight : function(code) {
+    renderer: renderer,
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    tables: true,
+    breaks: false,
+    smartLists: true,
+    smartypants: false,
+    highlight: function (code) {
       return hljs.highlightAuto(code).value;
     }
   });
-  
+
   return (
     <div>
       <Head>
-        <title>首页</title>
+        <meta charSet='utf-8' />
+        <title>Tony's 个人博客 | 首页</title>
+        <meta httpEquiv="description" content="Tonyhew - 一个追求技术的前端" />
+        <meta name="author" content="何伟义, Tonyhew" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
@@ -50,8 +53,13 @@ const Home = (list) => {
               renderItem={item => (
                 <List.Item>
                   <div className="list-title">
-                    <Link href={{pathname: '/detailed', query: {id: item.id}}}>
-                      <a>{item.title}</a>
+                    {
+                      item.isTop == 1 ? <img src="/static/images/top.png" /> : null
+                    }
+                    <Link href={{ pathname: '/detailed', query: { id: item.id } }}>
+                      <a className={item.isTop == 1 ? "list_top" : ""}>
+                        {item.title}
+                      </a>
                     </Link>
                   </div>
                   <div className="list-icon">
@@ -59,7 +67,7 @@ const Home = (list) => {
                     <span><Icon type="folder" /> {item.typeName}</span>
                     <span><Icon type="fire" /> {item.view_count}</span>
                   </div>
-                  <div className="list-context" dangerouslySetInnerHTML={{__html: marked(item.descript)}}></div>
+                  <div className="list-context" dangerouslySetInnerHTML={{ __html: marked(item.descript) }}></div>
                 </List.Item>
               )}
             >

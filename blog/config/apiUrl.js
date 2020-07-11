@@ -8,7 +8,8 @@ let servicePath = {
     getTypeInfo: ipUrl + 'getTypeInfo', // 文章类别
     getNavList: ipUrl + 'getNavList',//菜单
     getListById: ipUrl + 'getListById/',
-    getSecondNav: ipUrl + 'getSecondNav' // 获取二级菜单的接口，根据id
+    getSecondNav: ipUrl + 'getSecondNav', // 获取二级菜单的接口，根据id
+    getCountArticleList: ipUrl + 'getCountArticleList/'
 }
 
 export default servicePath;

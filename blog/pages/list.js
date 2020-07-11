@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
-import { Row, Col, List, Icon, Breadcrumb } from 'antd'
+import { Row, Col, List, Icon, Breadcrumb, Pagination } from 'antd'
 import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
@@ -15,12 +15,18 @@ import marked from 'marked'
 const MyList = (list) => {
 
   const [myList, setMylist] = useState(list.data);
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
+  const [pageTotal, setPageTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setMylist(list.data);
     getTitle()
   })
+
+  useEffect(() => {
+    getArticleTotal()
+  }, [])
 
   const getTitle = () => {
     if (list.url.query.id.length >= 4) {
@@ -52,10 +58,26 @@ const MyList = (list) => {
       return hljs.highlightAuto(code).value;
     }
   });
+
+  const getArticleTotal = () => {
+    const id = list.url.query.id;
+    axios(servicePath.getCountArticleList + id).then(
+      (res) => {
+        setPageTotal(res.data.data[0].total);
+      }
+    )
+  }
+
+  const onShowSizeChange = (current, pageSize) => {
+    // console.log(current, pageSize)
+  }
+
   return (
     <div>
       <Head>
-        <title>{title}</title>
+        <meta charSet='utf-8' />
+        <title>Tony's 个人博客 | {title}</title>
+        <meta name="author" content="何伟义, Tonyhew" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
@@ -93,6 +115,12 @@ const MyList = (list) => {
             >
 
             </List>
+            <Pagination
+              showSizeChanger
+              onShowSizeChange={onShowSizeChange(currentPage, pageTotal)}
+              defaultCurrent={1}
+              total={pageTotal}
+            />
           </div>
 
         </Col>
