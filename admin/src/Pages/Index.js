@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import servicePath from '../config/apiUrl'
-import { Doughnut } from 'react-chartjs-2'
-import '../static/css/Index.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
+import { Doughnut } from 'react-chartjs-2';
+import '../static/css/Index.css';
 
 function Index(props) {
-	const [typeName, setTypeName] = useState([])
-	const [count, setCount] = useState([])
+	const [typeName, setTypeName] = useState([]);
+	const [count, setCount] = useState([]);
 
 	useEffect(() => {
-		getValueArticle()
-	}, [])
+		getValueArticle();
+	}, []);
 
 	const getValueArticle = () => {
 		axios({
