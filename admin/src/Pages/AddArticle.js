@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import marked from 'marked';
 import '../static/css/AddArticle.css';
-import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd'
-import axios from 'axios'
-import servicePath from '../config/apiUrl'
+import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd';
+import Editor from 'for-editor';
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -49,8 +50,8 @@ function AddArticle(props) {
 	})
 
 	const changeContent = (e) => {
-		setArticleContent(e.target.value)
-		let html = marked(e.target.value)
+		setArticleContent(e)
+		let html = marked(e)
 		setMarkdownContent(html)
 	}
 
@@ -84,9 +85,9 @@ function AddArticle(props) {
 			url: servicePath.getFirstNav,
 			withCredentials: true,
 		}).then(res => {
-			for (let i = 0; i < res.data.fistNav; i++) {
-				console.log(res.data.fistNav[i].Id)
-			}
+			// for (let i = 0; i < res.data.fistNav; i++) {
+			// 	console.log(res.data.fistNav[i].Id)
+			// }
 			setFNavInfo(res.data.firstNav)
 		})
 	}
@@ -97,7 +98,6 @@ function AddArticle(props) {
 
 	const selectFNavHandler = (value) => {
 		setSelectNav(value)
-		console.log(props)
 		axios({
 			method: 'get',
 			url: servicePath.getSecondNav + value,
@@ -109,11 +109,9 @@ function AddArticle(props) {
 
 	const selectSNavHandler = (value) => {
 		setSelectSNav(value)
-		
+
 	}
 
-	console.log(selectedNav)
-	console.log(selectedSNav)
 	const saveArticle = () => {
 		if (!selectedType) {
 			message.error('请选择文章类型')
@@ -191,7 +189,6 @@ function AddArticle(props) {
 			header: { 'Access-Control-Allow-Origin': '*' }
 		}).then(
 			res => {
-				console.log(res)
 				let aticleId = res.data.data[0]
 				setArticleTitle(aticleId.title)
 				setArticleContent(aticleId.article_content)
@@ -209,7 +206,7 @@ function AddArticle(props) {
 	}
 
 	return (
-		<div style={{ padding: 24,background: '#fff' }}>
+		<div style={{ padding: 24, background: '#fff' }}>
 			<Row gutter={5}>
 				<Col span={18}>
 					<Row gutter={10}>
@@ -263,28 +260,34 @@ function AddArticle(props) {
 
 					<br />
 					<Row gutter={10}>
-						<Col span={12}>
-							<TextArea
+						<Col span={24}>
+							{/* <TextArea
 								className="markdown-content"
 								rows={35}
 								placeholder="文章内容"
 								value={articleContent}
 								onChange={changeContent}
+							/> */}
+							<Editor
+								value={articleContent}
+								onChange={value => changeContent(value)}
+								preview
+								subfield
 							/>
 						</Col>
-						<Col span={12}>
+						{/* <Col span={12}>
 							<div
 								className="show-html"
 								dangerouslySetInnerHTML={{ __html: markdownContent }}
 							></div>
-						</Col>
+						</Col> */}
 					</Row>
 				</Col>
 				<Col span={6}>
 					<Row>
 						<Col span={24}>
 							<Button size="large">暂存文章</Button>&nbsp;
-                            <Button type="primary" size="large" onClick={saveArticle}>发布文章</Button>
+              <Button type="primary" size="large" onClick={saveArticle}>发布文章</Button>
 							<br />
 						</Col>
 
