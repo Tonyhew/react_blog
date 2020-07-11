@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { List, Row, Col, Modal, message, Button } from 'antd'
+import { List, Row, Col, Modal, message, Button, Switch } from 'antd'
 import axios from 'axios'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
@@ -7,6 +7,7 @@ const { confirm } = Modal
 
 function ArticleList(props) {
 	const [list, setList] = useState([]);
+	const [isChecked, setIsChecked] = useState(false);
 
 	useEffect(() => {
 		getList();
@@ -29,6 +30,10 @@ function ArticleList(props) {
 				}
 			}
 		)
+	}
+
+	const topArticle = (id) => {
+		
 	}
 
 	const delteArticle = (id) => {
@@ -62,14 +67,17 @@ function ArticleList(props) {
 						<Col span={8}>
 							<b>标题</b>
 						</Col>
-						<Col span={4}>
+						<Col span={2}>
 							<b>类别</b>
 						</Col>
-						<Col span={4}>
+						<Col span={2}>
 							<b>栏目</b>
 						</Col>
 						<Col span={2}>
 							<b>发布时间</b>
+						</Col>
+						<Col span={4}>
+							<b>置顶</b>
 						</Col>
 						<Col span={2}>
 							<b>浏览量</b>
@@ -87,14 +95,21 @@ function ArticleList(props) {
 							<Col span={8}>
 								{item.title}
 							</Col>
-							<Col span={4}>
+							<Col span={2}>
 								{item.typeName}
 							</Col>
-							<Col span={4}>
+							<Col span={2}>
 								{item.arcTypeName ? item.arcTypeName : item.secondTitle}
 							</Col>
 							<Col span={2}>
 								{item.addTime}
+							</Col>
+							<Col span={2}>
+								<Switch 
+									checkedChildren={isChecked}
+									onChange={e => setIsChecked(e)}
+									onClick={() => topArticle(item.id)}
+								/>
 							</Col>
 							<Col span={2}>
 								{item.view_count}
