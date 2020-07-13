@@ -32,8 +32,46 @@ function ArticleList(props) {
 		)
 	}
 
+	// @params -1: 不置顶，1: 置顶
 	const topArticle = (id) => {
-		console.log(id)
+		let dataProps = {};
+		dataProps.id = id;
+		dataProps.is_top = 1;
+		axios({
+      method: 'post',
+      url: servicePath.isDisableTopArticle,
+      data: dataProps,
+      withCredentials: true,
+      header: { 'Acess-Control-Allow-Origin': '*' }
+    }).then(
+			(res) => {
+				console.log(res)
+				if (res.data.isSuccess) {
+					message.success('置顶成功');
+					getList();
+        }
+			}
+		)
+	}
+
+	const disTopArticle = (id) => {
+		let dataProps = {};
+		dataProps.id = id;
+		dataProps.is_top = -1;
+		axios({
+      method: 'post',
+      url: servicePath.isDisableTopArticle,
+      data: dataProps,
+      withCredentials: true,
+      header: { 'Acess-Control-Allow-Origin': '*' }
+    }).then(
+			(res) => {
+				if (res.data.isSuccess) {
+					message.error('取消置顶');
+					getList();
+        }
+			}
+		)
 	}
 
 	const delteArticle = (id) => {
@@ -104,12 +142,19 @@ function ArticleList(props) {
 							<Col span={2}>
 								{item.addTime}
 							</Col>
-							<Col span={2}>
-								<Switch 
-									checkedChildren={isChecked}
-									onChange={e => setIsChecked(e)}
-									onClick={() => topArticle(item.id)}
-								/>
+							<Col span={4}>
+								{
+									item.isTop === -1 ? <Switch
+																				checkedChildren={isChecked}
+																				onChange={e => setIsChecked(e)}
+																				onClick={() => topArticle(item.id)}
+																			/> : <Switch
+																			defaultChecked
+																			checkedChildren={isChecked}
+																			onChange={e => setIsChecked(e)}
+																			onClick={() => disTopArticle(item.id)}disTopArticle
+																		/>
+								}
 							</Col>
 							<Col span={2}>
 								{item.view_count}
