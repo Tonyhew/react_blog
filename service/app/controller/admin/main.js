@@ -279,6 +279,7 @@ class MainController extends Controller {
                 'blog_article.descript as descript, ' +
                 'blog_article.view_count as view_count, ' +
                 'blog_article.nav_id as nav_id, ' +
+                'blog_article.is_top as isTop, ' +
                 "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
                 'blog_type.typeName as typeName, ' +
                 'blog_arctype.typeName as arcTypeName, ' +
@@ -303,6 +304,15 @@ class MainController extends Controller {
       data: res,
     };
 
+  }
+
+  async isDisableTopArticle() {
+    const tmpArticle = this.ctx.request.body;
+    const result = await this.app.mysql.update('blog_article', tmpArticle);
+    const updateSuccess = result.affectedRows === 1;
+    this.ctx.body = {
+      isSuccess: updateSuccess,
+    };
   }
 
   async getArticleById() {
