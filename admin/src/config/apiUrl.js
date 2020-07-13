@@ -37,10 +37,11 @@ let servicePath = {
     countSecondNav: ipUrl + 'countSecondNav/',
     addArticle: ipUrl + 'addArticle', // 添加文章
     updateArticle: ipUrl + 'updateArticle', // 修改文章
-    getArticleList: ipUrl + 'getArticleList', // 修改文章
-    deleteArticle: ipUrl + 'deleteArticle/', // 修改文章
-    getArticleById: ipUrl + 'getArticleById/', // 修改文章
-    countArticleValue: ipUrl + 'countArticleValue/', // 修改文章
+    getArticleList: ipUrl + 'getArticleList', // 获取文章列表
+    deleteArticle: ipUrl + 'deleteArticle/', // 删除文章
+    isDisableTopArticle: ipUrl + 'isDisableTopArticle', // 是否置顶文章
+    getArticleById: ipUrl + 'getArticleById/', // 根据ID获取文章
+    countArticleValue: ipUrl + 'countArticleValue/', // 统计文章数
 }
 
 export default servicePath;
