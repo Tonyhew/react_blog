@@ -39,6 +39,7 @@ module.exports = app => {
   router.post('/admin/updateArticle', adminauth, controller.admin.main.updateArticle); // 修改文章
   router.get('/admin/getArticleList', adminauth, controller.admin.main.getArticleList); // 获取文章列表
   router.get('/admin/deleteArticle/:id', adminauth, controller.admin.main.deleteArticle); // 删除文章
+  router.post('/admin/isDisableTopArticle', adminauth, controller.admin.main.isDisableTopArticle); // 是否置顶文章
   router.get('/admin/getArticleById/:id', adminauth, controller.admin.main.getArticleById); // 根据id获取文章
   router.get('/admin/countArticleValue/', adminauth, controller.admin.main.countArticleValue); // 计算文章数量
 };
