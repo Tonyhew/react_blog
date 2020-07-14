@@ -68,6 +68,10 @@
     font-size:24px;
 }
 
+.introduce-html img{
+    width: 100%;
+}
+
 .introduce-html pre{
     display: block;
     background-color: #f0f0f0;
