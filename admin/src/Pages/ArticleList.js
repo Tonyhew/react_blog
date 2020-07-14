@@ -38,18 +38,18 @@ function ArticleList(props) {
 		dataProps.id = id;
 		dataProps.is_top = 1;
 		axios({
-      method: 'post',
-      url: servicePath.isDisableTopArticle,
-      data: dataProps,
-      withCredentials: true,
-      header: { 'Acess-Control-Allow-Origin': '*' }
-    }).then(
+			method: 'post',
+			url: servicePath.isDisableTopArticle,
+			data: dataProps,
+			withCredentials: true,
+			header: { 'Acess-Control-Allow-Origin': '*' }
+		}).then(
 			(res) => {
 				console.log(res)
 				if (res.data.isSuccess) {
 					message.success('置顶成功');
 					getList();
-        }
+				}
 			}
 		)
 	}
@@ -59,17 +59,17 @@ function ArticleList(props) {
 		dataProps.id = id;
 		dataProps.is_top = -1;
 		axios({
-      method: 'post',
-      url: servicePath.isDisableTopArticle,
-      data: dataProps,
-      withCredentials: true,
-      header: { 'Acess-Control-Allow-Origin': '*' }
-    }).then(
+			method: 'post',
+			url: servicePath.isDisableTopArticle,
+			data: dataProps,
+			withCredentials: true,
+			header: { 'Acess-Control-Allow-Origin': '*' }
+		}).then(
 			(res) => {
 				if (res.data.isSuccess) {
 					message.error('取消置顶');
 					getList();
-        }
+				}
 			}
 		)
 	}
@@ -95,7 +95,6 @@ function ArticleList(props) {
 	const updataArticle = (id, checked) => {
 		props.history.push('/index/add/' + id)
 	}
-
 
 	return (
 		<div style={{ padding: 24, background: '#fff' }}>
@@ -145,15 +144,15 @@ function ArticleList(props) {
 							<Col span={4}>
 								{
 									item.isTop === -1 ? <Switch
-																				checkedChildren={isChecked}
-																				onChange={e => setIsChecked(e)}
-																				onClick={() => topArticle(item.id)}
-																			/> : <Switch
-																			defaultChecked
-																			checkedChildren={isChecked}
-																			onChange={e => setIsChecked(e)}
-																			onClick={() => disTopArticle(item.id)}disTopArticle
-																		/>
+										checkedChildren={isChecked}
+										onChange={e => setIsChecked(e)}
+										onClick={() => topArticle(item.id)}
+									/> : <Switch
+											defaultChecked
+											checkedChildren={isChecked}
+											onChange={e => setIsChecked(e)}
+											onClick={() => disTopArticle(item.id)}
+										/>
 								}
 							</Col>
 							<Col span={2}>
