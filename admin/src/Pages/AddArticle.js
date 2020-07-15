@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Editor from 'for-editor-herb';
 import marked from 'marked';
 import '../static/css/AddArticle.css';
 import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd';
-import Editor from 'for-editor';
 import axios from 'axios';
 import servicePath from '../config/apiUrl';
 
 const { Option } = Select;
 const { TextArea } = Input;
+const Hljs = require('highlight.js')
 
 function AddArticle(props) {
 
@@ -18,14 +19,14 @@ function AddArticle(props) {
 			getArticleById(tmpId)
 		}
 		getTypeInfo();
-		getAllNav()
+		getAllNav();
 	}, []);
 
+	const $vm = useRef();
 	const [articleId, setArticleId] = useState(0);  // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
 	const [articleTitle, setArticleTitle] = useState('');  //文章标题
 	const [articleContent, setArticleContent] = useState('');  //markdown的编辑内容
-	const [markdownContent, setMarkdownContent] = useState('预览内容'); //html内容
-	const [introducemd, setIntroducemd] = useState();            //简介的markdown内容
+	const [introducemd, setIntroducemd] = useState(); //简介的markdown内容
 	const [introducehtml, setIntroducehtml] = useState('等待编辑'); //简介的html内容
 	const [showDate, setShowDate] = useState();   //发布日期
 	// const [updateDate, setUpdateDate] = useState() //修改日志的日期
@@ -52,7 +53,6 @@ function AddArticle(props) {
 	const changeContent = (e) => {
 		setArticleContent(e)
 		let html = marked(e)
-		setMarkdownContent(html)
 	}
 
 	const changeDescript = (e) => {
@@ -193,7 +193,6 @@ function AddArticle(props) {
 				setArticleTitle(aticleId.title)
 				setArticleContent(aticleId.article_content)
 				let html = marked(aticleId.article_content)
-				setMarkdownContent(html)
 				setIntroducemd(aticleId.descript)
 				let tmpDes = marked(aticleId.descript)
 				setIntroducehtml(tmpDes)
@@ -201,6 +200,68 @@ function AddArticle(props) {
 				setSelectType(aticleId.typeId)
 				setSelectNav(aticleId.nav_id)
 				setSelectSNav(aticleId.nav_id)
+			}
+		)
+	}
+
+	const customLang = {
+		placeholder: '开始编辑...',
+		undo: '上一步',
+		redo: '下一步',
+		h1: '一级标题',
+		h2: '二级标题',
+		h3: '三级标题',
+		h4: '四级标题',
+		h5: '五级标题',
+		h6: '六级标题',
+		para: '段落',
+		italic: '斜体',
+		bold: '粗体',
+		bolditalic: '斜粗体',
+		delline: '删除线',
+		underline: '下划线',
+		keytext: '键盘文本',
+		superscript: '上标',
+		subscript: '下标',
+		marktag: '高亮标签',
+		table: '表格',
+		quote: '引用',
+		img: '添加图片链接',
+		link: '链接',
+		list: '列表',
+		orderlist: '有序列表',
+		disorderlist: '无序列表',
+		checklist: '勾选框列表',
+		inlinecode: '行内代码',
+		code: '代码块',
+		collapse: '折叠块',
+		katex: 'KaTeX',
+		save: '保存',
+		preview: '预览',
+		singleColumn: '单栏',
+		doubleColumn: '双栏',
+		fullscreenOn: '全屏编辑',
+		fullscreenOff: '退出全屏',
+		addImgLink: '添加图片链接',
+		addImg: '上传图片',
+		toc: '生成大纲'
+	}
+
+	const addImg = (file) => {
+		var formD = new FormData();
+		formD.append('file', file)
+		axios({
+			method: 'post',
+			url: servicePath.uploadFiles,
+			withCredentials: true,
+			data: formD,
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				'Access-Control-Allow-Origin': '*'
+			}
+		}).then(
+			res => {
+				$vm.current.$img2Url(file.name, res.data.url)
 			}
 		)
 	}
@@ -269,10 +330,15 @@ function AddArticle(props) {
 								onChange={changeContent}
 							/> */}
 							<Editor
+								ref={$vm}
+								language={customLang}
 								value={articleContent}
 								onChange={value => changeContent(value)}
+								addImg={($file) => addImg($file)}
+								webkitdirectory
 								preview
 								subfield
+								highlight={Hljs.highlightAuto}
 							/>
 						</Col>
 						{/* <Col span={12}>
