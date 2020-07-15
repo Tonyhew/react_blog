@@ -345,6 +345,17 @@ class MainController extends Controller {
     };
   }
 
+  async uploadFiles() {
+    const data = await this.ctx.service.utils.uploadFiles();
+    if (data) {
+      this.ctx.body = data;
+    } else {
+      this.ctx.body = {
+        message: '上传失败',
+      };
+    }
+  }
+
 }
 
 module.exports = MainController;
