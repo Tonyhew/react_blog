@@ -42,6 +42,7 @@ let servicePath = {
     isDisableTopArticle: ipUrl + 'isDisableTopArticle', // 是否置顶文章
     getArticleById: ipUrl + 'getArticleById/', // 根据ID获取文章
     countArticleValue: ipUrl + 'countArticleValue/', // 统计文章数
+    uploadFiles: ipUrl + 'uploadFiles', // 上传文件
 }
 
 export default servicePath;
