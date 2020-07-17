@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Row, Col, List, Breadcrumb, Pagination } from 'antd';
-import { Icon } from '@ant-design/compatible';
 import Header from '../components/Header';
 import Author from '../components/Author';
 import Advert from '../components/Advert';
@@ -11,6 +10,7 @@ import axios from 'axios';
 import servicePath from '../config/apiUrl';
 import Link from 'next/link';
 import marked from 'marked';
+import IconFont from '../config/iconfont.config';
 
 
 const MyList = (list) => {
@@ -106,9 +106,9 @@ const MyList = (list) => {
                     </Link>
                   </div>
                   <div className="list-icon">
-                    <span><Icon type="calendar" /> {item.addTime}</span>
-                    <span><Icon type="folder" /> {item.typeName}</span>
-                    <span><Icon type="fire" /> {item.view_count}</span>
+                    <span><IconFont type="iconMonthdatecalendar" /> {item.addTime}</span>
+                    <span><IconFont type="iconfolder" /> {item.typeName}</span>
+                    <span><IconFont type="iconfire" /> {item.view_count}</span>
                   </div>
                   <div className="list-context" dangerouslySetInnerHTML={{ __html: marked(item.descript) }}></div>
                 </List.Item>
