@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
-import { Row, Col, Affix, Icon, Breadcrumb } from 'antd'
+import { Row, Col, Affix, Breadcrumb } from 'antd';
+import { Icon } from '@ant-design/compatible';
 import axios from 'axios'
 import Header from '../components/Header'
 import Author from '../components/Author'
@@ -101,6 +102,8 @@ const Detailed = (props) => {
               </div>
 
             </div>
+
+            
 
           </div>
         </Col>

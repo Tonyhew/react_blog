@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
-import { Row, Col, List, Icon, Breadcrumb, Pagination } from 'antd'
+import { Row, Col, List, Breadcrumb, Pagination } from 'antd';
+import { Icon } from '@ant-design/compatible';
 import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
@@ -120,6 +121,7 @@ const MyList = (list) => {
               onShowSizeChange={onShowSizeChange(currentPage, pageTotal)}
               defaultCurrent={1}
               total={pageTotal}
+              hideOnSinglePage
             />
           </div>
 

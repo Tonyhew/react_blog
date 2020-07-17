@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../static/style/components/header.css'
-import { Row, Col, Menu, Icon, Dropdown } from 'antd'
+import { Row, Col, Menu, Dropdown } from 'antd';
+import { Icon } from '@ant-design/compatible';
 import Router from 'next/router'
 import Link from 'next/link'
 import axios from 'axios'
