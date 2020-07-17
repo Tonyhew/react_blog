@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import '../static/style/components/header.css'
 import { Row, Col, Menu, Dropdown } from 'antd';
 import { Icon } from '@ant-design/compatible';
-import Router from 'next/router'
-import Link from 'next/link'
-import axios from 'axios'
-import servicePath from '../config/apiUrl'
+import Router from 'next/router';
+import Link from 'next/link';
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
 
 const { SubMenu } = Menu
 const Header = () => {
