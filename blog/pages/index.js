@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import Head from 'next/head'
-import Router from 'next/router'
-import Link from 'next/link'
-import { Row, Col, List, } from 'antd'
+import React, { useState } from 'react';
+import Head from 'next/head';
+import Router from 'next/router';
+import Link from 'next/link';
+import { Row, Col, List, } from 'antd';
 import { Icon } from '@ant-design/compatible';
-import axios from 'axios'
-import Header from '../components/Header'
-import '../static/style/pages/index.css'
-import Author from '../components/Author'
-import Advert from '../components/Advert'
-import Footer from '../components/Footer'
-import servicePath from '../config/apiUrl'
-import marked from 'marked'
-import hljs from "highlight.js"
-import 'highlight.js/styles/monokai-sublime.css'
+import axios from 'axios';
+import Header from '../components/Header';
+import '../static/style/pages/index.css';
+import Author from '../components/Author';
+import Advert from '../components/Advert';
+import Footer from '../components/Footer';
+import servicePath from '../config/apiUrl';
+import marked from 'marked';
+import hljs from "highlight.js";
+import 'highlight.js/styles/monokai-sublime.css';
 
 const Home = (list) => {
 
