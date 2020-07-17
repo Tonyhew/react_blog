@@ -1,3 +1,4 @@
+import { GithubOutlined, QqOutlined, WechatOutlined } from '@ant-design/icons';
 import { Avatar, Divider, Tooltip } from 'antd'
 import '../static/style/components/author.css'
 
@@ -12,18 +13,18 @@ const Author = () => {
                 <Divider>社交账号</Divider>
                 <Tooltip title="https://github.com/Tonyhew">
                     <a href="https://github.com/Tonyhew" target="_blank" >
-                        <Avatar size={28} icon="github" className="account" />
+                        <Avatar size={28} icon={<GithubOutlined />} className="account" />
                     </a>
                 </Tooltip>
                 <Tooltip title="QQ: 916390127">
-                    <Avatar size={28} icon="qq" className="account" />
+                    <Avatar size={28} icon={<QqOutlined />} className="account" />
                 </Tooltip>
                 <Tooltip title="WeChat: Tonyheweiyi">
-                    <Avatar size={28} icon="wechat" className="account" />
+                    <Avatar size={28} icon={<WechatOutlined />} className="account" />
                 </Tooltip>
             </div>
         </div>
-    )
+    );
 }
 
 export default Author
