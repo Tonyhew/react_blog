@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import Head from 'next/head'
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import { Row, Col, Affix, Breadcrumb } from 'antd';
 import { Icon } from '@ant-design/compatible';
-import axios from 'axios'
-import Header from '../components/Header'
-import Author from '../components/Author'
-import Footer from '../components/Footer'
-import '../static/style/pages/detailed.css'
-import MarkNav from 'markdown-navbar'
-import 'markdown-navbar/dist/navbar.css'
-import marked from 'marked'
-import hljs from "highlight.js"
-import 'highlight.js/styles/monokai-sublime.css'
-import Tocify from '../components/tocify.tsx'
-import servicePath from '../config/apiUrl'
+import axios from 'axios';
+import Header from '../components/Header';
+import Author from '../components/Author';
+import Footer from '../components/Footer';
+import '../static/style/pages/detailed.css';
+import MarkNav from 'markdown-navbar';
+import 'markdown-navbar/dist/navbar.css';
+import marked from 'marked';
+import hljs from "highlight.js";
+import 'highlight.js/styles/monokai-sublime.css';
+import Tocify from '../components/tocify.tsx';
+import servicePath from '../config/apiUrl';
 
 
 const Detailed = (props) => {
