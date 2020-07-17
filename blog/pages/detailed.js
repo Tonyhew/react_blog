@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Row, Col, Affix, Breadcrumb } from 'antd';
-import { Icon } from '@ant-design/compatible';
 import axios from 'axios';
 import Header from '../components/Header';
 import Author from '../components/Author';
@@ -14,6 +13,7 @@ import hljs from "highlight.js";
 import 'highlight.js/styles/monokai-sublime.css';
 import Tocify from '../components/tocify.tsx';
 import servicePath from '../config/apiUrl';
+import IconFont from '../config/iconfont.config';
 
 
 const Detailed = (props) => {
@@ -50,7 +50,7 @@ const Detailed = (props) => {
   let html = marked(props.content)
 
   const getTitle = () => {
-    if (props.nav_id.length >= 4) {
+    if (props.nav_id >= 1000) {
       axios(servicePath.getListSecondTitle + props.nav_id).then(
         (res) => {
           setTitle(res.data.data[0].title)
@@ -71,7 +71,7 @@ const Detailed = (props) => {
         <meta charSet='utf-8' />
         <title>Tony's 个人博客 | {props.title}</title>
         <meta name="description" content={props.title}></meta>
-        <meta name="author" content="何伟义, Tonyhew"/>
+        <meta name="author" content="何伟义, Tonyhew" />
       </Head>
       <Header />
       <Row className="comm-main" type="flex" justify="center">
@@ -91,9 +91,9 @@ const Detailed = (props) => {
               </div>
 
               <div className="list-icon center">
-                <span><Icon type="calendar" /> {props.addTime}</span>
-                <span><Icon type="folder" /> {props.typeName}</span>
-                <span><Icon type="fire" /> {props.view_count}</span>
+                <span><IconFont type="iconMonthdatecalendar" /> {props.addTime}</span>
+                <span><IconFont type="iconfolder" /> {props.typeName}</span>
+                <span><IconFont type="iconfire" /> {props.view_count}</span>
               </div>
 
               <div className="detailed-content"
@@ -103,7 +103,7 @@ const Detailed = (props) => {
 
             </div>
 
-            
+
 
           </div>
         </Col>
