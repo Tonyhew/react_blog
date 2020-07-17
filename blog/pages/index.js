@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Row, Col, List, } from 'antd';
-import { Icon } from '@ant-design/compatible';
 import axios from 'axios';
 import Header from '../components/Header';
 import '../static/style/pages/index.css';
@@ -11,9 +10,11 @@ import Author from '../components/Author';
 import Advert from '../components/Advert';
 import Footer from '../components/Footer';
 import servicePath from '../config/apiUrl';
+import IconFont from '../config/iconfont.config';
 import marked from 'marked';
 import hljs from "highlight.js";
 import 'highlight.js/styles/monokai-sublime.css';
+
 
 const Home = (list) => {
 
@@ -64,9 +65,9 @@ const Home = (list) => {
                     </Link>
                   </div>
                   <div className="list-icon">
-                    <span><Icon type="calendar" /> {item.addTime}</span>
-                    <span><Icon type="folder" /> {item.typeName}</span>
-                    <span><Icon type="fire" /> {item.view_count}</span>
+                    <span><IconFont type="iconMonthdatecalendar" /> {item.addTime}</span>
+                    <span><IconFont type="iconfolder" /> {item.typeName}</span>
+                    <span><IconFont type="iconfire" /> {item.view_count}</span>
                   </div>
                   <div className="list-context" dangerouslySetInnerHTML={{ __html: marked(item.descript) }}></div>
                 </List.Item>
