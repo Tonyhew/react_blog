@@ -2,11 +2,22 @@
 
 const Controller = require('egg').Controller;
 
-
+/**
+* @controller 后台接口文档(要执行后面的操作必须先要有openid)
+*/
 class MainController extends Controller {
   async index() {
     this.ctx.body = 'hi api';
   }
+
+  /**
+  * @summary 后台登录验证(是否存在用户)
+  * @description 后台登录验证(是否存在用户)
+  * @router post /admin/checkLogin/{$userName}/{$password}
+  * @request query string userName
+  * @request query string password
+  * @response 200 JsonBody 返回结果。
+  */
 
   async checkLogin() {
     const userName = this.ctx.request.body.userName;
@@ -26,6 +37,15 @@ class MainController extends Controller {
     }
   }
 
+  /**
+  * @summary 后台登录验证(验证账号密码是否正确)
+  * @description 后台登录验证(验证账号密码是否正确)
+  * @router post /admin/checkUser/{$userName}/{$password}
+  * @request query string userName
+  * @request query string password
+  * @response 200 JsonBody 返回结果。
+  */
+
   async checkUser() {
     const userName = this.ctx.request.body.userName;
     const password = this.ctx.request.body.password;
@@ -43,6 +63,13 @@ class MainController extends Controller {
     }
   }
 
+  /**
+  * @summary 获取用户信息
+  * @description 获取用户信息
+  * @router get /admin/getUserInfo
+  * @response 200 JsonBody 返回结果。
+  */
+
   async getUserInfo() {
     const sql = 'SELECT admin_user.id AS id, ' +
                 'admin_user.userName AS userName, ' +
@@ -56,6 +83,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 是否禁用用户
+  * @description 是否禁用用户
+  * @router post /admin/isDisableUser
+  * @response 200 JsonBody 返回结果。
+  */
+
   async isDisableUser() {
     const tmpArticle = this.ctx.request.body;
     const result = await this.app.mysql.update('admin_user', tmpArticle);
@@ -64,6 +98,13 @@ class MainController extends Controller {
       isSuccess: updateSuccess,
     };
   }
+
+  /**
+  * @summary 添加新用户
+  * @description 添加新用户
+  * @router post /admin/addNewUser
+  * @response 200 JsonBody 返回结果。
+  */
 
   async addNewUser() {
     const tmpFirstNav = this.ctx.request.body;
@@ -77,6 +118,14 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 删除新用户
+  * @description 删除新用户
+  * @router get /admin/deleteUser/{$id}
+  * @request query int id
+  * @response 200 JsonBody 返回结果。
+  */
+
   async deleteUser() {
     const id = this.ctx.params.id;
     // eslint-disable-next-line quote-props
@@ -86,6 +135,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 获取一级导航列表
+  * @description 获取一级导航列表
+  * @router get /admin/getNavList
+  * @response 200 JsonBody 返回结果。
+  */
+
   async getNavList() {
     const resType = await this.app.mysql.select('blog_arctype');
     this.ctx.body = {
@@ -93,12 +149,27 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 获取一级导航列表
+  * @description 获取一级导航列表
+  * @router get /admin/getFirstNav
+  * @response 200 JsonBody 返回结果。
+  */
+
   async getFirstNav() {
     const result = await this.app.mysql.select('blog_arctype');
     this.ctx.body = {
       firstNav: result,
     };
   }
+
+  /**
+  * @summary 根据一级导航ID获取二级导航列表
+  * @description 根据一级导航ID获取二级导航列表
+  * @router get /admin/getSecondNav/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
 
   async getSecondNav() {
     const id = this.ctx.params.id;
@@ -112,6 +183,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 添加一级导航栏目
+  * @description 添加一级导航栏目
+  * @router post /admin/addFirstNav
+  * @response 200 JsonBody 返回结果。
+  */
+
   async addFirstNav() {
     const tmpFirstNav = this.ctx.request.body;
     const result = await this.app.mysql.insert('blog_arctype', tmpFirstNav);
@@ -123,6 +201,14 @@ class MainController extends Controller {
       insertId,
     };
   }
+
+  /**
+  * @summary 根据ID获取一级导航信息
+  * @description 根据ID获取一级导航信息
+  * @router get /admin/getFirstNavInfo/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
 
   async getFirstNavInfo() {
     const id = this.ctx.params.id;
@@ -136,6 +222,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 更新(修改)一级导航栏目
+  * @description 更新(修改)一级导航栏目
+  * @router post /admin/updateFirstNav
+  * @response 200 JsonBody 返回结果。
+  */
+
   async updateFirstNav() {
     const tmpArticle = this.ctx.request.body;
     const result = await this.app.mysql.update('blog_arctype', tmpArticle);
@@ -145,6 +238,14 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 删除一级导航栏目
+  * @description 删除一级导航栏目
+  * @router get /admin/deleteFirstNav/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
+
   async deleteFirstNav() {
     const id = this.ctx.params.id;
     // eslint-disable-next-line quote-props
@@ -153,6 +254,14 @@ class MainController extends Controller {
       data: res,
     };
   }
+
+  /**
+  * @summary 根据一级导航ID获取二级导航列表
+  * @description 根据一级导航ID获取二级导航列表
+  * @router get /admin/getSecondNavById/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
 
   async getSecondNavById() {
     const id = this.ctx.params.id;
@@ -167,6 +276,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 添加二级导航列表
+  * @description 添加二级导航列表
+  * @router post /admin/addSecondNav
+  * @response 200 JsonBody 返回结果。
+  */
+
   async addSecondNav() {
     const tmpFirstNav = this.ctx.request.body;
     const result = await this.app.mysql.insert('blog_secondNav', tmpFirstNav);
@@ -179,6 +295,14 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 删除二级栏目
+  * @description 删除二级栏目
+  * @router get /admin/deleteSecondNav/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
+
   async deleteSecondNav() {
     const id = this.ctx.params.id;
     // eslint-disable-next-line quote-props
@@ -190,6 +314,14 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 统计二级栏目
+  * @description 统计二级栏目
+  * @router get /admin/countSecondNav/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
+
   async countSecondNav() {
     const id = this.ctx.params.id;
     const sql = 'SELECT COUNT(*) as c FROM blog_secondNav WHERE blog_secondNav.arctype_parent_id =' + id;
@@ -200,6 +332,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 编辑一级栏目导航状态
+  * @description 编辑一级栏目导航状态
+  * @router post /admin/editFirstNavStatus
+  * @response 200 JsonBody 返回结果。
+  */
+
   async editFirstNavStatus() {
     const tmpArticle = this.ctx.request.body;
     const result = await this.app.mysql.update('blog_arctype', tmpArticle);
@@ -209,12 +348,26 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 获取文章类别信息
+  * @description 获取文章类别信息
+  * @router get /admin/getTypeInfo
+  * @response 200 JsonBody 返回结果。
+  */
+
   async getTypeInfo() {
     const resType = await this.app.mysql.select('blog_type');
     this.ctx.body = {
       type: resType,
     };
   }
+
+  /**
+  * @summary 添加文章类别信息
+  * @description 添加文章类别信息
+  * @router post /admin/addNewTag
+  * @response 200 JsonBody 返回结果。
+  */
 
   async addNewTag() {
     const tmpTagType = this.ctx.request.body;
@@ -227,6 +380,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 更新(修改)文章类别信息
+  * @description 更新(修改)文章类别信息
+  * @router post /admin/updateTag
+  * @response 200 JsonBody 返回结果。
+  */
+
   async updateTag() {
 
     const tmpArticle = this.ctx.request.body;
@@ -238,6 +398,14 @@ class MainController extends Controller {
 
   }
 
+  /**
+  * @summary 删除文章类别信息
+  * @description 删除文章类别信息
+  * @router get /admin/deleteTag/{$id}
+  * @request query int ID
+  * @response 200 JsonBody 返回结果。
+  */
+
   async deleteTag() {
     const id = this.ctx.params.id;
     // eslint-disable-next-line quote-props
@@ -246,6 +414,13 @@ class MainController extends Controller {
       data: res,
     };
   }
+
+  /**
+  * @summary 添加文章
+  * @description 添加文章
+  * @router post /admin/addArticle
+  * @response 200 JsonBody 返回结果。
+  */
 
   async addArticle() {
 
@@ -262,6 +437,13 @@ class MainController extends Controller {
 
   }
 
+  /**
+  * @summary 修改文章
+  * @description 修改文章
+  * @router post /admin/updateArticle
+  * @response 200 JsonBody 返回结果。
+  */
+
   async updateArticle() {
 
     const tmpArticle = this.ctx.request.body;
@@ -272,6 +454,13 @@ class MainController extends Controller {
     };
 
   }
+
+  /**
+  * @summary 获取文章列表
+  * @description 获取文章列表
+  * @router get /admin/getArticleList
+  * @response 200 JsonBody 返回结果。
+  */
 
   async getArticleList() {
     const sql = 'SELECT blog_article.id as id, ' +
@@ -295,6 +484,14 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 删除文章
+  * @description 删除文章
+  * @router get /admin/deleteArticle/{$id}
+  * @request quert int ID
+  * @response 200 JsonBody 返回结果。
+  */
+
   async deleteArticle() {
 
     const id = this.ctx.params.id;
@@ -306,6 +503,13 @@ class MainController extends Controller {
 
   }
 
+  /**
+  * @summary 是否置顶文章
+  * @description 是否置顶文章
+  * @router post /admin/isDisableTopArticle
+  * @response 200 JsonBody 返回结果。
+  */
+
   async isDisableTopArticle() {
     const tmpArticle = this.ctx.request.body;
     const result = await this.app.mysql.update('blog_article', tmpArticle);
@@ -314,6 +518,14 @@ class MainController extends Controller {
       isSuccess: updateSuccess,
     };
   }
+
+  /**
+  * @summary 根据ID获取文章
+  * @description 根据ID获取文章
+  * @router get /admin/getArticleById/{$id}
+  * @request quert int ID
+  * @response 200 JsonBody 返回结果。
+  */
 
   async getArticleById() {
     const id = this.ctx.params.id;
@@ -335,6 +547,13 @@ class MainController extends Controller {
     };
   }
 
+  /**
+  * @summary 统计文章数量
+  * @description 统计文章数量
+  * @router get /admin/countArticleValue
+  * @response 200 JsonBody 返回结果。
+  */
+
   async countArticleValue() {
     const sql = 'SELECT typeName, ' +
       '(SELECT COUNT(*) FROM blog_article AS a WHERE a.type_id = t.ID) AS Count ' +
@@ -344,6 +563,13 @@ class MainController extends Controller {
       countArt: result,
     };
   }
+
+  /**
+  * @summary 上传文件
+  * @description 上传文件
+  * @router post /admin/uploadFiles
+  * @response 200 JsonBody 返回结果。
+  */
 
   async uploadFiles() {
     const data = await this.ctx.service.utils.uploadFiles();
