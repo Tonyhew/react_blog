@@ -11,12 +11,38 @@ class MainController extends Controller {
   }
 
   /**
-  * @summary 后台登录验证(是否存在用户)
-  * @description 后台登录验证(是否存在用户)
-  * @router post /admin/checkLogin/{$userName}/{$password}
+  * @summary 后台登录验证(验证账号密码是否正确)
+  * @description 后台登录验证(验证账号密码是否正确)
+  * @router post /admin/checkUser/{$userName}{$password}
   * @request query string userName
   * @request query string password
-  * @response 200 JsonBody 返回结果。
+  * @response 200 JsonBody 成功：进入checkLogin方法操作; 失败：返回账号或密码失败;。
+  */
+
+  async checkUser() {
+    const userName = this.ctx.request.body.userName;
+    const password = this.ctx.request.body.password;
+
+    const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
+    const result = await this.app.mysql.query(sql);
+    if (result.length > 0) {
+      this.ctx.body = {
+        isSuccess: true,
+      };
+    } else {
+      this.ctx.body = {
+        data: '账号或密码填写错误',
+      };
+    }
+  }
+
+  /**
+  * @summary 后台登录验证(验证用户权限、状态等)
+  * @description 后台登录验证(验证用户权限、状态等)，点击登录按钮如果有此用户跳转至后台首页，
+  * @router post /admin/checkLogin/{$userName}{$password}
+  * @request query string userName
+  * @request query string password
+  * @response 200 JsonBody 成功：返回openId及登录成功信息; 失败：返回登录失败;。
   */
 
   async checkLogin() {
@@ -34,32 +60,6 @@ class MainController extends Controller {
     } else {
       // eslint-disable-next-line quote-props
       this.ctx.body = { 'data': '登录失败' };
-    }
-  }
-
-  /**
-  * @summary 后台登录验证(验证账号密码是否正确)
-  * @description 后台登录验证(验证账号密码是否正确)
-  * @router post /admin/checkUser/{$userName}/{$password}
-  * @request query string userName
-  * @request query string password
-  * @response 200 JsonBody 返回结果。
-  */
-
-  async checkUser() {
-    const userName = this.ctx.request.body.userName;
-    const password = this.ctx.request.body.password;
-
-    const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
-    const result = await this.app.mysql.query(sql);
-    if (result.length > 0) {
-      this.ctx.body = {
-        isSuccess: true,
-      };
-    } else {
-      this.ctx.body = {
-        data: '账号或密码填写错误',
-      };
     }
   }
 
@@ -87,7 +87,7 @@ class MainController extends Controller {
   * @summary 是否禁用用户
   * @description 是否禁用用户
   * @router post /admin/isDisableUser
-  * @response 200 JsonBody 返回结果。
+  * @response 200 JsonBody 返回结果: isSuccess。
   */
 
   async isDisableUser() {
@@ -103,7 +103,7 @@ class MainController extends Controller {
   * @summary 添加新用户
   * @description 添加新用户
   * @router post /admin/addNewUser
-  * @response 200 JsonBody 返回结果。
+  * @response 200 JsonBody 返回结果：isSuccess，insertId。
   */
 
   async addNewUser() {
