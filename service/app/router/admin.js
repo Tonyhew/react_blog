@@ -42,5 +42,5 @@ module.exports = app => {
   router.post('/admin/isDisableTopArticle', adminauth, controller.admin.main.isDisableTopArticle); // 是否置顶文章
   router.get('/admin/getArticleById/:id', adminauth, controller.admin.main.getArticleById); // 根据id获取文章
   router.get('/admin/countArticleValue/', adminauth, controller.admin.main.countArticleValue); // 计算文章数量
-  router.post('/admin/uploadFiles/', controller.admin.main.uploadFiles); // 上传图片
+  router.post('/admin/uploadFiles/', adminauth, controller.admin.main.uploadFiles); // 上传图片
 };
