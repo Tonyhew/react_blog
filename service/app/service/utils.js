@@ -6,10 +6,10 @@ const qiniu = require('qiniu');
 const awaitWriteStream = require('await-stream-ready').write;
 const sendToWormhole = require('stream-wormhole');
 const md5 = require('md5');
-const bucket = ''; // 要上传的空间名
-const imageUrl = ''; // 空间绑定的域名
-const accessKey = ''; // Access Key
-const secretKey = ''; // Secret Key
+const bucket = 'imgwebsite'; // 要上传的空间名
+const imageUrl = 'http://img.tonyhew.com/'; // 空间绑定的域名
+const accessKey = 'T51EcOk7PQZ7-hJefbj3_gNvVLPs1C8I4aNUDA8r'; // Access Key
+const secretKey = 'ZYzcOiXv-xZ6f152jkbZ-_vEisNjGxRiQZst7rNM'; // Secret Key
 const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 const options = {
   scope: bucket,
@@ -18,13 +18,13 @@ const putPolicy = new qiniu.rs.PutPolicy(options);
 
 const config = new qiniu.conf.Config();
 config.zone = qiniu.zone.Zone_z0;
-
 class utilsService extends Service {
   async uploadFiles() {
     const uploadToken = putPolicy.uploadToken(mac);
     const { ctx } = this;
     const stream = await ctx.getFileStream();
-    const filename = md5(stream.filename) + path.extname(stream.filename).toLocaleLowerCase();
+    const filename =
+      md5(stream.filename) + path.extname(stream.filename).toLocaleLowerCase();
     const localFilePath = path.join(__dirname, '../public/uploads', filename);
     const writeStream = fs.createWriteStream(localFilePath);
     try {
@@ -57,7 +57,7 @@ class utilsService extends Service {
         return {
           url: imgSrc,
         };
-      // eslint-disable-next-line no-else-return
+        // eslint-disable-next-line no-else-return
       } else {
         return false;
       }
