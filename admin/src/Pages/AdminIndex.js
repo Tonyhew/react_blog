@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import '../static/css/AdminIndex.css';
@@ -18,8 +18,26 @@ function AdminIndex(props) {
 	const [collapsed, setCollapsed] = useState(false);
 
 	useEffect(() => {
-		localStorage.getItem("roleId");
-	}, []);
+		navRoleId()
+	}, [localStorage.roleId])
+
+	/**
+	 * 
+	 * 如果localStorage里的权限为最高管理权限，则渲染函数中的导航
+	 * @returns 返回一个jsx元素 or Boolean
+	 */
+	const navRoleId = () => {
+		if (localStorage.roleId == 10) {
+			return (
+				<Menu theme="dark">
+					<Menu.Item key="navManage" onClick={handleClickNav} ><Icon type="unordered-list" /><span>添加栏目</span></Menu.Item>
+					<Menu.Item key="userManage" onClick={handleClickUser} ><Icon type="user" /><span>用户管理</span></Menu.Item>
+				</Menu>
+			)
+		} else {
+			return false
+		}
+	}
 
 	const breadcrumbNameMap = {
 		'/index': '首页',
@@ -99,10 +117,7 @@ function AdminIndex(props) {
 						<span>工作台</span>
 					</Menu.Item>
 					{
-						localStorage.roleId == 10 ? <Menu.Item key="navManage" onClick={handleClickNav} ><Icon type="unordered-list" /><span>添加栏目</span></Menu.Item> : null
-					}
-					{
-						localStorage.roleId == 10 ? <Menu.Item key="userManage" onClick={handleClickUser} ><Icon type="user" /><span>用户管理</span></Menu.Item> : null
+						navRoleId()
 					}
 					<Menu.Item
 						key="typeManage"
