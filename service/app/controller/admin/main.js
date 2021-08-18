@@ -49,7 +49,11 @@ class MainController extends Controller {
     const userName = this.ctx.request.body.userName;
     const password = this.ctx.request.body.password;
     // const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
-    const sql = "SELECT * FROM admin_role WHERE id = (SELECT role_id FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "' AND user_status = -1) AND role_status = -1";
+    const sql = "SELECT * FROM admin_role WHERE id = (SELECT role_id FROM admin_user WHERE userName = '" +
+      userName +
+      "' AND password = '" +
+      password +
+      "' AND user_status = -1) AND role_status = -1";
     const res = await this.app.mysql.query(sql);
     if (res.length > 0) {
       const openId = new Date().getTime();
@@ -72,11 +76,11 @@ class MainController extends Controller {
 
   async getUserInfo() {
     const sql = 'SELECT admin_user.id AS id, ' +
-                'admin_user.userName AS userName, ' +
-                'admin_user.role_id AS role_id, ' +
-                'admin_role.role_name AS roleName, ' +
-                'admin_user.user_status AS user_status ' +
-                'FROM admin_user LEFT JOIN admin_role ON admin_user.role_id = admin_role.id';
+      'admin_user.userName AS userName, ' +
+      'admin_user.role_id AS role_id, ' +
+      'admin_role.role_name AS roleName, ' +
+      'admin_user.user_status AS user_status ' +
+      'FROM admin_user LEFT JOIN admin_role ON admin_user.role_id = admin_role.id';
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       userInfo: result,
@@ -174,9 +178,9 @@ class MainController extends Controller {
   async getSecondNav() {
     const id = this.ctx.params.id;
     const sql = 'SELECT blog_secondNav.Id as id, ' +
-              'blog_secondNav.title as title ' +
-              'FROM blog_secondNav ' +
-              'WHERE blog_secondNav.arctype_parent_id = ' + id;
+      'blog_secondNav.title as title ' +
+      'FROM blog_secondNav ' +
+      'WHERE blog_secondNav.arctype_parent_id = ' + id;
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       secondNav: result,
@@ -213,9 +217,9 @@ class MainController extends Controller {
   async getFirstNavInfo() {
     const id = this.ctx.params.id;
     const sql = 'SELECT blog_arctype.Id as id, ' +
-                'blog_arctype.typeName as typeName, ' +
-                'blog_arctype.icon as icon ' +
-                'FROM blog_arctype WHERE blog_arctype.id = ' + id;
+      'blog_arctype.typeName as typeName, ' +
+      'blog_arctype.icon as icon ' +
+      'FROM blog_arctype WHERE blog_arctype.id = ' + id;
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       fnavinfo: result,
@@ -266,10 +270,10 @@ class MainController extends Controller {
   async getSecondNavById() {
     const id = this.ctx.params.id;
     const sql = 'SELECT blog_secondNav.id as id, ' +
-                'blog_secondNav.title as title, ' +
-                'blog_secondNav.add_time as add_time ' +
-                'FROM blog_secondNav LEFT JOIN blog_arctype ON blog_secondNav.arctype_parent_id = blog_arctype.id ' +
-                'WHERE blog_secondNav.arctype_parent_id =' + id;
+      'blog_secondNav.title as title, ' +
+      'blog_secondNav.add_time as add_time ' +
+      'FROM blog_secondNav LEFT JOIN blog_arctype ON blog_secondNav.arctype_parent_id = blog_arctype.id ' +
+      'WHERE blog_secondNav.arctype_parent_id =' + id;
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
       secondnav: result,
@@ -464,19 +468,19 @@ class MainController extends Controller {
 
   async getArticleList() {
     const sql = 'SELECT blog_article.id as id, ' +
-                'blog_article.title as title, ' +
-                'blog_article.descript as descript, ' +
-                'blog_article.view_count as view_count, ' +
-                'blog_article.nav_id as nav_id, ' +
-                'blog_article.is_top as isTop, ' +
-                "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
-                'blog_type.typeName as typeName, ' +
-                'blog_arctype.typeName as arcTypeName, ' +
-                'blog_secondNav.title as secondTitle ' +
-                'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'LEFT JOIN blog_arctype ON blog_article.nav_id = blog_arctype.Id ' +
-                'LEFT JOIN blog_secondNav ON blog_article.nav_id = blog_secondNav.Id ' +
-                'ORDER BY blog_article.id DESC';
+      'blog_article.title as title, ' +
+      'blog_article.descript as descript, ' +
+      'blog_article.view_count as view_count, ' +
+      'blog_article.nav_id as nav_id, ' +
+      'blog_article.is_top as isTop, ' +
+      "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
+      'blog_type.typeName as typeName, ' +
+      'blog_arctype.typeName as arcTypeName, ' +
+      'blog_secondNav.title as secondTitle ' +
+      'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
+      'LEFT JOIN blog_arctype ON blog_article.nav_id = blog_arctype.Id ' +
+      'LEFT JOIN blog_secondNav ON blog_article.nav_id = blog_secondNav.Id ' +
+      'ORDER BY blog_article.id DESC';
 
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
