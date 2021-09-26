@@ -11,7 +11,8 @@ function ArticleList(props) {
 
 	useEffect(() => {
 		getList();
-	}, [])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [list])
 
 	const getList = () => {
 		axios({
@@ -45,7 +46,6 @@ function ArticleList(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				console.log(res)
 				if (res.data.isSuccess) {
 					message.success('置顶成功');
 					getList();

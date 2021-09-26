@@ -15,6 +15,7 @@ let ipUrl = 'https://api.tonyhew.com/admin/'
 let servicePath = {
     checkLogin: ipUrl + 'checkLogin', // 检查登录态
     checkUser: ipUrl + 'checkUser', // 检查是否有该用户
+    addUserCheck: ipUrl + 'addUserCheck', // 检测用户是否存在，不存在可以新增用户
     getUserInfo: ipUrl + 'getUserInfo', // 获取用户信息
     isDisableUser: ipUrl + 'isDisableUser', // 是否禁用用户
     addNewUser: ipUrl + 'addNewUser', // 添加用户

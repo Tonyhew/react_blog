@@ -34,7 +34,7 @@ function ArticleType(props) {
 
 	useEffect(() => {
 		getType()
-	}, [])
+	}, [type])
 
 	const addTag = () => {
 		setVisiable(true)
