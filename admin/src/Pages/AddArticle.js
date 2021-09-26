@@ -3,6 +3,7 @@ import Editor from 'for-editor-herb';
 import marked from 'marked';
 import '../static/css/AddArticle.css';
 import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd';
+import customLang from '../config/EditorConfig'
 import axios from 'axios';
 import servicePath from '../config/apiUrl';
 
@@ -52,7 +53,6 @@ function AddArticle(props) {
 
 	const changeContent = (e) => {
 		setArticleContent(e)
-		let html = marked(e)
 	}
 
 	const changeDescript = (e) => {
@@ -157,9 +157,9 @@ function AddArticle(props) {
 				(res) => {
 					setArticleId(res.data.insertId)
 					if (res.data.isSuccess) {
-						message.success('文章保存成功')
+						message.success('文章发布成功')
 					} else {
-						message.error('文章保存失败')
+						message.error('文章发布失败')
 					}
 				}
 			)
@@ -192,7 +192,6 @@ function AddArticle(props) {
 				let aticleId = res.data.data[0]
 				setArticleTitle(aticleId.title)
 				setArticleContent(aticleId.article_content)
-				let html = marked(aticleId.article_content)
 				setIntroducemd(aticleId.descript)
 				let tmpDes = marked(aticleId.descript)
 				setIntroducehtml(tmpDes)
@@ -202,49 +201,6 @@ function AddArticle(props) {
 				setSelectSNav(aticleId.nav_id)
 			}
 		)
-	}
-
-	const customLang = {
-		placeholder: '开始编辑...',
-		undo: '上一步',
-		redo: '下一步',
-		h1: '一级标题',
-		h2: '二级标题',
-		h3: '三级标题',
-		h4: '四级标题',
-		h5: '五级标题',
-		h6: '六级标题',
-		para: '段落',
-		italic: '斜体',
-		bold: '粗体',
-		bolditalic: '斜粗体',
-		delline: '删除线',
-		underline: '下划线',
-		keytext: '键盘文本',
-		superscript: '上标',
-		subscript: '下标',
-		marktag: '高亮标签',
-		table: '表格',
-		quote: '引用',
-		img: '添加图片链接',
-		link: '链接',
-		list: '列表',
-		orderlist: '有序列表',
-		disorderlist: '无序列表',
-		checklist: '勾选框列表',
-		inlinecode: '行内代码',
-		code: '代码块',
-		collapse: '折叠块',
-		katex: 'KaTeX',
-		save: '保存',
-		preview: '预览',
-		singleColumn: '单栏',
-		doubleColumn: '双栏',
-		fullscreenOn: '全屏编辑',
-		fullscreenOff: '退出全屏',
-		addImgLink: '添加图片链接',
-		addImg: '上传图片',
-		toc: '生成大纲'
 	}
 
 	const addImg = (file) => {
@@ -264,6 +220,11 @@ function AddArticle(props) {
 				$vm.current.$img2Url(file.name, res.data.url)
 			}
 		)
+	}
+
+	const getWordToEditor = (file) => {
+		const fileReader = new FileReader()
+		console.log(fileReader)
 	}
 
 	return (
@@ -352,6 +313,8 @@ function AddArticle(props) {
 				<Col span={6}>
 					<Row>
 						<Col span={24}>
+							<Input type="file" style={{ display: 'none' }}></Input>
+							<Button type="default" size="large" onClick={getWordToEditor}>导入文章</Button>&nbsp;
 							<Button size="large">暂存文章</Button>&nbsp;
               <Button type="primary" size="large" onClick={saveArticle}>发布文章</Button>
 							<br />
