@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import '../static/css/AdminIndex.css';
 import Index from './Index';
 import AddArticle from './AddArticle';
@@ -8,6 +8,7 @@ import ArticleList from './ArticleList';
 import ArticleType from './ArticleType';
 import NavManage from './NavManage';
 import UserManage from './UserManage';
+import useBreadcrumb from '../hooks/useBreadcrumb';
 // import servicePath from '../config/apiUrl';
 
 const { Content, Footer, Sider } = Layout;
@@ -16,22 +17,31 @@ const { SubMenu } = Menu;
 function AdminIndex(props) {
 
 	const [collapsed, setCollapsed] = useState(false);
+	const [roleId] = useState(localStorage.roleId)
 
 	useEffect(() => {
 		navRoleId()
-	}, [localStorage.roleId])
+	})
 
 	/**
 	 * 
-	 * 如果localStorage里的权限为最高管理权限，则渲染函数中的导航
+	 * 如果localStorage里的roleId为最高管理权限，则渲染函数中的导航
 	 * @returns 返回一个jsx元素 or Boolean
 	 */
 	const navRoleId = () => {
-		if (localStorage.roleId == 10) {
+		if (roleId === '10') {
 			return (
 				<Menu theme="dark">
 					<Menu.Item key="navManage" onClick={handleClickNav} ><Icon type="unordered-list" /><span>添加栏目</span></Menu.Item>
 					<Menu.Item key="userManage" onClick={handleClickUser} ><Icon type="user" /><span>用户管理</span></Menu.Item>
+					<Menu.Item
+						key="typeManage"
+						onClick={handleClickType}
+					>
+						<Icon type="tags" />
+						<span>标签管理</span>
+					</Menu.Item>
+
 				</Menu>
 			)
 		} else {
@@ -39,31 +49,7 @@ function AdminIndex(props) {
 		}
 	}
 
-	const breadcrumbNameMap = {
-		'/index': '首页',
-		'/index/add': '添加文章',
-		'/index/list': '文章列表',
-		'/index/type': '标签管理',
-		'/index/navManage': '栏目管理',
-		'/index/userManage': '用户管理',
-	}
 
-	const { location } = props
-	const pathSnippets = location.pathname.split('/').filter(i => i);
-	const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-		const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-		return (
-			<Breadcrumb.Item key={url}>
-				<Link to={url}>{breadcrumbNameMap[url]}</Link>
-			</Breadcrumb.Item>
-		);
-	});
-
-	const breadcrumbItems = [
-		<Breadcrumb.Item key="home">
-			{/* <Link to="/index">Home</Link> */}
-		</Breadcrumb.Item>,
-	].concat(extraBreadcrumbItems);
 	const setCurrentTitle = (title) => {
 		document.title = title
 	}
@@ -73,6 +59,7 @@ function AdminIndex(props) {
 	};
 
 	const handleClickArticle = e => {
+		console.log(e, '111')
 		if (e.key === 'addArticle') {
 			props.history.push('/index/add')
 		} else {
@@ -119,26 +106,23 @@ function AdminIndex(props) {
 					{
 						navRoleId()
 					}
-					<Menu.Item
-						key="typeManage"
-						onClick={handleClickType}
-					>
-						<Icon type="tags" />
-						<span>标签管理</span>
-					</Menu.Item>
-					<SubMenu
-						key="sub1"
-						onClick={handleClickArticle}
-						title={
-							<span>
-								<Icon type="desktop" />
-								<span>文章管理</span>
-							</span>
-						}
-					>
-						<Menu.Item key="addArticle">添加文章</Menu.Item>
-						<Menu.Item key="articleList">文章列表</Menu.Item>
-					</SubMenu>
+
+					{
+						roleId === '10' ? <SubMenu
+							key="sub1"
+							onClick={handleClickArticle}
+							title={
+								<span>
+									<Icon type="desktop" />
+									<span>文章管理</span>
+								</span>
+							}
+						>
+							<Menu.Item key="addArticle">添加文章</Menu.Item>
+							<Menu.Item key="articleList">文章列表</Menu.Item>
+						</SubMenu> : null
+					}
+
 					<Menu.Item key="9">
 						<Icon type="file" />
 						<span>留言管理</span>
@@ -148,7 +132,7 @@ function AdminIndex(props) {
 			<Layout>
 				<Content style={{ margin: '0 16px' }}>
 					<Breadcrumb style={{ margin: '16px 0' }}>
-						{breadcrumbItems}
+						{useBreadcrumb(props)}
 					</Breadcrumb>
 					<div style={{ minHeight: 360 }}>
 						<div>
