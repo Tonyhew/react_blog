@@ -11,9 +11,14 @@
 
 module.exports = app => {
   const { router, controller } = app;
+  /**
+   *
+   * 登录权限
+   */
   const adminauth = app.middleware.adminauth();
   router.get('/admin/index', adminauth, controller.admin.main.index);
   router.post('/admin/checkLogin', controller.admin.main.checkLogin); // 检查登录态
+  router.post('/admin/addUserCheck', adminauth, controller.admin.main.addUserCheck); // 检测用户是否存在
   router.post('/admin/checkUser', controller.admin.main.checkUser); // 检测用户名密码
   router.get('/admin/getUserInfo', adminauth, controller.admin.main.getUserInfo); // 获取用户列表
   router.post('/admin/isDisableUser', adminauth, controller.admin.main.isDisableUser); // 禁用用户
