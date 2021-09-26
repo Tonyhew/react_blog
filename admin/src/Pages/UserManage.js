@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import marked from 'marked';
+import React, { useState, useEffect, useRef } from 'react';
 import '../static/css/AddArticle.css';
 import { Row, Col, List, Input, Button, message, Switch, Drawer, Modal } from 'antd';
 import axios from 'axios';
@@ -16,9 +15,13 @@ function UserManage(props) {
   const [userName, setUserName] = useState('请输入你要新建的用户名');
   const [password, setPassword] = useState('请输入你的密码');
   const [repeatPassword, setRepeatPassword] = useState('请再次输入你的密码');
+  const userNameInput = useRef();
+  const passwordInput = useRef();
+  const repeatPasswordInput = useRef();
 
   useEffect(() => {
     getUserInfoList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getUserInfoList = () => {
@@ -29,7 +32,6 @@ function UserManage(props) {
       header: { 'Acess-Control-Allow-Origin': '*' }
     }).then(
       (res) => {
-        console.log(res.data.userInfo)
         if (res.data.data === '没有登录') {
           localStorage.removeItem('openId');
           localStorage.removeItem('roleId');
@@ -90,24 +92,51 @@ function UserManage(props) {
   }
 
   const submitUser = () => {
+    console.log(passwordInput.current, repeatPasswordInput.current)
     if (password === repeatPassword) {
       let dataProps = {};
       dataProps.userName = userName;
       dataProps.password = MD5(password + 'fndjvrfewewq9eu!');
       dataProps.role_id = 6;
       dataProps.user_status = -1;
+
+      let checkUserProps = {
+        userName: userName,
+      }
       axios({
         method: 'post',
-        url: servicePath.addNewUser,
-        data: dataProps,
+        url: servicePath.addUserCheck,
+        data: checkUserProps,
         withCredentials: true,
         header: { 'Acess-Control-Allow-Origin': '*' }
       }).then(
-        (res) => {
-          console.log(res);
-          getUserInfoList();
+        res => {
+          if (userName !== res.data.userName && res.data.isAddNewUser) {
+            axios({
+              method: 'post',
+              url: servicePath.addNewUser,
+              data: dataProps,
+              withCredentials: true,
+              header: { 'Acess-Control-Allow-Origin': '*' }
+            }).then(
+              (res) => {
+                if (res.data.isSuccess) {
+                  userNameInput.current.state.value = '';
+                  userNameInput.current.input.placeholder = '';
+                  passwordInput.current.input.value = '';
+                  passwordInput.current.input.placeholder = '';
+                  repeatPasswordInput.current.input.value = '';
+                  repeatPasswordInput.current.input.placeholder = '';
+                  getUserInfoList();
+                }
+              }
+            )
+          } else {
+            message.error(res.data.message)
+          }
         }
       )
+
     } else {
       message.error('两次密码不一致')
     }
@@ -176,12 +205,14 @@ function UserManage(props) {
                 {
                   item.role_id === 10 ?
                     <Switch checkedChildren={isChecked} defaultChecked disabled /> :
-                    item.user_status == -1 ? <Switch
-                      checkedChildren={isChecked}
-                      defaultChecked
-                      onChange={e => setIsChecked(e)}
-                      onClick={() => disableUser(item.id)}
-                    /> : <Switch
+                    item.user_status === -1 ?
+                      <Switch
+                        checkedChildren={isChecked}
+                        defaultChecked
+                        onChange={e => setIsChecked(e)}
+                        onClick={() => disableUser(item.id)}
+                      /> :
+                      <Switch
                         onChange={e => setIsChecked(e)}
                         onClick={() => activeUser(item.id)}
                       />
@@ -204,13 +235,13 @@ function UserManage(props) {
       >
         <Row>
           <Col span={24}>
-            <Input className="input" size="large" placeholder={userName} onChange={(e) => setUserName(e.target.value)} />
+            <Input ref={userNameInput} className="input" size="large" placeholder={userName} onChange={(e) => setUserName(e.target.value)} />
           </Col>
           <Col span={24}>
-            <Input.Password className="input" size="large" placeholder={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input.Password ref={passwordInput} className="input" size="large" placeholder={password} onChange={(e) => setPassword(e.target.value)} />
           </Col>
           <Col span={24}>
-            <Input.Password className="input" size="large" placeholder={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
+            <Input.Password ref={repeatPasswordInput} className="input" size="large" placeholder={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
           </Col>
         </Row>
 
