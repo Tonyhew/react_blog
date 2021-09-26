@@ -25,13 +25,40 @@ class MainController extends Controller {
 
     const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
     const result = await this.app.mysql.query(sql);
+
     if (result.length > 0) {
       this.ctx.body = {
+        userName: result[0].userName,
         isSuccess: true,
       };
     } else {
       this.ctx.body = {
         data: '账号或密码填写错误',
+      };
+    }
+  }
+
+  /**
+  * @summary 添加新用户检测是否有同名账号(验证账号是否存在)
+  * @description 检测用户是否存在，不存在可以新增用户
+  * @router post /admin/addUserCheck/{$userName}
+  * @request query string userName
+  * @response 200 JsonBody 成功：进入addNewUser方法操作; 失败：返回账号已存在;。
+  */
+
+  async addUserCheck() {
+    const userName = this.ctx.request.body.userName;
+    const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "'";
+    const result = await this.app.mysql.query(sql);
+
+    if (result.length > 0) {
+      this.ctx.body = {
+        userName: result[0].userName,
+        message: '已有此用户',
+      };
+    } else {
+      this.ctx.body = {
+        isAddNewUser: true,
       };
     }
   }
