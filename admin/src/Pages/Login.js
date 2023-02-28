@@ -54,6 +54,7 @@ function Login(props) {
 								if (res.data.loginStatus[0].role_status) {
 									setIsLoading(false)
 									if (res.data.data === '登录成功') {
+										
 										localStorage.setItem('openId', res.data.openId);
 										localStorage.setItem("roleId", res.data.loginStatus[0].Id);
 										props.history.push('/index')

@@ -49,6 +49,7 @@ function NavManage(props) {
       header: { 'Acess-Control-Allow-Origin': '*' }
     }).then(
       (res) => {
+        console.log(res)
         if (res.data.data === '没有登录') {
           localStorage.removeItem('openId');
           localStorage.removeItem('roleId');
