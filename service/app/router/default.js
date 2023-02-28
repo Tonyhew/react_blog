@@ -3,6 +3,7 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/default/index', controller.default.home.index);
+  router.get('/default/getSiteInfo', controller.default.home.getSiteInfo); // 获取网站基本信息（标题、描述、关键词等）
   router.get('/default/getListTitle/:id', controller.default.home.getListTitle); // 获取列表标题
   router.get('/default/getListSecondTitle/:id', controller.default.home.getListSecondTitle); // 获取二级栏目标题
   router.get('/default/getArticleList', controller.default.home.getArticleList);

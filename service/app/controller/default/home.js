@@ -10,6 +10,21 @@ class HomeController extends Controller {
   }
 
   /**
+  * @summary 获取网站 keywords。
+  * @description 获取网站 keywords。
+  * @router get /default/getSiteInfo
+  * @request query integer Id 需要去查新的ID。
+  * @response 200 JsonBody 返回结果。
+  */
+
+  async getSiteInfo() {
+    const results = await this.app.mysql.select('blog_siteInfo');
+    this.ctx.body = {
+      siteInfo: results,
+    };
+  }
+
+  /**
   * @summary 根据ID获取列表标题。
   * @description 根据ID获取列表标题。
   * @router get /default/getListTitle/{$id}
@@ -19,8 +34,8 @@ class HomeController extends Controller {
 
   async getListTitle() {
     const id = this.ctx.params.id;
-    const sql = 'SELECT blog_arctype.typeName ' +
-                'FROM blog_arctype WHERE blog_arctype.id = ' + id;
+    const sql = `SELECT blog_arctype.typeName FROM blog_arctype WHERE blog_arctype.id = ${id}`;
+
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
   }
@@ -35,8 +50,7 @@ class HomeController extends Controller {
 
   async getListSecondTitle() {
     const id = this.ctx.params.id;
-    const sql = 'SELECT blog_secondNav.title ' +
-                'FROM blog_secondNav WHERE blog_secondNav.id = ' + id;
+    const sql = `SELECT blog_secondNav.title FROM blog_secondNav WHERE blog_secondNav.id = ${id}`;
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
   }
@@ -49,16 +63,16 @@ class HomeController extends Controller {
   */
 
   async getArticleList() {
-    const sql = 'SELECT blog_article.id as id,' +
-                'blog_article.title as title,' +
-                'blog_article.descript as descript,' +
-                "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
-                'blog_article.view_count as view_count,' +
-                'blog_article.is_top as isTop, ' +
-                'blog_type.typeName as typeName ' +
-                'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'ORDER BY blog_article.is_top DESC, blog_article.addTime DESC';
-
+    const sql = `SELECT blog_article.id as id, 
+                blog_article.title as title, 
+                blog_article.descript as descript, 
+                blog_article.article_img as articleImg, 
+                FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime, 
+                blog_article.view_count as view_count, 
+                blog_article.is_top as isTop, 
+                blog_type.typeName as typeName FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id 
+                ORDER BY blog_article.is_top DESC, blog_article.addTime DESC
+              `;
     const results = await this.app.mysql.query(sql);
     this.ctx.body = { data: results };
   }
@@ -75,23 +89,22 @@ class HomeController extends Controller {
     const id = this.ctx.params.id;
 
     if (id) {
-      const sql1 = 'UPDATE blog_article SET view_count = (view_Count + 1) WHERE id = ' + id;
+      const sql1 = ` UPDATE blog_article SET view_count = (view_Count + 1) WHERE id = ${id}`;
 
       const updateResult = await this.app.mysql.query(sql1);
       const updateSuccess = updateResult.affectedRows === 1;
 
       if (updateSuccess) {
-        const sql2 = 'SELECT blog_article.id as id,' +
-                'blog_article.title as title,' +
-                'blog_article.descript as descript,' +
-                'blog_article.article_content as content,' +
-                "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
-                'blog_article.view_count as view_count,' +
-                'blog_article.nav_id as nav_id, ' +
-                'blog_type.typeName as typeName,' +
-                'blog_type.id as typeId ' +
-                'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-                'WHERE blog_article.id =' + id;
+        const sql2 = `SELECT blog_article.id as id, blog_article.title as title, blog_article.descript as descript, 
+          blog_article.keywords as keywords, blog_article.article_img as articleImg, 
+          blog_article.article_content as content, 
+          FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime,
+          blog_article.view_count as view_count,
+          blog_article.nav_id as nav_id, 
+          blog_type.typeName as typeName,
+          blog_type.id as typeId FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id 
+          WHERE blog_article.id = ${id}
+        `;
         const result = await this.app.mysql.query(sql2);
         this.ctx.body = {
           data: result,
@@ -125,7 +138,9 @@ class HomeController extends Controller {
   */
 
   async getNavList() {
-    const result = await this.app.mysql.select('blog_arctype');
+    const result = await this.app.mysql.select('blog_arctype', {
+      orders: [[ 'orderNum' ]], // 排序方式
+    });
     this.ctx.body = { data: result };
   }
 
@@ -160,6 +175,7 @@ class HomeController extends Controller {
     const sql = 'SELECT blog_article.id as id,' +
                 'blog_article.title as title,' +
                 'blog_article.descript as descript,' +
+                'blog_article.article_img as articleImg, ' +
                 "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +
                 'blog_article.view_count as view_count,' +
                 'blog_type.typeName as typeName ' +

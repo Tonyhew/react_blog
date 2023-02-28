@@ -7,7 +7,7 @@ const awaitWriteStream = require('await-stream-ready').write;
 const sendToWormhole = require('stream-wormhole');
 const md5 = require('md5');
 const bucket = 'imgwebsite'; // 要上传的空间名
-const imageUrl = 'http://img.tonyhew.com'; // 空间绑定的域名
+const imageUrl = 'https://img.tonyhew.com'; // 空间绑定的域名
 const accessKey = 'T51EcOk7PQZ7-hJefbj3_gNvVLPs1C8I4aNUDA8r'; // Access Key
 const secretKey = 'ZYzcOiXv-xZ6f152jkbZ-_vEisNjGxRiQZst7rNM'; // Secret Key
 const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
@@ -57,9 +57,6 @@ class utilsService extends Service {
         return {
           url: imgSrc,
         };
-      // eslint-disable-next-line no-else-return
-      } else {
-        return false;
       }
     } catch (err) {
       // 如果出现错误，关闭管道

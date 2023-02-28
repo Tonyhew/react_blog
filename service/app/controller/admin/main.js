@@ -6,8 +6,46 @@ const Controller = require('egg').Controller;
 * @controller 后台接口文档(要执行后面的操作必须先要有openid)
 */
 class MainController extends Controller {
+
   async index() {
     this.ctx.body = 'hi api';
+  }
+
+  /**
+  * @summary 公司公众号落地页新增顾客信息
+  * @description 公司公众号落地页新增顾客信息
+  * @router post /admin/addCustomers/{$customer_name}{$customer_mobile}{$customer_address}
+  * @request query string customer_name
+  * @request query string customer_mobile
+  * @request query string customer_address
+  * @response 200 JsonBody 成功：数据库新增一条数据; 失败：无返回;。
+  */
+
+  async addCustomers() {
+    const tmpCustomers = this.ctx.request.body;
+    console.log(tmpCustomers);
+    const result = await this.app.mysql.insert('blog_customers', tmpCustomers);
+    const insertSuccess = result.affectedRows === 1;
+    const insertId = result.insertId;
+
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      insertId,
+    };
+  }
+
+  /**
+  * @summary 公司公众号落地页获取顾客信息
+  * @description 公司公众号落地页获取顾客信息
+  * @router post /admin/addCustomers/
+  * @response 200 JsonBody 成功：获取该数据表中的所有数据; 失败：无返回;。
+  */
+
+  async getCustomers() {
+    const resultList = await this.app.mysql.select('blog_customers');
+    this.ctx.body = {
+      result: resultList,
+    };
   }
 
   /**
@@ -73,9 +111,8 @@ class MainController extends Controller {
   */
 
   async checkLogin() {
-    const userName = this.ctx.request.body.userName;
-    const password = this.ctx.request.body.password;
-    // const sql = "SELECT userName FROM admin_user WHERE userName = '" + userName + "' AND password = '" + password + "'";
+    const ctx = this.ctx;
+    const { userName, password } = ctx.request.body;
     const sql = "SELECT * FROM admin_role WHERE id = (SELECT role_id FROM admin_user WHERE userName = '" +
       userName +
       "' AND password = '" +
@@ -85,12 +122,12 @@ class MainController extends Controller {
     if (res.length > 0) {
       const openId = new Date().getTime();
       // eslint-disable-next-line quote-props
-      this.ctx.session.openId = { 'openId': openId };
+      ctx.session.openId = { 'openId': openId };
       // eslint-disable-next-line quote-props
-      this.ctx.body = { 'data': '登录成功', 'openId': openId, loginStatus: res };
+      ctx.body = { 'data': '登录成功', 'openId': openId, loginStatus: res };
     } else {
       // eslint-disable-next-line quote-props
-      this.ctx.body = { 'data': '登录失败' };
+      ctx.body = { 'data': '登录失败' };
     }
   }
 
@@ -497,6 +534,8 @@ class MainController extends Controller {
     const sql = 'SELECT blog_article.id as id, ' +
       'blog_article.title as title, ' +
       'blog_article.descript as descript, ' +
+      'blog_article.keywords as keywords, ' +
+      'blog_article.article_img as articleImg, ' +
       'blog_article.view_count as view_count, ' +
       'blog_article.nav_id as nav_id, ' +
       'blog_article.is_top as isTop, ' +
@@ -563,6 +602,8 @@ class MainController extends Controller {
     const sql = 'SELECT blog_article.id as id, ' +
       'blog_article.title as title, ' +
       'blog_article.descript as descript, ' +
+      'blog_article.keywords as keywords, ' +
+      'blog_article.article_img as articleImg, ' +
       'blog_article.article_content as article_content, ' +
       'blog_article.view_count as view_count, ' +
       "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
