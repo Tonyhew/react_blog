@@ -4,9 +4,10 @@ import { Row, Col, Affix, Breadcrumb } from 'antd';
 import axios from 'axios';
 import Header from '../components/Header';
 import Author from '../components/Author';
+import Advert from '../components/Advert';
 import Footer from '../components/Footer';
 import '../static/style/pages/detailed.css';
-import MarkNav from 'markdown-navbar';
+// import MarkNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
 import marked from 'marked';
 import hljs from "highlight.js";
@@ -67,13 +68,7 @@ const Detailed = (props) => {
 
   return (
     <>
-      <Head>
-        <meta charSet='utf-8' />
-        <title>Tony's 个人博客 | {props.title}</title>
-        <meta name="description" content={props.title}></meta>
-        <meta name="author" content="何伟义, Tonyhew" />
-      </Head>
-      <Header />
+      <Header title={props.title} desc={props.descript} keywords={props.keywords} />
       <Row className="comm-main" type="flex" justify="center">
         <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}  >
           <div>
@@ -118,6 +113,7 @@ const Detailed = (props) => {
               </div>
             </div>
           </Affix>
+          <Advert />
         </Col>
       </Row>
       <Footer />
