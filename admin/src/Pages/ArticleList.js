@@ -77,10 +77,10 @@ function ArticleList(props) {
 	const delteArticle = (id) => {
 		confirm({
 			title: '你确定要删除这篇博客吗？',
-			content: '如果你点击OK按钮，文章将会永远被删除，无法恢复',
+			content: '如果你点击OK按钮, 文章将会永远被删除, 无法恢复',
 			onOk() {
 				axios(servicePath.deleteArticle + id, { withCredentials: true }).then(
-					res => {
+					() => {
 						message.success('文章删除成功')
 						getList()
 					}
@@ -92,7 +92,7 @@ function ArticleList(props) {
 		})
 	}
 
-	const updataArticle = (id, checked) => {
+	const updataArticle = (id) => {
 		props.history.push('/index/add/' + id)
 	}
 

@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd'
+import React, { useState } from 'react'
+import { Layout, Menu, Breadcrumb } from 'antd'
+import {
+  FileOutlined,
+  DesktopOutlined,
+  PieChartOutlined,
+  UnorderedListOutlined,
+  UserAddOutlined,
+  TagsOutlined,
+} from '@ant-design/icons'
 import { Route } from 'react-router-dom'
-import '../static/css/AdminIndex.css'
 import Index from './Index'
 import AddArticle from './AddArticle'
 import ArticleList from './ArticleList'
@@ -9,55 +16,49 @@ import ArticleType from './ArticleType'
 import NavManage from './NavManage'
 import UserManage from './UserManage'
 import useBreadcrumb from '../hooks/useBreadcrumb'
-// import servicePath from '../config/apiUrl';
+import { getItem } from '../hooks/useMenuItem'
+import '../static/css/AdminIndex.css'
 
 const { Content, Footer, Sider } = Layout
-const { SubMenu } = Menu
 
-function AdminIndex(props) {
+const AdminIndex = (props) => {
   const [collapsed, setCollapsed] = useState(false)
   const [roleId] = useState(localStorage.roleId)
 
-  useEffect(() => {
-    navRoleId()
-  })
+  const MenuRender = [
+    getItem('工作台', 'Index', <PieChartOutlined />),
+    roleId === '10' ? getItem('添加栏目', 'navManage', <UnorderedListOutlined />) : null,
+    roleId === '10' ? getItem('用户管理', 'userManage', <UserAddOutlined />) : null,
+    roleId === '10' ? getItem('标签管理', 'typeManage', <TagsOutlined />) : null,
+    roleId === '10'
+      ? getItem('文章管理', 'sub1', <DesktopOutlined />, [
+          getItem('添加文章', 'addArticle'),
+          getItem('文章列表', 'articleList'),
+        ])
+      : null,
+    getItem('留言管理', '9', <FileOutlined />),
+  ]
 
-  /**
-   *
-   * 如果localStorage里的roleId为最高管理权限，则渲染函数中的导航
-   * @returns 返回一个jsx元素 or Boolean
-   */
-  const navRoleId = useCallback(() => {
-    if (roleId === '10') {
-      return (
-        <Menu theme='dark'>
-          <Menu.Item
-            key='navManage'
-            onClick={handleClickNav}
-          >
-            <Icon type='unordered-list' />
-            <span>添加栏目</span>
-          </Menu.Item>
-          <Menu.Item
-            key='userManage'
-            onClick={handleClickUser}
-          >
-            <Icon type='user' />
-            <span>用户管理</span>
-          </Menu.Item>
-          <Menu.Item
-            key='typeManage'
-            onClick={handleClickType}
-          >
-            <Icon type='tags' />
-            <span>标签管理</span>
-          </Menu.Item>
-        </Menu>
-      )
+  const menuItemFunc = (e) => {
+    if (e.key === 'addArticle') {
+      props.history.push('/index/add')
     } else {
-      return false
+      props.history.push('/index/list')
     }
-  })
+    switch (e.key) {
+      case 'Index':
+        return props.history.push('/index/')
+      case 'navManage':
+        return props.history.push('/index/navManage')
+      case 'userManage':
+        return props.history.push('/index/userManage')
+      case 'typeManage':
+        return props.history.push('/index/type')
+      case '9':
+        return props.history.push('/index/')
+      default:
+    }
+  }
 
   const setCurrentTitle = (title) => {
     document.title = title
@@ -65,39 +66,6 @@ function AdminIndex(props) {
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed)
-  }
-
-  const handleClickArticle = (e) => {
-    console.log(e, '111')
-    if (e.key === 'addArticle') {
-      props.history.push('/index/add')
-    } else {
-      props.history.push('/index/list')
-    }
-  }
-
-  const handleClickIndex = (e) => {
-    if (e.key === 'Index') {
-      props.history.push('/index/')
-    }
-  }
-
-  const handleClickNav = (e) => {
-    if (e.key === 'navManage') {
-      props.history.push('/index/navManage')
-    }
-  }
-
-  const handleClickUser = (e) => {
-    if (e.key === 'userManage') {
-      props.history.push('/index/userManage')
-    }
-  }
-
-  const handleClickType = (e) => {
-    if (e.key === 'typeManage') {
-      props.history.push('/index/type')
-    }
   }
 
   return (
@@ -110,39 +78,10 @@ function AdminIndex(props) {
         <div className='logo'>后台管理系统</div>
         <Menu
           theme='dark'
-          defaultSelectedKeys={['1']}
+          items={MenuRender}
+          onClick={(e) => menuItemFunc(e)}
           mode='inline'
-        >
-          <Menu.Item
-            key='Index'
-            onClick={handleClickIndex}
-          >
-            <Icon type='pie-chart' />
-            <span>工作台</span>
-          </Menu.Item>
-          {navRoleId()}
-
-          {roleId === '10' ? (
-            <SubMenu
-              key='sub1'
-              onClick={handleClickArticle}
-              title={
-                <span>
-                  <Icon type='desktop' />
-                  <span>文章管理</span>
-                </span>
-              }
-            >
-              <Menu.Item key='addArticle'>添加文章</Menu.Item>
-              <Menu.Item key='articleList'>文章列表</Menu.Item>
-            </SubMenu>
-          ) : null}
-
-          <Menu.Item key='9'>
-            <Icon type='file' />
-            <span>留言管理</span>
-          </Menu.Item>
-        </Menu>
+        />
       </Sider>
       <Layout>
         <Content style={{ margin: '0 16px' }}>

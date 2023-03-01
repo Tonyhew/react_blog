@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Login from '../Pages/Login';
 import AdminIndex from '../Pages/AdminIndex';
 
-
 function Main() {
 	return (
 		<Router>

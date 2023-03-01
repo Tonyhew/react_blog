@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Card, Input, Icon, Spin, message } from 'antd';
-import 'antd/dist/antd.css';
+import { Button, Card, Input, Spin, message } from 'antd';
+import { UserOutlined, KeyOutlined } from '@ant-design/icons';
+import 'antd/dist/reset.css';
 import '../static/css/Login.css';
 import servicePath from '../config/apiUrl';
 import axios from 'axios';
@@ -86,13 +87,13 @@ function Login(props) {
 	return (
 		<div className="Login-div">
 
-			<Spin tip="Loading..." spinning={isLoading}>
+			<Spin tip='Loading...' spinning={isLoading}>
 				<Card title="后台管理系统" bordered={true} style={{ width: 400 }}>
 					<Input
 						id="userName"
 						size="large"
 						placeholder="请输入你的用户名"
-						prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+						prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
 						onChange={(e) => { setUserName(e.target.value) }}
 					/>
 					<br /><br />
@@ -100,7 +101,7 @@ function Login(props) {
 						id="password"
 						size="large"
 						placeholder="请输入你的密码"
-						prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />}
+						prefix={<KeyOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
 						onChange={(e) => { setPassword(e.target.value) }}
 					/>
 					<br /><br />
