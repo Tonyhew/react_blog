@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { List, Row, Col, Modal, message, Input, Button, Drawer } from 'antd'
-import axios from 'axios'
+import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
 const { confirm } = Modal
@@ -13,7 +13,7 @@ function ArticleType(props) {
   const [tagIcon, setTagIcon] = useState('标签图标')
   const [visiable, setVisiable] = useState(false)
 
-  const getType = () => {
+  const getType = useCallback(() => {
     axios({
       method: 'get',
       url: servicePath.getTypeInfo,
@@ -28,12 +28,11 @@ function ArticleType(props) {
         setType(res.data.type)
       }
     })
-  }
+  }, [props.history])
 
-  useEffect(() => {
+	useEffect(() => {
     getType()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type])
+  }, [getType])
 
   const addTag = () => {
     setVisiable(true)
@@ -42,7 +41,19 @@ function ArticleType(props) {
 
   const updateTags = (id, checked) => {
     setTypeId(id)
-		
+		axios({
+			method: 'get',
+      url: servicePath.getTypeInfoById + id,
+      withCredentials: true,
+      header: { 'Acess-Control-Allow-Origin': '*' },
+		}).then(
+			res => {
+				let type = res.data.typeInfo[0]
+				setTagTitle(type.typeName)
+				setOrderNum(type.orderNum)
+				setTagIcon(type.icon)
+			}
+		)
     setVisiable(true)
   }
 

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Editor from 'for-editor-herb'
 import marked from 'marked'
 import '../static/css/AddArticle.css'
 import { Row, Col, Input, Select, Button, DatePicker, message, Upload } from 'antd'
-import { UploadOutlined } from '@ant-design/icons'
 import customLang from '../config/EditorConfig'
-import axios from 'axios'
+import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
+import { iconToElement } from '../hooks/useUploadFile'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -25,6 +25,12 @@ function AddArticle(props) {
   }, [])
 
   const $vm = useRef()
+
+  const [iconLoading, setIconLoading] = useState(false)
+  const [fileList, setFileList] = useState([]);
+  const [articleImgUrl, setArticleImgUrl] = useState('')
+  const [articleImgBase64, setArticleImgBase64] = useState('') // 图片 base64
+
   const [articleId, setArticleId] = useState(0) // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
   const [articleKeywords, setArticleKeywords] = useState('') // 文章关键词
   const [articleTitle, setArticleTitle] = useState('') //文章标题
@@ -37,8 +43,8 @@ function AddArticle(props) {
   const [fnavInfo, setFNavInfo] = useState([]) // 文章一级栏目信息
   const [snavInfo, setSNavInfo] = useState([]) // 文章二级栏目信息
   const [selectedType, setSelectType] = useState('文章类型') //选择的文章类别
-  const [selectedNav, setSelectNav] = useState('文章一级栏目') //选择的文章类别
-  const [selectedSNav, setSelectSNav] = useState('文章二级栏目') //选择的文章类别
+  const [selectedNav, setSelectNav] = useState() // 一级栏目Id
+  const [selectedSNav, setSelectSNav] = useState() //二级栏目Id
 
   const renderer = new marked.Renderer()
 
@@ -104,11 +110,70 @@ function AddArticle(props) {
     })
   }
 
+  const getSNav = useCallback(async () => {
+    if (selectedNav !== undefined && selectedNav !== 0) {
+      await axios({
+        method: 'get',
+        url: servicePath.getSecondNav + selectedNav,
+        withCredentials: true,
+      }).then((res) => {
+        setSNavInfo(res.data.secondNav)
+      })
+    }
+  }, [selectedNav])
+
+  useEffect(() => {
+    getSNav()
+  }, [getSNav])
+
   const selectSNavHandler = (value) => {
     setSelectSNav(value)
   }
 
-  const articleImgProps = {}
+  const uploadButton = (
+    <div style={{ width: '100%' }}>
+      <Button
+        icon={iconLoading ? iconToElement('LoadingOutlined') : iconToElement('PlusOutlined')}
+        title={'上传图标'}
+        children={'上传图标'}
+      />
+    </div>
+  )
+
+  const handlePictureChange = (info) => {
+    setIconLoading(true)
+    console.log(info)
+    const formData = new FormData();
+    fileList.forEach(file => formData.append('file', file))
+    console.log(formData)
+    axios({
+      method: 'post',
+      url: servicePath.uploadFiles,
+      withCredentials: true,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      },
+    }).then(
+      res => {
+        console.log(res)
+        setArticleImgUrl(res.data.url)
+      }
+    )
+  }
+
+  const articleImgProps = {
+    // action: servicePath.uploadFiles,
+    listType: 'picture',
+    maxCount: 1,
+    showUploadList: false,
+    onChange: handlePictureChange,
+    beforeUpload: (file) => {
+      setFileList([...fileList, file])
+      return false;
+    },
+  }
 
   const saveArticle = () => {
     if (!selectedType) {
@@ -136,6 +201,8 @@ function AddArticle(props) {
     dataProps.title = articleTitle
     dataProps.article_content = articleContent
     dataProps.descript = introducemd
+    dataProps.keywords = articleKeywords
+    dataProps.article_img = articleImgUrl
     // let dateText = showDate.replace('-', '/')
     dataProps.addTime = new Date(showDate).getTime() / 1000
     // dataProps.fNav = fnavInfo
@@ -144,6 +211,8 @@ function AddArticle(props) {
     } else {
       dataProps.nav_id = selectedSNav
     }
+
+    console.log(dataProps)
     if (articleId === 0) {
       dataProps.view_count = 0
       axios({
@@ -181,34 +250,43 @@ function AddArticle(props) {
       withCredentials: true,
       header: { 'Access-Control-Allow-Origin': '*' },
     }).then((res) => {
-      let aticleId = res.data.data[0]
-      setArticleTitle(aticleId.title)
-      setArticleContent(aticleId.article_content)
-      setIntroducemd(aticleId.descript)
-      let tmpDes = marked(aticleId.descript)
+      let articleDetail = res.data.data[0]
+      setSelectNav(parseInt(articleDetail.aId))
+      setSelectSNav(articleDetail.nav_id)
+      setArticleImgUrl(articleDetail.articleImg)
+      setArticleKeywords(articleDetail.keywords)
+      setArticleTitle(articleDetail.title)
+      setArticleContent(articleDetail.article_content)
+      setIntroducemd(articleDetail.descript)
+      let tmpDes = marked(articleDetail.descript)
       setIntroducehtml(tmpDes)
-      setShowDate(aticleId.addTime)
-      setSelectType(aticleId.typeId)
-      setSelectNav(aticleId.nav_id)
-      setSelectSNav(aticleId.nav_id)
+      setShowDate(articleDetail.addTime)
+      setSelectType(articleDetail.typeId)
     })
   }
 
   const addImg = (file) => {
-    var formD = new FormData()
-    formD.append('file', file)
+    let formData = new FormData()
+    formData.append('file', file)
+    console.log(formData)
     axios({
+      auth: localStorage.getItem('openId'),
       method: 'post',
       url: servicePath.uploadFiles,
       withCredentials: true,
-      data: formD,
+      data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*',
       },
     }).then((res) => {
+      console.log(res)
       $vm.current.$img2Url(file.name, res.data.url)
-    })
+    }).catch(
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   const getWordToEditor = (file) => {
@@ -251,11 +329,11 @@ function AddArticle(props) {
               </Select>
             </Col>
           </Row>
-
-          <Row gutter={[10, 20]}>
+          <br />
+          <Row gutter={10}>
             <Col span={12}>
               <Select
-                defaultValue={selectedNav}
+                value={selectedNav}
                 size='large'
                 onChange={selectFNavHandler}
                 style={{ width: '100%' }}
@@ -274,7 +352,7 @@ function AddArticle(props) {
             </Col>
             <Col span={12}>
               <Select
-                defaultValue={selectedSNav}
+                value={selectedSNav}
                 size='large'
                 onChange={selectSNavHandler}
                 style={{ width: '100%' }}
@@ -293,11 +371,19 @@ function AddArticle(props) {
               </Select>
             </Col>
           </Row>
-
+          <br />
           <Row gutter={10}>
             <Col span={12}>
               <Upload {...articleImgProps}>
-                <Button icon={<UploadOutlined />}>Upload</Button>
+                {articleImgBase64 || articleImgUrl ? (
+                  <img
+                    src={articleImgBase64 || articleImgUrl}
+                    alt={''}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                ) : (
+                  uploadButton
+                )}
               </Upload>
             </Col>
             <Col span={12}>

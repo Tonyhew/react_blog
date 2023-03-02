@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import moment from 'moment'
+import moment from 'dayjs'
 import { List, Row, Col, Button, Drawer, Input, DatePicker, message, Modal } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import servicePath from '../config/apiUrl'
 import '../static/css/NavManage.css'
-import axios from 'axios'
+import axios from '../config/AxiosConfig'
 
 const { confirm } = Modal
 function NavManage(props) {
@@ -60,7 +60,7 @@ function NavManage(props) {
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
       console.log(res)
-      if (res.data.data === '没有登录') {
+      if (res.data.data === '没有登录' || res.data.data === '登录失效') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
         props.history.push('/')

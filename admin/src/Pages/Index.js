@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import { Doughnut } from 'react-chartjs-2'
 import '../static/css/Index.css'
@@ -20,7 +20,7 @@ function Index(props) {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      if (res.data.data === '没有登录') {
+      if (res.data.data === '没有登录' || res.data.data === '登录失效') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
         props.history.push('/')

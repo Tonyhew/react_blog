@@ -4,7 +4,7 @@ import { UserOutlined, KeyOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import '../static/css/Login.css';
 import servicePath from '../config/apiUrl';
-import axios from 'axios';
+import axios from '../config/AxiosConfig'
 import MD5 from 'md5';
 
 function Login(props) {

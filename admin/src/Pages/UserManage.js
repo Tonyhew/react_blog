@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import '../static/css/AddArticle.css'
 import { Row, Col, List, Input, Button, message, Switch, Drawer, Modal } from 'antd'
-import axios from 'axios'
+import axios from '../config/AxiosConfig'
 import MD5 from 'md5'
 import servicePath from '../config/apiUrl'
 import '../static/css/UserManage.css'
@@ -31,7 +31,7 @@ function UserManage(props) {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      if (res.data.data === '没有登录') {
+      if (res.data.data === '没有登录' || res.data.data === '登录失效') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
         props.history.push('/')

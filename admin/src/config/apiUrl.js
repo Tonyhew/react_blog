@@ -1,4 +1,4 @@
-let ipUrl = 'http://127.0.0.1:7001/admin/'
+let ipUrl = 'https://api.tonyhew.com/admin/'
 
 /** 
  * 
@@ -22,6 +22,7 @@ let servicePath = {
     deleteUser: ipUrl + 'deleteUser/', // 删除用户
     getNavList: ipUrl + 'getNavList', 
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
+    getTypeInfoById: ipUrl + 'getTypeInfoById/', // 根据 ID 获取标签信息
     addNewTag: ipUrl + 'addNewTag',
     updateTag: ipUrl + 'updateTag',
     deleteTag: ipUrl + 'deleteTag/',

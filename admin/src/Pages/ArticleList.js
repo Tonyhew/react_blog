@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { List, Row, Col, Modal, message, Button, Switch } from 'antd'
-import axios from 'axios'
+import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
 const { confirm } = Modal
@@ -22,7 +22,7 @@ function ArticleList(props) {
 			header: { 'Acess-Control-Allow-Origin': '*' }
 		}).then(
 			(res) => {
-				if (res.data.data === '没有登录') {
+				if (res.data.data === '没有登录' || res.data.data === '登录失效') {
 					localStorage.removeItem('openId');
 					localStorage.removeItem('roleId');
 					props.history.push('/');
