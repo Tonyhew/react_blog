@@ -431,6 +431,27 @@ class MainController extends Controller {
   }
 
   /**
+  * @summary 根据 Id 获取文章类别信息
+  * @description 根据 Id 获取文章类别信息
+  * @router get /admin/getTypeInfoById/${id}
+  * @response 200 JsonBody 返回结果。
+  */
+
+  async getTypeInfoById() {
+    const id = this.ctx.params.id;
+    const sql = `SElECT blog_type.Id as id,
+                  blog_type.typeName as typeName,
+                  blog_type.orderNum as orderNum,
+                  blog_type.icon as icon
+                  FROM blog_type where blog_type.Id = ${id}
+                `;
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = {
+      typeInfo: result,
+    };
+  }
+
+  /**
   * @summary 添加文章类别信息
   * @description 添加文章类别信息
   * @router post /admin/addNewTag
@@ -609,9 +630,12 @@ class MainController extends Controller {
       "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
       'blog_article.nav_id as nav_id, ' +
       'blog_type.typeName as typeName ,' +
-      'blog_type.id as typeId ' +
+      'blog_type.id as typeId, ' +
+      'blog_arctype.typeName as aTypeName, ' +
+      'blog_arctype.Id as aId ' +
       'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-      'WHERE blog_article.id =' + id;
+      'LEFT JOIN blog_arctype ON blog_article.nav_pid = blog_arctype.Id ' +
+      'WHERE blog_article.id = ' + id;
 
     const result = await this.app.mysql.query(sql);
     this.ctx.body = {
@@ -645,6 +669,7 @@ class MainController extends Controller {
 
   async uploadFiles() {
     const data = await this.ctx.service.utils.uploadFiles();
+    console.log(data);
     if (data) {
       this.ctx.body = data;
     } else {

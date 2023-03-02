@@ -8,6 +8,7 @@ module.exports = () => {
       ctx.body = {
         data: '没有登录',
       };
+      ctx.throw(403, '登录失效');
     }
   };
 

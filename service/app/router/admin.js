@@ -26,6 +26,7 @@ module.exports = app => {
   router.get('/admin/deleteUser/:id', adminauth, controller.admin.main.deleteUser); // 删除用户
   router.get('/admin/getNavList', adminauth, controller.admin.main.getNavList); // 获取一级导航列表
   router.get('/admin/getTypeInfo', adminauth, controller.admin.main.getTypeInfo); // 获取标签信息
+  router.get('/admin/getTypeInfoById/:id', adminauth, controller.admin.main.getTypeInfoById); // 根据 ID 获取标签信息
   router.post('/admin/addNewTag', adminauth, controller.admin.main.addNewTag); // 添加新标签
   router.post('/admin/updateTag', adminauth, controller.admin.main.updateTag); // 修改标签
   router.get('/admin/deleteTag/:id', adminauth, controller.admin.main.deleteTag); // 删除标签
