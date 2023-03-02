@@ -1,8 +1,8 @@
 import React from 'react';
 import { Breadcrumb } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-function useBreadcrumb(props) {
+function useBreadcrumb() {
   const breadcrumbNameMap = {
     '/index': '首页',
     '/index/add': '添加文章',
@@ -12,7 +12,7 @@ function useBreadcrumb(props) {
     '/index/userManage': '用户管理',
   }
 
-  const { location } = props
+  const location = useLocation()
   const pathSnippets = location.pathname.split('/').filter(i => i);
 
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {

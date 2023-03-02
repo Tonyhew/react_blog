@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import axios from '../config/AxiosConfig'
+import { useNavigate } from 'react-router-dom'
 import servicePath from '../config/apiUrl'
 import { Doughnut } from 'react-chartjs-2'
 import '../static/css/Index.css'
 
-function Index(props) {
+const Index = () => {
+
+  const navigate = useNavigate()
+
   const [typeName, setTypeName] = useState([])
   const [count, setCount] = useState([])
 
@@ -23,7 +27,7 @@ function Index(props) {
       if (res.data.data === '没有登录' || res.data.data === '登录失效') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
-        props.history.push('/')
+        navigate('/')
       } else {
         let result = res.data.countArt
         var dataA = result.reduce((res, v) => {

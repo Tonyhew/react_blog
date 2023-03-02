@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { List, Row, Col, Modal, message, Button, Switch } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
 const { confirm } = Modal
 
-function ArticleList(props) {
+function ArticleList() {
+
+	const navigate = useNavigate()
+
 	const [list, setList] = useState([]);
 	const [isChecked, setIsChecked] = useState(false);
 
@@ -25,7 +29,7 @@ function ArticleList(props) {
 				if (res.data.data === '没有登录' || res.data.data === '登录失效') {
 					localStorage.removeItem('openId');
 					localStorage.removeItem('roleId');
-					props.history.push('/');
+					navigate('/');
 				} else {
 					setList(res.data.list)
 				}
@@ -93,7 +97,7 @@ function ArticleList(props) {
 	}
 
 	const updataArticle = (id) => {
-		props.history.push('/index/add/' + id)
+		navigate(`/index/add/${id}`)
 	}
 
 	return (
@@ -160,7 +164,7 @@ function ArticleList(props) {
 							</Col>
 							<Col span={4}>
 								<Button type="primary" className="button" onClick={() => updataArticle(item.id)}>修改</Button>
-								<Button type="danger" onClick={() => delteArticle(item.id)}>删除</Button>
+								<Button type="primary" danger onClick={() => delteArticle(item.id)}>删除</Button>
 							</Col>
 						</Row>
 					</List.Item>

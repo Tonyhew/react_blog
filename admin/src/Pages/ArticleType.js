@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { List, Row, Col, Modal, message, Input, Button, Drawer } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
 const { confirm } = Modal
 
-function ArticleType(props) {
+const ArticleType = () => {
+
+  const navigate = useNavigate();
+
   const [typeId, setTypeId] = useState(0)
   const [type, setType] = useState([])
   const [tagTitle, setTagTitle] = useState('标签标题')
@@ -23,12 +27,12 @@ function ArticleType(props) {
       if (res.data.data === '没有登录') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
-        props.history.push('/')
+        navigate('/')
       } else {
         setType(res.data.type)
       }
     })
-  }, [props.history])
+  }, [])
 
 	useEffect(() => {
     getType()
@@ -105,7 +109,7 @@ function ArticleType(props) {
   const delteArticle = (id) => {
     confirm({
       title: '你确定要删除这篇博客吗？',
-      content: '如果你点击OK按钮，文章将会永远被删除，无法恢复',
+      content: '如果你点击OK按钮, 文章将会永远被删除, 无法恢复',
       onOk() {
         axios(servicePath.deleteTag + id, { withCredentials: true }).then(() => {
           message.success('文章删除成功')

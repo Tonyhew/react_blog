@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Card, Input, Spin, message } from 'antd';
 import { UserOutlined, KeyOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import 'antd/dist/reset.css';
 import '../static/css/Login.css';
 import servicePath from '../config/apiUrl';
 import axios from '../config/AxiosConfig'
 import MD5 from 'md5';
 
-function Login(props) {
+const Login = () => {
+
+	const navigate = useNavigate();
 
 	const [userName, setUserName] = useState('');
 	const [password, setPassword] = useState('');
@@ -58,12 +61,12 @@ function Login(props) {
 										
 										localStorage.setItem('openId', res.data.openId);
 										localStorage.setItem("roleId", res.data.loginStatus[0].Id);
-										props.history.push('/index')
+										navigate('/index')
 									}
 								}
 							} else {
 								setIsLoading(false)
-								props.history.push('/')
+								navigate('/')
 								message.error('没有该账号')
 							}
 						}

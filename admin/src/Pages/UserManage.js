@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
 import '../static/css/AddArticle.css'
 import { Row, Col, List, Input, Button, message, Switch, Drawer, Modal } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import axios from '../config/AxiosConfig'
 import MD5 from 'md5'
 import servicePath from '../config/apiUrl'
 import '../static/css/UserManage.css'
 
 const { confirm } = Modal
-function UserManage(props) {
+const UserManage = () => {
+
+  const navigate = useNavigate()
+
   const [userInfoList, setUserInfoList] = useState([])
   const [roleStatus] = useState(-1)
   const [isChecked, setIsChecked] = useState(true)
@@ -34,7 +38,7 @@ function UserManage(props) {
       if (res.data.data === '没有登录' || res.data.data === '登录失效') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
-        props.history.push('/')
+        navigate('/')
       } else {
         setUserInfoList(res.data.userInfo)
       }
@@ -86,7 +90,6 @@ function UserManage(props) {
   }
 
   const submitUser = () => {
-    console.log(passwordInput.current, repeatPasswordInput.current)
     if (password === repeatPassword) {
       let dataProps = {}
       dataProps.userName = userName
@@ -134,7 +137,7 @@ function UserManage(props) {
   const deleteUser = (id) => {
     confirm({
       title: '你确定要删除这个用户吗',
-      content: '如果你点击OK按钮，此用户将会永远被删除，无法恢复',
+      content: '如果你点击OK按钮, 此用户将会永远被删除, 无法恢复',
       onOk() {
         axios(servicePath.deleteUser + id, { withCredentials: true }).then(() => {
           message.success('此用户删除成功')

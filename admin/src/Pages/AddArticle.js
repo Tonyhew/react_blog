@@ -3,6 +3,7 @@ import Editor from 'for-editor-herb'
 import marked from 'marked'
 import '../static/css/AddArticle.css'
 import { Row, Col, Input, Select, Button, DatePicker, message, Upload } from 'antd'
+import { useNavigate, useParams } from 'react-router-dom'
 import customLang from '../config/EditorConfig'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
@@ -13,8 +14,12 @@ const { TextArea } = Input
 const Hljs = require('highlight.js')
 
 function AddArticle(props) {
+
+  const navigate = useNavigate()
+  const params = useParams()
+
   useEffect(() => {
-    let tmpId = props.match.params.id
+    let tmpId = params.id
     if (tmpId) {
       setArticleId(tmpId)
       getArticleById(tmpId)
@@ -78,7 +83,7 @@ function AddArticle(props) {
       if (res.data.data === '没有登录') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
-        props.history.push('/')
+        navigate('/')
       } else {
         setTypeInfo(res.data.type)
       }
@@ -111,6 +116,7 @@ function AddArticle(props) {
   }
 
   const getSNav = useCallback(async () => {
+    console.log(selectedNav, selectedSNav)
     if (selectedNav !== undefined && selectedNav !== 0) {
       await axios({
         method: 'get',
@@ -203,13 +209,11 @@ function AddArticle(props) {
     dataProps.descript = introducemd
     dataProps.keywords = articleKeywords
     dataProps.article_img = articleImgUrl
-    // let dateText = showDate.replace('-', '/')
     dataProps.addTime = new Date(showDate).getTime() / 1000
-    // dataProps.fNav = fnavInfo
     if (selectedSNav === '文章二级栏目' || selectedSNav === undefined) {
-      dataProps.nav_id = selectedNav
-    } else {
       dataProps.nav_id = selectedSNav
+    } else {
+      dataProps.nav_pid = selectedNav
     }
 
     console.log(dataProps)
@@ -251,7 +255,8 @@ function AddArticle(props) {
       header: { 'Access-Control-Allow-Origin': '*' },
     }).then((res) => {
       let articleDetail = res.data.data[0]
-      setSelectNav(parseInt(articleDetail.aId))
+      console.log(articleDetail)
+      setSelectNav(articleDetail.nav_pid)
       setSelectSNav(articleDetail.nav_id)
       setArticleImgUrl(articleDetail.articleImg)
       setArticleKeywords(articleDetail.keywords)
@@ -420,7 +425,7 @@ function AddArticle(props) {
               <Input
                 type='file'
                 style={{ display: 'none' }}
-              ></Input>
+              />
               <Button
                 type='default'
                 size='large'
@@ -447,7 +452,7 @@ function AddArticle(props) {
                 placeholder='文章简介'
                 value={introducemd}
                 onChange={changeDescript}
-              ></TextArea>
+              />
               <br />
               <br />
               <div

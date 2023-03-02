@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'dayjs'
 import { List, Row, Col, Button, Drawer, Input, DatePicker, message, Modal } from 'antd'
+import { useNavigate, useParams } from 'react-router-dom'
 import { PlusOutlined } from '@ant-design/icons'
 import servicePath from '../config/apiUrl'
 import '../static/css/NavManage.css'
@@ -9,6 +10,9 @@ import axios from '../config/AxiosConfig'
 const { confirm } = Modal
 function NavManage(props) {
   moment.suppressDeprecationWarnings = true
+
+  const navigate = useNavigate()
+  const params = useParams()
 
   const [navId, setNavId] = useState(0)
   const [navList, setNavList] = useState([])
@@ -26,7 +30,7 @@ function NavManage(props) {
   useEffect(() => {
     getNavList()
     getCurrentTime()
-    let tmpId = props.match.params.id
+    let tmpId = params.id
     if (tmpId) {
       setNavId(tmpId)
     }
@@ -63,7 +67,7 @@ function NavManage(props) {
       if (res.data.data === '没有登录' || res.data.data === '登录失效') {
         localStorage.removeItem('openId')
         localStorage.removeItem('roleId')
-        props.history.push('/')
+        navigate('/')
       } else {
         setNavList(res.data.data)
       }
@@ -142,7 +146,7 @@ function NavManage(props) {
   const deleteNavItem = (id) => {
     confirm({
       title: '你确定要删除这条栏目吗？',
-      content: '如果你点击OK按钮，栏目将会永远被删除，无法恢复',
+      content: '如果你点击OK按钮, 栏目将会永远被删除, 无法恢复',
       onOk() {
         axios(servicePath.deleteFirstNav + id, { withCredentials: true }).then((res) => {
           message.success('栏目删除成功')
@@ -177,7 +181,7 @@ function NavManage(props) {
     console.log(id)
     confirm({
       title: '你确定要删除这条栏目吗？',
-      content: '如果你点击OK按钮，栏目将会永远被删除，无法恢复',
+      content: '如果你点击OK按钮, 栏目将会永远被删除, 无法恢复',
       onOk() {
         axios(servicePath.deleteSecondNav + id, { withCredentials: true }).then((res) => {
           message.success('栏目删除成功')
@@ -198,8 +202,7 @@ function NavManage(props) {
                 withCredentials: true,
                 data: data,
                 header: { 'Acess-Control-Allow-Origin': '*' },
-              }).then((res) => {
-                console.log(res)
+              }).then(() => {
                 addNewSecond(secondPId)
               })
             }
@@ -235,8 +238,7 @@ function NavManage(props) {
           withCredentials: true,
           data: data,
           header: { 'Acess-Control-Allow-Origin': '*' },
-        }).then((res) => {
-          console.log(res)
+        }).then(() => {
           addNewSecond(secondPId)
         })
       }
@@ -300,7 +302,8 @@ function NavManage(props) {
                   修改
                 </Button>
                 <Button
-                  type='danger'
+                  type='primary'
+                  danger
                   className='button_nav'
                   onClick={() => deleteNavItem(item.Id)}
                 >
@@ -366,6 +369,7 @@ function NavManage(props) {
           }}
         >
           <Button
+            danger
             onClick={addFirstNavClose}
             style={{ marginRight: 8 }}
           >
@@ -462,6 +466,7 @@ function NavManage(props) {
           }}
         >
           <Button
+            danger
             onClick={closeSecondDrawer}
             style={{ marginRight: 8 }}
           >

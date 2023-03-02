@@ -1,13 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Login from '../Pages/Login';
-import AdminIndex from '../Pages/AdminIndex';
+import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
+import Routes from '../config/useRouter';
 
-function Main() {
+const App = () => {
+  const Views = () => useRoutes(Routes);
+  return <Views />;
+};
+
+const Main = () => {
+
 	return (
 		<Router>
-			<Route path="/" exact component={Login} />
-			<Route path="/index/" component={AdminIndex} />
+			<App />
 		</Router>
 	)
 }
