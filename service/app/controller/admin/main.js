@@ -629,6 +629,7 @@ class MainController extends Controller {
       'blog_article.view_count as view_count, ' +
       "FROM_UNIXTIME(blog_article.addTime, '%y-%m-%d') as addTime, " +
       'blog_article.nav_id as nav_id, ' +
+      'blog_article.nav_pid as nav_pid, ' +
       'blog_type.typeName as typeName ,' +
       'blog_type.id as typeId, ' +
       'blog_arctype.typeName as aTypeName, ' +
