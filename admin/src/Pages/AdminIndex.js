@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import {
   FileOutlined,
@@ -16,11 +16,16 @@ import '../static/css/AdminIndex.css'
 const { Content, Footer, Sider } = Layout
 
 const AdminIndex = (props) => {
-
   const navigate = useNavigate()
 
   const [collapsed, setCollapsed] = useState(false)
   const [roleId] = useState(localStorage.roleId)
+
+  useEffect(() => {
+    if (!localStorage.getItem('openId') && !localStorage.getItem('roleId')) {
+      navigate('/login')
+    }
+  })
 
   const MenuRender = [
     getItem('工作台', 'Index', <PieChartOutlined />),
