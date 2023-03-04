@@ -122,7 +122,7 @@ class MainController extends Controller {
     if (res.length > 0) {
       const openId = new Date().getTime();
       // eslint-disable-next-line quote-props
-      ctx.session.openId = { 'openId': openId };
+      ctx.session.openId = openId;
       // eslint-disable-next-line quote-props
       ctx.body = { 'data': '登录成功', 'openId': openId, loginStatus: res };
     } else {
