@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'dayjs'
 import { List, Row, Col, Button, Drawer, Input, DatePicker, message, Modal } from 'antd'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { PlusOutlined } from '@ant-design/icons'
 import servicePath from '../config/apiUrl'
 import '../static/css/NavManage.css'
@@ -11,7 +11,6 @@ const { confirm } = Modal
 function NavManage(props) {
   moment.suppressDeprecationWarnings = true
 
-  const navigate = useNavigate()
   const params = useParams()
 
   const [navId, setNavId] = useState(0)
@@ -63,14 +62,7 @@ function NavManage(props) {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      console.log(res)
-      if (res.data.data === '没有登录' || res.data.data === '登录失效') {
-        localStorage.removeItem('openId')
-        localStorage.removeItem('roleId')
-        navigate('/')
-      } else {
-        setNavList(res.data.data)
-      }
+      setNavList(res.data.data)
     })
   }
 

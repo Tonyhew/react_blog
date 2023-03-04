@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd'
+import { Layout, Menu, Breadcrumb, message } from 'antd'
 import {
   FileOutlined,
   DesktopOutlined,
@@ -15,17 +15,19 @@ import '../static/css/AdminIndex.css'
 
 const { Content, Footer, Sider } = Layout
 
-const AdminIndex = (props) => {
+const AdminIndex = () => {
   const navigate = useNavigate()
 
   const [collapsed, setCollapsed] = useState(false)
-  const [roleId] = useState(localStorage.roleId)
+  const [roleId] = useState(localStorage.getItem('roleId'))
+  const [openId] = useState(localStorage.getItem('openId'))
 
   useEffect(() => {
-    if (!localStorage.getItem('openId') && !localStorage.getItem('roleId')) {
+    if (!openId && !roleId) {
+      message.warning('登录失效，将返回登录页面')
       navigate('/login')
     }
-  })
+  }, [navigate, openId, roleId])
 
   const MenuRender = [
     getItem('工作台', 'Index', <PieChartOutlined />),
@@ -43,7 +45,7 @@ const AdminIndex = (props) => {
 
   const menuItemFunc = (e) => {
     if (e.key === 'addArticle') {
-      navigate('/index/add')
+      navigate('/index/list/add')
     } else {
       navigate('/index/list')
     }

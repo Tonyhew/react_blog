@@ -3,7 +3,7 @@ import Editor from 'for-editor-herb'
 import marked from 'marked'
 import '../static/css/AddArticle.css'
 import { Row, Col, Input, Select, Button, DatePicker, message, Upload } from 'antd'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import customLang from '../config/EditorConfig'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
@@ -14,8 +14,6 @@ const { TextArea } = Input
 const Hljs = require('highlight.js')
 
 function AddArticle(props) {
-
-  const navigate = useNavigate()
   const params = useParams()
 
   useEffect(() => {
@@ -32,9 +30,8 @@ function AddArticle(props) {
   const $vm = useRef()
 
   const [iconLoading, setIconLoading] = useState(false)
-  const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState([])
   const [articleImgUrl, setArticleImgUrl] = useState('')
-  const [articleImgBase64, setArticleImgBase64] = useState('') // 图片 base64
 
   const [articleId, setArticleId] = useState(0) // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
   const [articleKeywords, setArticleKeywords] = useState('') // 文章关键词
@@ -80,13 +77,7 @@ function AddArticle(props) {
       url: servicePath.getTypeInfo,
       withCredentials: true,
     }).then((res) => {
-      if (res.data.data === '没有登录') {
-        localStorage.removeItem('openId')
-        localStorage.removeItem('roleId')
-        navigate('/')
-      } else {
-        setTypeInfo(res.data.type)
-      }
+      setTypeInfo(res.data.type)
     })
   }
 
@@ -116,7 +107,6 @@ function AddArticle(props) {
   }
 
   const getSNav = useCallback(async () => {
-    console.log(selectedNav, selectedSNav)
     if (selectedNav !== undefined && selectedNav !== 0) {
       await axios({
         method: 'get',
@@ -149,8 +139,8 @@ function AddArticle(props) {
   const handlePictureChange = (info) => {
     setIconLoading(true)
     console.log(info)
-    const formData = new FormData();
-    fileList.forEach(file => formData.append('file', file))
+    const formData = new FormData()
+    fileList.forEach((file) => formData.append('file', file))
     console.log(formData)
     axios({
       method: 'post',
@@ -161,12 +151,10 @@ function AddArticle(props) {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*',
       },
-    }).then(
-      res => {
-        console.log(res)
-        setArticleImgUrl(res.data.url)
-      }
-    )
+    }).then((res) => {
+      console.log(res)
+      setArticleImgUrl(res.data.url)
+    })
   }
 
   const articleImgProps = {
@@ -177,7 +165,7 @@ function AddArticle(props) {
     onChange: handlePictureChange,
     beforeUpload: (file) => {
       setFileList([...fileList, file])
-      return false;
+      return false
     },
   }
 
@@ -255,7 +243,6 @@ function AddArticle(props) {
       header: { 'Access-Control-Allow-Origin': '*' },
     }).then((res) => {
       let articleDetail = res.data.data[0]
-      console.log(articleDetail)
       setSelectNav(articleDetail.nav_pid)
       setSelectSNav(articleDetail.nav_id)
       setArticleImgUrl(articleDetail.articleImg)
@@ -284,14 +271,14 @@ function AddArticle(props) {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*',
       },
-    }).then((res) => {
-      console.log(res)
-      $vm.current.$img2Url(file.name, res.data.url)
-    }).catch(
-      err => {
+    })
+      .then((res) => {
+        console.log(res)
+        $vm.current.$img2Url(file.name, res.data.url)
+      })
+      .catch((err) => {
         console.log(err)
-      }
-    )
+      })
   }
 
   const getWordToEditor = (file) => {
@@ -380,9 +367,9 @@ function AddArticle(props) {
           <Row gutter={10}>
             <Col span={12}>
               <Upload {...articleImgProps}>
-                {articleImgBase64 || articleImgUrl ? (
+                {articleImgUrl ? (
                   <img
-                    src={articleImgBase64 || articleImgUrl}
+                    src={articleImgUrl}
                     alt={''}
                     style={{ width: '100%', height: '100%' }}
                   />

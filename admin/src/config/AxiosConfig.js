@@ -9,7 +9,11 @@ let service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
-    return config
+    const token = localStorage.getItem('openId')
+    if (token) {
+      config.headers.token = token
+    }
+    return config;
   },
   (err) => {
     console.log('request:', err)
@@ -42,9 +46,7 @@ service.interceptors.response.use(
           break
         case 403:
           m = '您没有权限操作！'
-          localStorage.removeItem('openId')
-          localStorage.removeItem('roleId')
-          window.location.href = '/'
+          window.location.href = '/login'
           break
         case 404:
           m = `请求地址出错: ${err.response.config.url}`

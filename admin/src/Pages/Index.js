@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from '../config/AxiosConfig'
-import { useNavigate } from 'react-router-dom'
 import servicePath from '../config/apiUrl'
 import { Doughnut } from 'react-chartjs-2'
 import '../static/css/Index.css'
 
 const Index = () => {
-
-  const navigate = useNavigate()
 
   const [typeName, setTypeName] = useState([])
   const [count, setCount] = useState([])
@@ -24,23 +21,17 @@ const Index = () => {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      if (res.data.data === '没有登录' || res.data.data === '登录失效') {
-        localStorage.removeItem('openId')
-        localStorage.removeItem('roleId')
-        navigate('/')
-      } else {
-        let result = res.data.countArt
-        var dataA = result.reduce((res, v) => {
-          Object.keys(v).forEach((key) => {
-            const value = v[key]
-            if (res[key]) res[key].push(value)
-            else res[key] = [value]
-          })
-          return res
-        }, {})
-        setTypeName(dataA.typeName)
-        setCount(dataA.Count)
-      }
+      let result = res.data.countArt
+      var dataA = result.reduce((res, v) => {
+        Object.keys(v).forEach((key) => {
+          const value = v[key]
+          if (res[key]) res[key].push(value)
+          else res[key] = [value]
+        })
+        return res
+      }, {})
+      setTypeName(dataA.typeName)
+      setCount(dataA.Count)
     })
   }
 

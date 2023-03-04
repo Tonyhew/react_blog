@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import '../static/css/AddArticle.css'
 import { Row, Col, List, Input, Button, message, Switch, Drawer, Modal } from 'antd'
-import { useNavigate } from 'react-router-dom'
 import axios from '../config/AxiosConfig'
 import MD5 from 'md5'
 import servicePath from '../config/apiUrl'
@@ -9,8 +8,6 @@ import '../static/css/UserManage.css'
 
 const { confirm } = Modal
 const UserManage = () => {
-
-  const navigate = useNavigate()
 
   const [userInfoList, setUserInfoList] = useState([])
   const [roleStatus] = useState(-1)
@@ -35,13 +32,7 @@ const UserManage = () => {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      if (res.data.data === '没有登录' || res.data.data === '登录失效') {
-        localStorage.removeItem('openId')
-        localStorage.removeItem('roleId')
-        navigate('/')
-      } else {
-        setUserInfoList(res.data.userInfo)
-      }
+      setUserInfoList(res.data.userInfo)
     })
   }
 

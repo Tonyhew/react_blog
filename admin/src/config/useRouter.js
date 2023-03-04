@@ -24,7 +24,7 @@ const Routes = [
         element: <Index />,
       },
       {
-        path: '/index/add/',
+        path: '/index/list/add/',
         caseSensitive: true,
         element: <AddArticle />,
       },
@@ -34,7 +34,7 @@ const Routes = [
         element: <ArticleList />,
       },
       {
-        path: '/index/add/:id',
+        path: '/index/list/add/:id',
         caseSensitive: true,
         element: <AddArticle />,
       },

@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { List, Row, Col, Modal, message, Input, Button, Drawer } from 'antd'
-import { useNavigate } from 'react-router-dom'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
 const { confirm } = Modal
 
 const ArticleType = () => {
-
-  const navigate = useNavigate();
 
   const [typeId, setTypeId] = useState(0)
   const [type, setType] = useState([])
@@ -24,17 +21,11 @@ const ArticleType = () => {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      if (res.data.data === '没有登录') {
-        localStorage.removeItem('openId')
-        localStorage.removeItem('roleId')
-        navigate('/')
-      } else {
-        setType(res.data.type)
-      }
+      setType(res.data.type)
     })
   }, [])
 
-	useEffect(() => {
+  useEffect(() => {
     getType()
   }, [getType])
 
@@ -45,19 +36,17 @@ const ArticleType = () => {
 
   const updateTags = (id, checked) => {
     setTypeId(id)
-		axios({
-			method: 'get',
+    axios({
+      method: 'get',
       url: servicePath.getTypeInfoById + id,
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
-		}).then(
-			res => {
-				let type = res.data.typeInfo[0]
-				setTagTitle(type.typeName)
-				setOrderNum(type.orderNum)
-				setTagIcon(type.icon)
-			}
-		)
+    }).then((res) => {
+      let type = res.data.typeInfo[0]
+      setTagTitle(type.typeName)
+      setOrderNum(type.orderNum)
+      setTagIcon(type.icon)
+    })
     setVisiable(true)
   }
 

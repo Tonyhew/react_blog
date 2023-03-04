@@ -58,7 +58,7 @@ const Login = () => {
 								if (res.data.loginStatus[0].role_status) {
 									setIsLoading(false)
 									if (res.data.data === '登录成功') {
-										
+										console.log(res.data.data)
 										localStorage.setItem('openId', res.data.openId);
 										localStorage.setItem("roleId", res.data.loginStatus[0].Id);
 										navigate('/index')
