@@ -55,7 +55,14 @@ const Home = (list) => {
               itemLayout='vertical'
               dataSource={myList}
               renderItem={(item) => (
-                <List.Item>
+                <List.Item
+                  extra={
+                    <img
+                      width={272}
+                      src={item.articleImg}
+                    />
+                  }
+                >
                   <div className='list-title'>
                     {item.isTop == 1 ? <img src='/static/images/top.png' /> : null}
                     <Link href={{ pathname: '/detailed', query: { id: item.id } }}>

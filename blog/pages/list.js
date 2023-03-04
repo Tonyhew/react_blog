@@ -13,6 +13,7 @@ import marked from 'marked'
 import IconFont from '../config/iconfont.config'
 
 const MyList = (list) => {
+
   const [myList, setMylist] = useState(list.data)
   const [title, setTitle] = useState('')
   const [pageTotal, setPageTotal] = useState(0)
@@ -98,7 +99,14 @@ const MyList = (list) => {
               dataSource={myList}
               renderItem={(item) => (
                 <>
-                  <List.Item>
+                  <List.Item
+                    extra={
+                      <img
+                        width={272}
+                        src={item.articleImg}
+                      />
+                    }
+                  >
                     <div className='list-title'>
                       <Link href={{ pathname: '/detailed', query: { id: item.id } }}>
                         <a>{item.title}</a>
