@@ -26,10 +26,9 @@ const Header = (metaInfo) => {
     if (id?.includes(metaInfo.path)) {
       setCurrent(`${id}`)
     }
-    
+
     getSiteInfo()
   }, [router, current])
-
 
   const getSiteInfo = useCallback(() => {
     axios.get(servicePath.getSiteInfo).then((res) => {
@@ -56,10 +55,16 @@ const Header = (metaInfo) => {
   }, [])
 
   const handleClick = (e) => {
-    if (e.key == '/index') {
-      Router.push('/index')
+    if (router.pathname.includes(e.key)) {
+      setIsClose(false)
     } else {
-      Router.push(`/list?id=${e.key}`)
+      if (e.key == '/index') {
+        Router.push('/index')
+        setIsClose(false)
+      } else {
+        Router.push(`/list?id=${e.key}`)
+        setIsClose(false)
+      }
     }
   }
 
@@ -224,7 +229,7 @@ const Header = (metaInfo) => {
             <Link href='/'>
               <div className='header_logo'>
                 <span className='header-logo'>Tony</span>
-                <span className='header-txt'>专注前端开发</span>
+                <span className='header-txt'>分享技术、生活日常的个人博客</span>
               </div>
             </Link>
           </Col>
