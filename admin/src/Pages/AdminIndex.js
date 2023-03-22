@@ -7,6 +7,7 @@ import {
   UnorderedListOutlined,
   UserAddOutlined,
   TagsOutlined,
+  SettingOutlined,
 } from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
 import useBreadcrumb from '../hooks/useBreadcrumb'
@@ -31,6 +32,7 @@ const AdminIndex = () => {
 
   const MenuRender = [
     getItem('工作台', 'Index', <PieChartOutlined />),
+    getItem('网站信息', 'siteInfo', <SettingOutlined />),
     roleId === '10' ? getItem('添加栏目', 'navManage', <UnorderedListOutlined />) : null,
     roleId === '10' ? getItem('用户管理', 'userManage', <UserAddOutlined />) : null,
     roleId === '10' ? getItem('标签管理', 'typeManage', <TagsOutlined />) : null,
@@ -52,6 +54,8 @@ const AdminIndex = () => {
     switch (e.key) {
       case 'Index':
         return navigate('/index/')
+      case 'siteInfo':
+        return navigate('/index/siteInfo')
       case 'navManage':
         return navigate('/index/navManage')
       case 'userManage':

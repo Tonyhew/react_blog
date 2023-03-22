@@ -20,6 +20,9 @@ let servicePath = {
     isDisableUser: ipUrl + 'isDisableUser', // 是否禁用用户
     addNewUser: ipUrl + 'addNewUser', // 添加用户
     deleteUser: ipUrl + 'deleteUser/', // 删除用户
+    getSiteInfo: ipUrl + 'getSiteInfo',
+    getSiteInfoById: ipUrl + 'getSiteInfoById/',
+    editSiteInfo: ipUrl + 'editSiteInfo',
     getNavList: ipUrl + 'getNavList', 
     getTypeInfo: ipUrl + 'getTypeInfo', // 获得文章类别信息
     getTypeInfoById: ipUrl + 'getTypeInfoById/', // 根据 ID 获取标签信息

@@ -9,6 +9,8 @@ function useBreadcrumb() {
 
   const breadcrumbNameMap = {
     '/index': '首页',
+    '/index/siteInfo': '网站基本信息',
+    '/index/siteInfo/updateSiteInfo': '更新网站基本信息',
     '/index/list': '文章列表',
     '/index/list/add': pathSnippets[3] === undefined ? '新增文章' : `编辑${pathSnippets[2]}文章`,
     '/index/type': '标签管理',

@@ -2,7 +2,7 @@
 
 module.exports = () => {
   return async function adminauth(ctx, next) {
-    if (ctx.session.openId) {
+    if (ctx.session.openId || ctx.headers.token) {
       await next();
     } else {
       ctx.body = {

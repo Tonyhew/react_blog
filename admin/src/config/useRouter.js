@@ -7,6 +7,8 @@ import ArticleList from '../Pages/ArticleList'
 import ArticleType from '../Pages/ArticleType'
 import NavManage from '../Pages/NavManage'
 import UserManage from '../Pages/UserManage'
+import SiteInfo from '../Pages/SiteInfo'
+import UpdateSiteInfo from '../Pages/UpdateSiteInfo'
 
 const Routes = [
   {
@@ -22,6 +24,16 @@ const Routes = [
         path: '/index/',
         caseSensitive: true,
         element: <Index />,
+      },
+      {
+        path: '/index/siteInfo',
+        caseSensitive: true,
+        element: <SiteInfo />
+      },
+      {
+        path: '/index/siteInfo/updateSiteInfo/:id',
+        caseSensitive: true,
+        element: <UpdateSiteInfo />
       },
       {
         path: '/index/list/add/',

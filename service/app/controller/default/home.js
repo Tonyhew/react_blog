@@ -1,6 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+
 /**
 * @controller 前台接口文档
 */

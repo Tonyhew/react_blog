@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
-import Head from 'next/head'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, List, Breadcrumb, Pagination } from 'antd'
+import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
@@ -13,6 +13,8 @@ import marked from 'marked'
 import IconFont from '../config/iconfont.config'
 
 const MyList = (list) => {
+  const router = useRouter()
+  const { id } = router.query
 
   const [myList, setMylist] = useState(list.data)
   const [title, setTitle] = useState('')
@@ -22,19 +24,19 @@ const MyList = (list) => {
   useEffect(() => {
     setMylist(list.data)
     getTitle()
-  })
+  }, [list])
 
   useEffect(() => {
     getArticleTotal()
   }, [])
 
   const getTitle = () => {
-    if (list.url.query.id.length >= 4) {
-      axios(servicePath.getListSecondTitle + list.url.query.id).then((res) => {
+    if (id.length >= 4) {
+      axios(servicePath.getListSecondTitle + id).then((res) => {
         setTitle(res.data.data[0].title)
       })
     } else {
-      axios(servicePath.getListTitle + list.url.query.id).then((res) => {
+      axios(servicePath.getListTitle + id).then((res) => {
         setTitle(res.data.data[0].typeName)
       })
     }
@@ -56,7 +58,6 @@ const MyList = (list) => {
   })
 
   const getArticleTotal = () => {
-    const id = list.url.query.id
     axios(servicePath.getCountArticleList + id).then((res) => {
       setPageTotal(res.data.data[0].total)
     })
@@ -68,7 +69,10 @@ const MyList = (list) => {
 
   return (
     <div>
-      <Header title={title} />
+      <Header
+        title={title}
+        path={id}
+      />
       <Row
         className='comm-main'
         type='flex'
@@ -130,7 +134,7 @@ const MyList = (list) => {
                   </List.Item>
                 </>
               )}
-            ></List>
+            />
             <Pagination
               showSizeChanger
               onShowSizeChange={onShowSizeChange(currentPage, pageTotal)}

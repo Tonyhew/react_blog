@@ -204,6 +204,59 @@ class MainController extends Controller {
   }
 
   /**
+  * @summary 获取网站基本信息
+  * @description 获取网站基本信息
+  * @router get /admin/getSiteInfo
+  * @response 200 JsonBody 返回结果。
+  */
+
+  async getSiteInfo() {
+    const res = await this.app.mysql.select('blog_siteInfo');
+    this.ctx.body = {
+      data: res,
+    };
+  }
+
+  /**
+  * @summary 根据 Id 获取文章类别信息
+  * @description 根据 Id 获取文章类别信息
+  * @router get /admin/getTypeInfoById/${id}
+  * @response 200 JsonBody 返回结果。
+  */
+
+  async getSiteInfoById() {
+    const id = this.ctx.params.id;
+    const sql = `SElECT blog_siteInfo.Id as id,
+                  blog_siteInfo.site_title as title,
+                  blog_siteInfo.site_description as description,
+                  blog_siteInfo.site_keywords as keywords 
+                  FROM blog_siteInfo where blog_siteInfo.Id = ${id}
+                `;
+    const result = await this.app.mysql.query(sql);
+    this.ctx.body = {
+      siteInfo: result,
+    };
+  }
+
+  /**
+  * @summary 编辑网站信息
+  * @description 编辑网站信息
+  * @router post /admin/addNewUser
+  * @response 200 JsonBody 返回结果：isSuccess，insertId。
+  */
+
+  async editSiteInfo() {
+    const tmpSiteInfo = this.ctx.request.body;
+    const result = await this.app.mysql.update('blog_siteInfo', tmpSiteInfo);
+    const editSuccess = result.affectedRows === 1;
+
+    this.ctx.body = {
+      isSuccess: editSuccess,
+    };
+  }
+
+
+  /**
   * @summary 获取一级导航列表
   * @description 获取一级导航列表
   * @router get /admin/getNavList

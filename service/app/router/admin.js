@@ -24,6 +24,9 @@ module.exports = app => {
   router.post('/admin/isDisableUser', adminauth, controller.admin.main.isDisableUser); // 禁用用户
   router.post('/admin/addNewUser', adminauth, controller.admin.main.addNewUser); // 新增用户
   router.get('/admin/deleteUser/:id', adminauth, controller.admin.main.deleteUser); // 删除用户
+  router.get('/admin/getSiteInfo', adminauth, controller.admin.main.getSiteInfo); // 获取网站基本信息
+  router.get('/admin/getSiteInfoById/:id', adminauth, controller.admin.main.getSiteInfoById); // 根据 ID 查找网站基本信息
+  router.post('/admin/editSiteInfo', adminauth, controller.admin.main.editSiteInfo); // 修改网站基本信息
   router.get('/admin/getNavList', adminauth, controller.admin.main.getNavList); // 获取一级导航列表
   router.get('/admin/getTypeInfo', adminauth, controller.admin.main.getTypeInfo); // 获取标签信息
   router.get('/admin/getTypeInfoById/:id', adminauth, controller.admin.main.getTypeInfoById); // 根据 ID 获取标签信息
