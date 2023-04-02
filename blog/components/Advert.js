@@ -1,6 +1,17 @@
+import React, { useEffect } from 'react';
 import '../static/style/components/advert.css'
 
 const Advert = () => {
+
+  useEffect(() => {
+    var ads = document.getElementsByClassName("adsbygoogle").length;
+    for (var i = 0; i < ads; i++) {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) { }
+    }
+}, []);
+
   return (
     <>
       <div className='ad-div comm-box'>
@@ -18,7 +29,7 @@ const Advert = () => {
             data-ad-format='auto'
             data-full-width-responsive='true'
           ></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          {/* <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> */}
         </div>
       </div>
     </>

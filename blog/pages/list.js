@@ -103,35 +103,37 @@ const MyList = (list) => {
               dataSource={myList}
               renderItem={(item) => (
                 <>
-                  <List.Item
-                    extra={
-                      <img
-                        width={272}
-                        src={item.articleImg}
-                      />
-                    }
-                  >
-                    <div className='list-title'>
-                      <Link href={{ pathname: '/detailed', query: { id: item.id } }}>
-                        <a>{item.title}</a>
-                      </Link>
-                    </div>
-                    <div className='list-icon'>
-                      <span>
-                        <IconFont type='iconMonthdatecalendar' /> {item.addTime}
-                      </span>
-                      <span>
-                        <IconFont type='iconfolder' /> {item.typeName}
-                      </span>
-                      <span>
-                        <IconFont type='iconfire' /> {item.view_count}
-                      </span>
-                    </div>
-                    <div
-                      className='list-context'
-                      dangerouslySetInnerHTML={{ __html: marked(item.descript) }}
-                    ></div>
-                  </List.Item>
+                  {item.isShow === 1 ? (
+                    <List.Item
+                      extra={
+                        <img
+                          width={272}
+                          src={item.articleImg}
+                        />
+                      }
+                    >
+                      <div className='list-title'>
+                        <Link href={{ pathname: '/detailed', query: { id: item.id } }}>
+                          <a>{item.title}</a>
+                        </Link>
+                      </div>
+                      <div className='list-icon'>
+                        <span>
+                          <IconFont type='iconMonthdatecalendar' /> {item.addTime}
+                        </span>
+                        <span>
+                          <IconFont type='iconfolder' /> {item.typeName}
+                        </span>
+                        <span>
+                          <IconFont type='iconfire' /> {item.view_count}
+                        </span>
+                      </div>
+                      <div
+                        className='list-context'
+                        dangerouslySetInnerHTML={{ __html: marked(item.descript) }}
+                      ></div>
+                    </List.Item>
+                  ) : null}
                 </>
               )}
             />

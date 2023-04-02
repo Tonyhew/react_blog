@@ -606,6 +606,7 @@ class MainController extends Controller {
 
   async getArticleList() {
     const sql = 'SELECT blog_article.id as id, ' +
+      'blog_article.is_show as isShow, ' +
       'blog_article.title as title, ' +
       'blog_article.descript as descript, ' +
       'blog_article.keywords as keywords, ' +
@@ -618,7 +619,7 @@ class MainController extends Controller {
       'blog_arctype.typeName as arcTypeName, ' +
       'blog_secondNav.title as secondTitle ' +
       'FROM blog_article LEFT JOIN blog_type ON blog_article.type_id = blog_type.Id ' +
-      'LEFT JOIN blog_arctype ON blog_article.nav_id = blog_arctype.Id ' +
+      'LEFT JOIN blog_arctype ON blog_article.nav_pid = blog_arctype.Id ' +
       'LEFT JOIN blog_secondNav ON blog_article.nav_id = blog_secondNav.Id ' +
       'ORDER BY blog_article.id DESC';
 

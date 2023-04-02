@@ -11,11 +11,12 @@ function ArticleList() {
 
   const [list, setList] = useState([])
   const [isChecked, setIsChecked] = useState(false)
+  const [isShow, setIsShow] = useState(true)
 
   useEffect(() => {
     getList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list])
+  }, [])
 
   const getList = () => {
     axios({
@@ -65,6 +66,26 @@ function ArticleList() {
     })
   }
 
+  const showArticle = (id, ishow) => {
+    let dataProps = {
+      id,
+    }
+    axios({
+      method: 'post',
+      url: servicePath.updateArticle,
+      data: {
+        ...dataProps,
+        is_show: ishow === 1 ? -1 : 1,
+      },
+      withCredentials: true,
+      header: { 'Acess-Control-Allow-Origin': '*' },
+    }).then((res) => {
+      if (res.data.isSuccess) {
+        getList()
+      }
+    })
+  }
+
   const delteArticle = (id) => {
     confirm({
       title: '你确定要删除这篇博客吗？',
@@ -102,8 +123,11 @@ function ArticleList() {
             <Col span={2}>
               <b>发布时间</b>
             </Col>
-            <Col span={4}>
+            <Col span={2}>
               <b>置顶</b>
+            </Col>
+            <Col span={2}>
+              <b>状态</b>
             </Col>
             <Col span={2}>
               <b>浏览量</b>
@@ -122,7 +146,7 @@ function ArticleList() {
               <Col span={2}>{item.typeName}</Col>
               <Col span={2}>{item.arcTypeName ? item.arcTypeName : item.secondTitle}</Col>
               <Col span={2}>{item.addTime}</Col>
-              <Col span={4}>
+              <Col span={2}>
                 {item.isTop === -1 ? (
                   <Switch
                     checkedChildren={isChecked}
@@ -137,6 +161,15 @@ function ArticleList() {
                     onClick={() => disTopArticle(item.id)}
                   />
                 )}
+              </Col>
+              <Col span={2}>
+                <Switch
+                  checked={item.isShow === 1}
+                  checkedChildren={'显示'}
+                  unCheckedChildren={'不显示'}
+                  onChange={(e) => setIsShow(e)}
+                  onClick={() => showArticle(item.id, item.isShow)}
+                />
               </Col>
               <Col span={2}>{item.view_count}</Col>
               <Col span={4}>

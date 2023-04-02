@@ -67,6 +67,7 @@ class HomeController extends Controller {
     const sql = `SELECT blog_article.id as id, 
                 blog_article.title as title, 
                 blog_article.descript as descript, 
+                blog_article.is_show as isShow, 
                 blog_article.article_img as articleImg, 
                 FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime, 
                 blog_article.view_count as view_count, 
@@ -175,6 +176,7 @@ class HomeController extends Controller {
     const id = this.ctx.params.id;
     const sql = 'SELECT blog_article.id as id,' +
                 'blog_article.title as title,' +
+                'blog_article.is_show as isShow, ' +
                 'blog_article.descript as descript,' +
                 'blog_article.article_img as articleImg, ' +
                 "FROM_UNIXTIME(blog_article.addTime, '%Y-%m-%d %H:%i:%s') as addTime," +

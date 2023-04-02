@@ -8,6 +8,7 @@ import customLang from '../config/EditorConfig'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import { iconToElement } from '../hooks/useUploadFile'
+import moment from 'dayjs'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -190,7 +191,10 @@ function AddArticle(props) {
       return false
     }
 
-    let dataProps = {}
+    let dataProps = {
+      nav_id: selectedSNav ? selectedSNav : selectedNav,
+      nav_pid: selectedNav ? selectedNav : null
+    }
     dataProps.type_id = selectedType
     dataProps.title = articleTitle
     dataProps.article_content = articleContent
@@ -198,11 +202,6 @@ function AddArticle(props) {
     dataProps.keywords = articleKeywords
     dataProps.article_img = articleImgUrl
     dataProps.addTime = new Date(showDate).getTime() / 1000
-    if (selectedSNav === '文章二级栏目' || selectedSNav === undefined) {
-      dataProps.nav_id = selectedSNav
-    } else {
-      dataProps.nav_pid = selectedNav
-    }
 
     console.log(dataProps)
     if (articleId === 0) {
@@ -211,7 +210,10 @@ function AddArticle(props) {
         method: 'post',
         url: servicePath.addArticle,
         withCredentials: true,
-        data: dataProps,
+        data: {
+          ...dataProps,
+          addTime: moment().valueOf()
+        },
       }).then((res) => {
         setArticleId(res.data.insertId)
         if (res.data.isSuccess) {
@@ -225,7 +227,10 @@ function AddArticle(props) {
       axios({
         method: 'post',
         url: servicePath.updateArticle,
-        data: dataProps,
+        data: {
+          ...dataProps,
+
+        },
         withCredentials: true,
       }).then((res) => {
         if (res.data.isSuccess) {
@@ -344,7 +349,7 @@ function AddArticle(props) {
             </Col>
             <Col span={12}>
               <Select
-                value={selectedSNav}
+                value={selectedSNav === 1 ? null : selectedSNav}
                 size='large'
                 onChange={selectSNavHandler}
                 style={{ width: '100%' }}

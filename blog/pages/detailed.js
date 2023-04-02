@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import { Row, Col, Affix, Breadcrumb } from 'antd';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -60,7 +59,7 @@ const Detailed = (props) => {
     } else {
       axios(servicePath.getListTitle + props.nav_id).then(
         (res) => {
-          setTitle(res.data.data[0].typeName)
+          setTitle(res.data.data[0]?.typeName)
         }
       )
     }
