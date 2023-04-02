@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import moment from 'dayjs'
 import { List, Row, Col, Button, Drawer, Input, DatePicker, message, Modal } from 'antd'
 import { useParams } from 'react-router-dom'
-import { PlusOutlined } from '@ant-design/icons'
 import servicePath from '../config/apiUrl'
-import '../static/css/NavManage.css'
 import axios from '../config/AxiosConfig'
+import moment from 'dayjs'
+import '../static/css/NavManage.css'
+import iconToElement from '../hooks/useIcon'
 
 const { confirm } = Modal
 function NavManage(props) {
@@ -128,7 +128,6 @@ function NavManage(props) {
       withCredentials: true,
       header: { 'Acess-Control-Allow-Origin': '*' },
     }).then((res) => {
-      console.log(res.data.fnavinfo)
       let navId = res.data.fnavinfo[0]
       setFirstNavTypeName(navId.typeName)
       setFirstNavIcon(navId.icon)
@@ -170,7 +169,6 @@ function NavManage(props) {
   }
 
   const deleteSecondNav = (id) => {
-    console.log(id)
     confirm({
       title: '你确定要删除这条栏目吗？',
       content: '如果你点击OK按钮, 栏目将会永远被删除, 无法恢复',
@@ -282,7 +280,7 @@ function NavManage(props) {
               <Col span={6}>
                 <Button
                   type='primary'
-                  icon={<PlusOutlined />}
+                  icon={iconToElement('PlusOutlined')}
                   shape='circle'
                   onClick={() => addNewSecond(item.Id)}
                 />

@@ -3,6 +3,7 @@ import { List, Row, Col, Modal, message, Input, Button, Drawer } from 'antd'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
+
 const { confirm } = Modal
 
 const ArticleType = () => {

@@ -1,13 +1,4 @@
-import React from 'react'
-import * as antIcons from '@ant-design/icons'
 import { message } from 'antd'
-
-export const iconToElement = (name, className, ...Children) => {
-  return React.createElement(antIcons && antIcons[name], {
-    style: { fontSize: '1rem' },
-    className
-  }, ...Children)
-}
 
 export const getBase64 = (img, callback) => {
   const reader = new FileReader();

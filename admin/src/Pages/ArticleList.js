@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
 import '../static/css/ArticleList.css'
+
 const { confirm } = Modal
 
 function ArticleList() {

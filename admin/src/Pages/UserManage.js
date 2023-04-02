@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import '../static/css/AddArticle.css'
 import { Row, Col, List, Input, Button, message, Switch, Drawer, Modal } from 'antd'
 import axios from '../config/AxiosConfig'
 import MD5 from 'md5'
 import servicePath from '../config/apiUrl'
+import '../static/css/AddArticle.css'
 import '../static/css/UserManage.css'
 
 const { confirm } = Modal
 const UserManage = () => {
-
   const [userInfoList, setUserInfoList] = useState([])
   const [roleStatus] = useState(-1)
   const [isChecked, setIsChecked] = useState(true)
@@ -22,7 +21,6 @@ const UserManage = () => {
 
   useEffect(() => {
     getUserInfoList()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getUserInfoList = () => {

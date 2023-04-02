@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Editor from 'for-editor-herb'
 import marked from 'marked'
-import '../static/css/AddArticle.css'
 import { Row, Col, Input, Select, Button, DatePicker, message, Upload } from 'antd'
 import { useParams } from 'react-router-dom'
 import customLang from '../config/EditorConfig'
 import axios from '../config/AxiosConfig'
 import servicePath from '../config/apiUrl'
-import { iconToElement } from '../hooks/useUploadFile'
+import iconToElement from '../hooks/useIcon'
 import moment from 'dayjs'
+import '../static/css/AddArticle.css'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -139,10 +139,8 @@ function AddArticle(props) {
 
   const handlePictureChange = (info) => {
     setIconLoading(true)
-    console.log(info)
     const formData = new FormData()
     fileList.forEach((file) => formData.append('file', file))
-    console.log(formData)
     axios({
       method: 'post',
       url: servicePath.uploadFiles,
@@ -153,7 +151,6 @@ function AddArticle(props) {
         'Access-Control-Allow-Origin': '*',
       },
     }).then((res) => {
-      console.log(res)
       setArticleImgUrl(res.data.url)
     })
   }
@@ -203,7 +200,6 @@ function AddArticle(props) {
     dataProps.article_img = articleImgUrl
     dataProps.addTime = new Date(showDate).getTime() / 1000
 
-    console.log(dataProps)
     if (articleId === 0) {
       dataProps.view_count = 0
       axios({
@@ -265,7 +261,6 @@ function AddArticle(props) {
   const addImg = (file) => {
     let formData = new FormData()
     formData.append('file', file)
-    console.log(formData)
     axios({
       auth: localStorage.getItem('openId'),
       method: 'post',
@@ -278,7 +273,6 @@ function AddArticle(props) {
       },
     })
       .then((res) => {
-        console.log(res)
         $vm.current.$img2Url(file.name, res.data.url)
       })
       .catch((err) => {
@@ -288,7 +282,6 @@ function AddArticle(props) {
 
   const getWordToEditor = (file) => {
     const fileReader = new FileReader()
-    console.log(fileReader)
   }
 
   return (

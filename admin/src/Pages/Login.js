@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Card, Input, Spin, message } from 'antd';
-import { UserOutlined, KeyOutlined } from '@ant-design/icons';
+import iconToElement from '../hooks/useIcon';
 import { useNavigate } from 'react-router-dom';
-import 'antd/dist/reset.css';
-import '../static/css/Login.css';
 import servicePath from '../config/apiUrl';
 import axios from '../config/AxiosConfig'
 import MD5 from 'md5';
+import '../static/css/Login.css';
 
 const Login = () => {
 
@@ -53,12 +52,10 @@ const Login = () => {
 						withCredentials: true,
 					}).then(
 						(res) => {
-							console.log(res)
 							if (res.data.loginStatus != null) {
 								if (res.data.loginStatus[0].role_status) {
 									setIsLoading(false)
 									if (res.data.data === '登录成功') {
-										console.log(res.data.data)
 										localStorage.setItem('openId', res.data.openId);
 										localStorage.setItem("roleId", res.data.loginStatus[0].Id);
 										navigate('/index')
@@ -96,7 +93,9 @@ const Login = () => {
 						id="userName"
 						size="large"
 						placeholder="请输入你的用户名"
-						prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+						prefix={iconToElement('UserOutlined', '', {
+							color: 'rgba(0,0,0,.25)'
+						})}
 						onChange={(e) => { setUserName(e.target.value) }}
 					/>
 					<br /><br />
@@ -104,7 +103,9 @@ const Login = () => {
 						id="password"
 						size="large"
 						placeholder="请输入你的密码"
-						prefix={<KeyOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+						prefix={iconToElement('KeyOutlined', '', {
+							color: 'rgba(0,0,0,.25)'
+						})}
 						onChange={(e) => { setPassword(e.target.value) }}
 					/>
 					<br /><br />
